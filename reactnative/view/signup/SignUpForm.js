@@ -2,10 +2,10 @@ import { View, Text, Button, TextInput } from "react-native";
 import { Formik } from 'formik';
 import axios from 'axios';
 
-const LoginForm = () => {
+const SignUpForm = () => {
     return (
         <Formik
-            initialValues={{ username: '', password: '' }}
+            initialValues={{ username: '', password: '', confirmPassword: '' }}
             onSubmit={ async (values) => {
                 console.log(values)
                 try {
@@ -27,6 +27,11 @@ const LoginForm = () => {
                         onBlur={handleBlur('password')}
                         value={values.password}
                     />
+                    <TextInput
+                        onChangeText={handleChange('confirmPassword')}
+                        onBlur={handleBlur('confirmPassword')}
+                        value={values.confirmPassword}
+                    />
                     <Button onPress={handleSubmit} title="Submit" />
                 </View>
             )}
@@ -34,4 +39,4 @@ const LoginForm = () => {
     );
 }
 
-export default LoginForm;
+export default SignUpForm;
