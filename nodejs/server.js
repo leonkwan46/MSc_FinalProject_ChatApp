@@ -1,14 +1,25 @@
-const http = require("http");
+import express from "express";
+import bodyParser from "body-parser";
+import cors from 'cors';
+import connectDB from "./db/config.js";
 
-const hostname = "127.0.0.1";
-const port = 3000;
+// App Config
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+connectDB();
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "text/plain");
-  res.end("Hello World\n");
-});
+// Routes
+import loginRoute from "./routes/login.js";
+app.use("/login", loginRoute);
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+
+
+
+
+
+
+
+app.listen(5000, () => {
+  console.log("Server started on port 5000");
 });
