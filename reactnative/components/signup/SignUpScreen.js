@@ -1,5 +1,5 @@
-import { View, Text } from "react-native";
-import SignUpForm from "./SignUpForm";
+import { View, Text } from "react-native"
+import SignUpForm from "./SignUpForm"
 
 
 const SignUpComponent = () => {
@@ -11,4 +11,4 @@ const SignUpComponent = () => {
     )
 }
 
-export default SignUpComponent;
+export default SignUpComponent
