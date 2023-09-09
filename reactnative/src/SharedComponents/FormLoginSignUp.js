@@ -1,25 +1,27 @@
 import { View, Text, Pressable, TextInput, StyleSheet } from "react-native"
-import { VStack, Box, Divider } from "@react-native-material/core";
+import { VStack, Box } from "@react-native-material/core"
 import { Formik } from 'formik'
 import axios from 'axios'
 
-const LoginForm = () => {
+const FormLoginSignUp = (props) => {
+
+    const isSignUp = (props.page === 'signup' ? true : false)
+
     return (
-        <View style={styles.container}>
+        <View style={ styles.container }>
             <Formik
-                initialValues={{ username: '', password: '' }}
+                initialValues={{ username: '', password: '', confirmPassword: '' }}
                 onSubmit={ async (values) => {
                     console.log(values)
                     try {
-                        await axios.post('http://localhost:5000/login', values);
+                        await axios.post('http://localhost:5000/login', values)
                     } catch (err) {
-                        console.log(err);
+                        console.log(err)
                     }
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values }) => (
 
-                    // Styling Here
                     <VStack spacing={20}>
                         <Box>
                             <TextInput 
@@ -41,6 +43,19 @@ const LoginForm = () => {
                                 placeholderTextColor={'#aaa'}
                             />
                         </Box>
+                        {isSignUp ? 
+                            <Box>
+                                <TextInput
+                                    onChangeText={handleChange('password')}
+                                    onBlur={handleBlur('password')}
+                                    value={values.password}
+                                    style={styles.inputContainer}
+                                    placeholder="Confirm Password"
+                                    placeholderTextColor={'#aaa'}
+                                />
+                            </Box>
+                            : null
+                        }
                         <Box style={styles.buttonContainer}>
                             <Pressable onPress={handleSubmit} style={styles.buttonSize}>
                                 <Text style={styles.buttonText}>Login</Text>
@@ -50,12 +65,13 @@ const LoginForm = () => {
                 )}
             </Formik>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
-
+        borderRadius: 10,
+        margin: 10,
     },
     inputContainer: {
         backgroundColor: '#fff',
@@ -85,4 +101,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default LoginForm
+export default FormLoginSignUp

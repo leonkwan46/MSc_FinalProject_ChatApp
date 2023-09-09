@@ -1,12 +1,12 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from './components/HomeScreen';
-import LoginScreen from './components/login/LoginScreen';
-import SignUpScreen from './components/signup/SignUpScreen';
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native'
+import HomeScreen from './src/components/HomeScreen'
+import LoginScreen from './src/components/login/LoginScreen'
+import SignUpScreen from './src/components/signup/SignUpScreen'
 
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 const App = () => {
   return (
@@ -17,7 +17,7 @@ const App = () => {
           <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-  );
-};
+  )
+}
 
-export default App;
+export default App

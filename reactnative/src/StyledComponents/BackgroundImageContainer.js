@@ -1,7 +1,7 @@
 import React from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
 
-const image = require('../assets/images/login-signup-bg-img.jpg')
+const image = require('../../assets/images/login-signup-bg-img.jpg')
 
 export const BackgroundImageContainer = ({children }) => {
     return (
@@ -11,8 +11,8 @@ export const BackgroundImageContainer = ({children }) => {
       >
         {children}
       </ImageBackground>
-    );
-  };
+    )
+  }
 
 const styles = StyleSheet.create({
     container: {

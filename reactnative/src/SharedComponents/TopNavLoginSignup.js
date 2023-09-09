@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 import { Header } from 'react-native-elements'
 
 const TopNavLoginSignup = (props) => {
-    const [isLogin, setIsLogin] = useState(props.page === 'login' ? true : false)
+    
+    const isLogin = (props.page === 'login' ? true : false)
+
     return (
         <View>
             <Header
                 containerStyle = { styles.container }
-                leftComponent = {isLogin ? { icon: 'menu', color: '#fff' } : {}}
+                leftComponent = { isLogin ? { icon: 'menu', color: '#fff' } : {} }
             />
         </View>
     )

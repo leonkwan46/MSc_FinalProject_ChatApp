@@ -1,9 +1,8 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import HomePage from '../components/HomeScreen'
-import LoginComponent from '../components/login/LoginScreen';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 const BottomNav = () => {
     return (

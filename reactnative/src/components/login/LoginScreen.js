@@ -1,24 +1,21 @@
 import React from 'react'
-import { Text, View, StyleSheet } from "react-native"
-import LoginForm from "./LoginForm"
+import { View, StyleSheet } from "react-native"
 import BackgroundImageContainer from "../../StyledComponents/BackgroundImageContainer"
 import TopHeadingLoginSignup from '../../SharedComponents/TopHeadingLoginSignup'
 import TopNavLoginSignup from '../../SharedComponents/TopNavLoginSignup'
-import LoginCard from '../../SharedComponents/LoginCard'
-import BottomNav from '../../navigation/BottomNav'
+import BottomSignInNavigation from './BottomSignInNavigation'
+import FormLoginSignUp from '../../SharedComponents/FormLoginSignUp'
 
-const LoginComponent = () => {
+const LoginScreen = () => {
     return (
         <BackgroundImageContainer>
             <View style={ styles.backgroundColor }>
                 <TopNavLoginSignup />
                 <View style={ styles.container }>
-                    <TopHeadingLoginSignup />
-                    <View style={ styles.cardContainer }>
-                        <LoginCard />
-                    </View>
+                    <TopHeadingLoginSignup page='login' />
+                    <FormLoginSignUp page='login' />
+                    <BottomSignInNavigation />
                 </View>
-                <BottomNav />
             </View>
         </BackgroundImageContainer>
     )
@@ -28,15 +25,12 @@ const styles = StyleSheet.create({
     backgroundColor: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.65)',
+        paddingTop: '20%',
     },
     container: {
         flex: 1,
-        padding: 30,
+        margin: 30,
     },
-    cardContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-    },
-  });
+  })
 
-export default LoginComponent
+export default LoginScreen

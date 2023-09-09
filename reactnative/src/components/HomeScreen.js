@@ -7,9 +7,9 @@ import TopNavLoginSignup from '../SharedComponents/TopNavLoginSignup'
 const LoginScreen = ({ navigation }) => {
   return (
     <BackgroundImageContainer>
-      <View style={styles.container}>
+      <View style={ styles.container }>
         <TopNavLoginSignup page='login' />
-        <View style={styles.text}>
+        <View style={ styles.text }>
           <Text>Home Page</Text>
         </View>
         <View>
