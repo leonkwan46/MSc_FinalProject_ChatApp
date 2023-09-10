@@ -58,7 +58,10 @@ const FormLoginSignUp = (props) => {
                         }
                         <Box style={styles.buttonContainer}>
                             <Pressable onPress={handleSubmit} style={styles.buttonSize}>
-                                <Text style={styles.buttonText}>Login</Text>
+                                {isSignUp ? 
+                                    <Text style={styles.buttonText}>Register</Text> :
+                                    <Text style={styles.buttonText}>Login</Text>
+                                }
                             </Pressable>
                         </Box>
                     </VStack>

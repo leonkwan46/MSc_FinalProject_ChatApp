@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet } from 'react-native'
 
 const image = require('../../assets/images/login-signup-bg-img.jpg')
 
-export const BackgroundImageContainer = ({children }) => {
+export const BackgroundImageContainer = ({ children }) => {
     return (
       <ImageBackground
         source={image}
