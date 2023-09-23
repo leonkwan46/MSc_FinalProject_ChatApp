@@ -1,6 +1,7 @@
 import { useState, React } from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native"
+import { View, Text, FlatList, StyleSheet, Pressable } from "react-native"
 import { Overlay } from 'react-native-elements'
+import OverlayInfo from './OverlayInfo'
 
 const SignUpAs = () => {
     const [visible, setVisible] = useState(false)
@@ -34,17 +35,17 @@ const SignUpAs = () => {
                         data={selected}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => handleOnPress(item.id)} style={styles.selections}>
+                            <Pressable onPress={() => handleOnPress(item.id)} style={styles.selections}>
                                 {item.selected ?
                                     <Text style={styles.selected}>{item.name}</Text> :                                
                                     <Text style={styles.unselected}>{item.name}</Text>
                                 }
-                            </TouchableOpacity>
+                            </Pressable>
                         )}
                     />
                     <View>
                         <Overlay isVisible={visible} onBackdropPress={() => setVisible(false)} overlayStyle={styles.overlay}>
-                            <Text>Hello from Overlay!</Text>
+                            <OverlayInfo />
                         </Overlay>
                     </View>
                 </View>

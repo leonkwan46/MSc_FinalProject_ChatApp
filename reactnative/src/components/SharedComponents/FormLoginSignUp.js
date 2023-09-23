@@ -2,25 +2,51 @@ import { View, Text, Pressable, TextInput, StyleSheet } from "react-native"
 import { VStack, Box } from "@react-native-material/core"
 import { Formik } from 'formik'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from "../../redux/reducer/authSlice"
+import * as Yup from 'yup'
 
 const FormLoginSignUp = (props) => {
 
     const isSignUp = (props.page === 'signup' ? true : false)
+    const dispatch = useDispatch()
+    
+    const SignupSchema = Yup.object().shape({
+        username: Yup.string()
+            .required('Required'),
+        password: Yup.string()
+            .min(2, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    })
 
     return (
         <View style={ styles.container }>
             <Formik
                 initialValues={{ username: '', password: '', confirmPassword: '' }}
+                validationSchema={SignupSchema}
                 onSubmit={ async (values) => {
                     console.log(values)
-                    try {
-                        await axios.post('http://localhost:5000/login', values)
-                    } catch (err) {
-                        console.log(err)
-                    }
+                    // if (isSignUp) {
+                    //     console.log('Register')
+                    //     const response = await axios.post('http://localhost:5000/signup', {
+                    //         username: values.username,
+                    //         password: values.password
+                    //     })
+                    //     dispatch(login(response.data))
+                    // } else {
+                    //     console.log('Login')
+                    //     const response = await axios.post('http://localhost:5000/login', {
+                    //         username: values.username,
+                    //         password: values.password
+                    //     })
+                    //     dispatch(login(response.data))
+                    // }
                 }}
             >
-                {({ handleChange, handleBlur, handleSubmit, values }) => (
+                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
 
                     <VStack spacing={20}>
                         <Box>
@@ -28,7 +54,7 @@ const FormLoginSignUp = (props) => {
                                 onChangeText={handleChange('username')}
                                 onBlur={handleBlur('username')}
                                 value={values.username}
-                                style={styles.inputContainer}
+                                style={errors.username && touched.username ? styles.errors : styles.inputContainer}
                                 placeholder="Username"
                                 placeholderTextColor={'#aaa'}
                             />
@@ -38,7 +64,7 @@ const FormLoginSignUp = (props) => {
                                 onChangeText={handleChange('password')}
                                 onBlur={handleBlur('password')}
                                 value={values.password}
-                                style={styles.inputContainer}
+                                style={errors.password && touched.password ? styles.errors : styles.inputContainer}
                                 placeholder="Password"
                                 placeholderTextColor={'#aaa'}
                             />
@@ -46,10 +72,10 @@ const FormLoginSignUp = (props) => {
                         {isSignUp ? 
                             <Box>
                                 <TextInput
-                                    onChangeText={handleChange('password')}
-                                    onBlur={handleBlur('password')}
-                                    value={values.password}
-                                    style={styles.inputContainer}
+                                    onChangeText={handleChange('confirmPassword')}
+                                    onBlur={handleBlur('confirmPassword')}
+                                    value={values.confirmPassword}
+                                    style={errors.confirmPassword && touched.confirmPassword ? styles.errors : styles.inputContainer}
                                     placeholder="Confirm Password"
                                     placeholderTextColor={'#aaa'}
                                 />
@@ -102,6 +128,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontFamily: 'Lemon-Regular',
     },
+    errors: {
+        backgroundColor: '#fff',
+        height: 50,
+        borderRadius: 10,
+        padding: 10,
+        fontSize: 14,
+        fontFamily: 'Lemon-Regular',
+        borderColor: 'red',
+        borderWidth: 1,
+    }
 })
 
 export default FormLoginSignUp
