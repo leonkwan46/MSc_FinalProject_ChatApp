@@ -1,19 +1,18 @@
-import express from "express";
-import User from "../db/users.js";
+import expres from "express"
+import User from "../db/users.js"
 
-const router = express.Router();
+const router = expres.Router()
 
-// Create Account
 router.post("/", async (req, res) => {
     try {
-        const user = await new User({
-            username: req.body.username,
-            password: req.body.password,
-        });
-        user.save();
+        const { username, password } = req.body
+        const user = await User.findOne({ username })
+        console.log(user)
+        if (!user || user.password !== password) {throw new Error ("Invalid username or password")}
+        return res.status(200).json(user)
     } catch (err) {
-        console.log("NOOOOO")
+        
     }
-});
+})
 
-export default router;
+export default router

@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "prestart": "npm install",
+    "start": "npx nodemon server.js"
+  },
   "type": "module",
   "devDependencies": {
     "@babel/core": "^7.22.9",
