@@ -1,11 +1,7 @@
 import React from 'react'
 import { View, StyleSheet} from "react-native"
-import ContainerLoginSignup from "../StyledComponents/ContainerLoginSignup"
-import TopHeadingLoginSignup from '../SharedComponents/TopHeadingLoginSignup'
-import TopNavLoginSignup from '../SharedComponents/TopNavLoginSignup'
+import { ContainerLoginSignup, TopHeadingLoginSignup, TopNavLoginSignup, FormLoginSignUp } from "../SharedComponents"
 import BottomSignInNavigation from './BottomSignInNavigation'
-import FormLoginSignUp from '../SharedComponents/FormLoginSignUp'
-import { ScrollView } from 'react-native-gesture-handler'
 
 const LoginScreen = () => {
     return (

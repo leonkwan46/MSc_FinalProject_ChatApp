@@ -1,10 +1,12 @@
 import { useState, React } from 'react'
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native"
-import { Overlay } from 'react-native-elements'
-import OverlayInfo from './OverlayInfo'
+import { useDispatch } from 'react-redux'
+import AttentionOverlay from './AttentionOverlay'
+import { openOverlay } from '../../redux/reducer/overlaySlice'
 
 const SignUpAs = () => {
-    const [visible, setVisible] = useState(false)
+
+    const dispatch = useDispatch()
     const [selected, setSelected] = useState([
         { id: 1, name: 'Student / Parents', selected: true },
         { id: 2, name: 'Teacher', selected: false },
@@ -14,7 +16,7 @@ const SignUpAs = () => {
         const newSelected = selected.map((item) => {
             if (item.id === id) {
                 if (item.id === 2) {
-                    setVisible(true)
+                    dispatch(openOverlay())
                 }
                 return { ...item, selected: true }
             }
@@ -43,11 +45,7 @@ const SignUpAs = () => {
                             </Pressable>
                         )}
                     />
-                    <View>
-                        <Overlay isVisible={visible} onBackdropPress={() => setVisible(false)} overlayStyle={styles.overlay}>
-                            <OverlayInfo />
-                        </Overlay>
-                    </View>
+                    <AttentionOverlay />
                 </View>
             </View>
         </View>
@@ -105,14 +103,6 @@ const styles = StyleSheet.create({
     divider: {
         height: 2,
         backgroundColor: '#D4AF37',
-    },
-    overlay: {
-        width: '70%',
-        height: '60%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 30,
     },
 })
 export default SignUpAs

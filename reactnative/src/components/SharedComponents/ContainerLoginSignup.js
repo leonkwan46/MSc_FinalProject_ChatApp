@@ -3,7 +3,7 @@ import { ImageBackground, View, ScrollView, StyleSheet } from 'react-native'
 
 const image = require('../../../assets/images/login-signup-bg-img.jpg')
 
-export const ContainerLoginSignup = ({ children }) => {
+const ContainerLoginSignup = ({ children }) => {
     return (
         <ImageBackground
           source={image}
