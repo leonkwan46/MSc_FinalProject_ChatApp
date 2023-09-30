@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from "react-native"
-import { closeOverlay } from '../../redux/reducer/overlaySlice'
+import { closeTeacherOverlay } from '../../redux/reducer/signUpInfoSlice'
 import { useDispatch } from 'react-redux'
 
 const OverlayInfo = () => {
@@ -26,7 +26,7 @@ const OverlayInfo = () => {
                 <View style={styles.buttonContainer}>
                     <Pressable
                         style={styles.button}
-                        onPress={() => dispatch(closeOverlay())}
+                        onPress={() => dispatch(closeTeacherOverlay())}
                         >
                         <Text>Ready!</Text>
                     </Pressable>

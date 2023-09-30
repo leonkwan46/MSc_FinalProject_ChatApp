@@ -11,8 +11,7 @@ const TopHeadingLoginSignup = (props) => {
         isLogin ? 
         <Text style={ styles.text }> Login </Text> :
         <Text style={ styles.text }> Sign Up </Text>
-      }
-        
+      } 
     </View>
   )
 }

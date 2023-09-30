@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import authReducer from './authSlice'
-import overlayReducer from './overlaySlice'
+import signUpInfoSlice from './signUpInfoSlice'
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    overlay: overlayReducer,
+    signUpInfo: signUpInfoSlice,
 })
 
 export default rootReducer

@@ -1,22 +1,20 @@
+import React from 'react'
 import { View, Text, Pressable, TextInput, StyleSheet } from "react-native"
 import { VStack, Box } from "@react-native-material/core"
 import { Formik } from 'formik'
-import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from "../../redux/reducer/authSlice"
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
+import { signUpUser } from '../../../redux/reducer/authSlice'
+import { openStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
 
 const FormLoginSignUp = (props) => {
 
     const isSignUp = (props.page === 'signup' ? true : false)
     const dispatch = useDispatch()
-    
     const SignupSchema = Yup.object().shape({
         username: Yup.string()
             .required('Required'),
         password: Yup.string()
-            .min(2, 'Too Short!')
-            .max(50, 'Too Long!')
             .required('Required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -25,25 +23,16 @@ const FormLoginSignUp = (props) => {
     return (
         <View style={ styles.container }>
             <Formik
-                initialValues={{ username: '', password: '', confirmPassword: '' }}
+                initialValues={{ username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }}
                 validationSchema={SignupSchema}
-                onSubmit={ async (values) => {
-                    console.log(values)
-                    // if (isSignUp) {
-                    //     console.log('Register')
-                    //     const response = await axios.post('http://localhost:5000/signup', {
-                    //         username: values.username,
-                    //         password: values.password
-                    //     })
-                    //     dispatch(login(response.data))
-                    // } else {
-                    //     console.log('Login')
-                    //     const response = await axios.post('http://localhost:5000/login', {
-                    //         username: values.username,
-                    //         password: values.password
-                    //     })
-                    //     dispatch(login(response.data))
-                    // }
+                onSubmit={ async (values, { resetForm }) => {
+                    if (isSignUp) {
+                        dispatch(openStatusOverlay())
+                        dispatch(signUpUser(values))
+                    } else {
+                        
+                    }
+                    resetForm()
                 }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -61,6 +50,7 @@ const FormLoginSignUp = (props) => {
                         </Box>
                         <Box>
                             <TextInput
+                                secureTextEntry={true}
                                 onChangeText={handleChange('password')}
                                 onBlur={handleBlur('password')}
                                 value={values.password}
@@ -72,6 +62,7 @@ const FormLoginSignUp = (props) => {
                         {isSignUp ? 
                             <Box>
                                 <TextInput
+                                    secureTextEntry={true}
                                     onChangeText={handleChange('confirmPassword')}
                                     onBlur={handleBlur('confirmPassword')}
                                     value={values.confirmPassword}

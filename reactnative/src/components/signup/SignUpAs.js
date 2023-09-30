@@ -2,7 +2,7 @@ import { useState, React } from 'react'
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native"
 import { useDispatch } from 'react-redux'
 import AttentionOverlay from './AttentionOverlay'
-import { openOverlay } from '../../redux/reducer/overlaySlice'
+import { openTeacherOverlay, collectUserRole } from '../../redux/reducer/signUpInfoSlice'
 
 const SignUpAs = () => {
 
@@ -12,11 +12,14 @@ const SignUpAs = () => {
         { id: 2, name: 'Teacher', selected: false },
     ])
 
-    const handleOnPress =(id) => {
+    const handleOnPress = (id) => {
         const newSelected = selected.map((item) => {
             if (item.id === id) {
-                if (item.id === 2) {
-                    dispatch(openOverlay())
+                if (id === 2) {
+                    dispatch(collectUserRole({ role: 'teacher' }))
+                    dispatch(openTeacherOverlay())
+                } else {
+                    dispatch(collectUserRole({ role: 'student' }))
                 }
                 return { ...item, selected: true }
             }

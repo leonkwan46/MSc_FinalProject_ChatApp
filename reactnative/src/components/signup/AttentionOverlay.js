@@ -1,17 +1,17 @@
-import React from 'react';
-import { Overlay } from 'react-native-elements';
-import OverlayInfo from './OverlayInfo';
-import { useDispatch, useSelector } from 'react-redux';
-import { closeOverlay } from '../../redux/reducer/overlaySlice';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import React from 'react'
+import { Overlay } from 'react-native-elements'
+import OverlayInfo from './OverlayInfo'
+import { useDispatch, useSelector } from 'react-redux'
+import { closeTeacherOverlay } from '../../redux/reducer/signUpInfoSlice'
+import { StyleSheet, View, ImageBackground } from 'react-native'
 
 const AttentionOverlay = () => {
     const dispatch = useDispatch()
-    const visible = useSelector(state => state.overlay.isOverlayOpen)
+    const visible = useSelector((state) => state.signUpInfo.isTecherOverlayOpen)
     const image = require('../../../assets/images/overlay.jpg')
 
     return (
-            <Overlay isVisible={visible} onBackdropPress={() => dispatch(closeOverlay())} overlayStyle={styles.overlay} >
+            <Overlay isVisible={visible} onBackdropPress={() => dispatch(closeTeacherOverlay())} overlayStyle={styles.overlay} >
                 <ImageBackground
                     source={image}
                     style={styles.imageContainer}
