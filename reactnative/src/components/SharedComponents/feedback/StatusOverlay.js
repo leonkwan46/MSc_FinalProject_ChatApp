@@ -9,32 +9,29 @@ const StatusOverlay = ({message, status}) => {
     const dispatch = useDispatch()
 
     // Images
-    const done = require('../../../../assets/images/done.png')
     const failed = require('../../../../assets/images/error.png')
 
     const visible = useSelector((state) => state.signUpInfo.isStatusOverlayOpen)
 
-    // status = true
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            dispatch(closeStatusOverlay())
-        }, 1000)
-        return () => { clearTimeout(timer) }
-    }, [visible])
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         dispatch(closeStatusOverlay())
+    //     }, 3000)
+    //     return () => { clearTimeout(timer) }
+    // }, [visible])
 
     return (
         <Overlay isVisible={visible} overlayStyle={styles.overlay} onBackdropPress={() => dispatch(closeStatusOverlay())}>
             <View>
-                <Image source={status ? done : failed} style={styles.image} />
+                <Image source={failed} style={styles.image} />
             </View>
             <View style={styles.textContainer}>
-                <Text style={status ? styles.success : styles.failed}>{status ? 'Success!' : 'Failed!'}</Text>
-                <Text style={styles.errorMessage}>{status ? 'Welcome!' : message}</Text>
+                <Text style={styles.failed}>{'Failed!'}</Text>
+                <Text style={styles.errorMessage}>{message}</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <Pressable style={status ? styles.buttonSuccess : styles.buttonFailed} onPress={() => dispatch(closeStatusOverlay())}>
-                    <Text style={styles.buttonText}>{status ? 'Okay' : 'Try Again'}</Text>
+                <Pressable style={styles.buttonFailed} onPress={() => dispatch(closeStatusOverlay())}>
+                    <Text style={styles.buttonText}>{'Try Again'}</Text>
                 </Pressable>
             </View>
         </Overlay>

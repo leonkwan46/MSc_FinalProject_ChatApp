@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, Pressable, TextInput, StyleSheet } from "react-native"
 import { VStack, Box } from "@react-native-material/core"
 import { Formik } from 'formik'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
-import { signUpUser } from '../../../redux/reducer/authSlice'
+import { loginUser, signUpUser } from '../../../redux/reducer/authSlice'
 import { openStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
+import { useNavigation } from '@react-navigation/native'
 
 const FormLoginSignUp = (props) => {
-
+    const navigation = useNavigation()
     const isSignUp = (props.page === 'signup' ? true : false)
     const dispatch = useDispatch()
+    const role = useSelector((state) => state.signUpInfo.role)
+
+    // Validation Schema
     const SignupSchema = Yup.object().shape({
         username: Yup.string()
             .required('Required'),
@@ -23,14 +27,17 @@ const FormLoginSignUp = (props) => {
     return (
         <View style={ styles.container }>
             <Formik
-                initialValues={{ username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }}
-                validationSchema={SignupSchema}
+                initialValues={{ username: 'qwe', password: 'qwe', confirmPassword: 'qwe', role: role }}
+                validationSchema={isSignUp ? SignupSchema : null}
                 onSubmit={ async (values, { resetForm }) => {
                     if (isSignUp) {
-                        dispatch(openStatusOverlay())
-                        dispatch(signUpUser(values))
+                        dispatch(signUpUser(values)).then(() => {
+                            res.payload.token ? navigation.navigate('HomeScreen') : dispatch(openStatusOverlay())
+                        })
                     } else {
-                        
+                        dispatch(loginUser(values)).then((res) => {
+                            res.payload.token ? navigation.navigate('HomeScreen') : dispatch(openStatusOverlay())
+                        })
                     }
                     resetForm()
                 }}

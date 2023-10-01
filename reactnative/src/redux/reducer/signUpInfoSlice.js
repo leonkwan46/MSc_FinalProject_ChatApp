@@ -5,11 +5,7 @@ const signUpInfoSlice = createSlice({
     initialState: {
         isTecherOverlayOpen: false,
         isStatusOverlayOpen: false,
-        userData: {
-            username: '',
-            password: '',
-            role: ''
-        }
+        role: 'parent'
     },
     reducers: {
         collectUserRole: (state, action) => {

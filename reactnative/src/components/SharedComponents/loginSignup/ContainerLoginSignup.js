@@ -7,14 +7,14 @@ const image = require('../../../../assets/images/login-signup-bg-img.jpg')
 
 const ContainerLoginSignup = ({ children }) => {
   const { isLoading, error, token } = useSelector((state) => state.auth)
-  const status = error ? false : token ? true : null
+  const status = error && !token ? true : false
   return (
       <ImageBackground
         source={image}
         style={styles.container}
       >
         {isLoading ? <Loading /> : null}
-        {status !== null ? <StatusOverlay status={status} message={error} /> : null}
+        {status ? <StatusOverlay message={error} /> : null}
 
         <SafeAreaView style={ styles.backgroundColor }>
           <ScrollView

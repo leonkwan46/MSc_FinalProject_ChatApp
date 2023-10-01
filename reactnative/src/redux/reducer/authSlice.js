@@ -28,19 +28,23 @@ export const loginUser = createAsyncThunk(
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        isLoading: false,
-        user: {},
         token: null,
+        user: {
+            _id: '',
+            username: '',
+            role: '',
+        },
+        isLoading: false,
         error: null,
     },
     reducers: {
-        login: (state, action) => {
-            state.user = action.payload.user
-            state.token = action.payload.token
-        },
         logout: (state) => {
-            state.user = {}
             state.token = null
+            state.user = {
+                _id: '',
+                username: '',
+                role: '',
+            }
         }
     },
     extraReducers: (builder) => {
@@ -50,13 +54,22 @@ const authSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(signUpUser.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.user = action.payload.user
+                state.error = null
                 state.token = action.payload.token
+                state.user.role = action.payload.user.role
+                state.user._id = action.payload.user._id
+                state.user.username = action.payload.user.username
+                state.isLoading = false
             })
             .addCase(signUpUser.rejected, (state, action) => {
+                state.token = null
+                state.user = {
+                    _id: '',
+                    username: '',
+                    role: '',
+                }
+                state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
-                state.error = action.payload.message
             })
 
             // Login Status
@@ -64,13 +77,21 @@ const authSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.user = action.payload.user
                 state.token = action.payload.token
+                state.user.role = action.payload.user.role
+                state.user._id = action.payload.user._id
+                state.user.username = action.payload.user.username
+                state.isLoading = false
             })
             .addCase(loginUser.rejected, (state, action) => {
+                state.token = null
+                state.user = {
+                    _id: '',
+                    username: '',
+                    role: '',
+                }
+                state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
-                state.error = action.payload.message
             })
     }
 })
