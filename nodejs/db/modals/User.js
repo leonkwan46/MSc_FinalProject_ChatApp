@@ -1,12 +1,5 @@
 import mongoose from "mongoose"
 
-const validateInvitationCode = (role) => {
-  if (role !== "student" && role !== "parent") {
-    return false;
-  }
-  return true;
-}
-
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -14,7 +7,7 @@ const userSchema = new mongoose.Schema(
       require: true,
       unique: true,
     },
-    password: {
+    hashPassword: {
       type: String,
       require: true,
     },
@@ -26,17 +19,9 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    isInvited: {
+    isVerifiend: {
       type: Boolean,
       default: false,
-    },
-    invitationCode: {
-      type: String,
-      unique: true,
-      validation: {
-        validator: (() => {validateInvitationCode(this.role)}),
-        message: "Invalid Role",
-      },
     },
   }
 )
