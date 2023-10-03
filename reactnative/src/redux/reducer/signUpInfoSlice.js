@@ -9,7 +9,7 @@ const signUpInfoSlice = createSlice({
     },
     reducers: {
         collectUserRole: (state, action) => {
-            state.userData.role = action.payload.role
+            state.role = action.payload.role
         },
         openTeacherOverlay: (state) => {
             state.isTecherOverlayOpen = true

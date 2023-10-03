@@ -27,15 +27,21 @@ const FormLoginSignUp = (props) => {
     return (
         <View style={ styles.container }>
             <Formik
-                initialValues={{ username: 'qwe', password: 'qwe', confirmPassword: 'qwe', role: role }}
+                initialValues={{ username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }}
                 validationSchema={isSignUp ? SignupSchema : null}
                 onSubmit={ async (values, { resetForm }) => {
+                    const payload = {...values, role: role}
                     if (isSignUp) {
-                        dispatch(signUpUser(values)).then(() => {
-                            res.payload.token ? navigation.navigate('HomeScreen') : dispatch(openStatusOverlay())
+                        dispatch(signUpUser(payload)).then((res) => {
+                            console.log(res)
+                            if (res && res.payload.token) {
+                                role === 'parent' ? navigation.navigate('ExtraDetailsScreen') : navigation.navigate('HomeScreen')
+                            } else {
+                                dispatch(openStatusOverlay())
+                            }
                         })
                     } else {
-                        dispatch(loginUser(values)).then((res) => {
+                        dispatch(loginUser(payload)).then((res) => {
                             res.payload.token ? navigation.navigate('HomeScreen') : dispatch(openStatusOverlay())
                         })
                     }

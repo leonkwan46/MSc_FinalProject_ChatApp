@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import HomeScreen from './src/components/HomeScreen'
 import LoginScreen from './src/components/login/LoginScreen'
 import SignUpScreen from './src/components/signUp/SignUpScreen'
+import ExtraDetailsScreen from './src/components/extraDetails/extraDetailsScreen'
 import { Provider } from 'react-redux'
 import store from './src/redux/store'
 
@@ -14,9 +15,10 @@ const App = () => {
     <Provider store={store} >
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="ExtraDetailsScreen" component={ExtraDetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
