@@ -1,5 +1,5 @@
 import React from "react"
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native"
+import { Text, View, StyleSheet, Pressable } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
 const BottomSignInNavigation = () => {
@@ -7,7 +7,7 @@ const BottomSignInNavigation = () => {
     const navigation = useNavigation()
 
     const handleOnPress = () => {
-        navigation.navigate('SignUpScreen')
+        navigation.navigate('LoginSignUpScreen', {isSignIn: true})
     }
 
     return (
@@ -15,9 +15,9 @@ const BottomSignInNavigation = () => {
             <Text>
                 <Text style={ styles.text }>Don't have an account? </Text>
                 <View style={ styles.linkContainer }>
-                    <TouchableOpacity onPress={handleOnPress}>
+                    <Pressable onPress={handleOnPress}>
                         <Text style={ styles.linkText }> Sign up!</Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
             </Text>
         </View>

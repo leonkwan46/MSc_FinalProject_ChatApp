@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, Text, Pressable, TextInput, StyleSheet } from "react-native"
 import { VStack, Box } from "@react-native-material/core"
 import { Formik } from 'formik'
@@ -10,7 +10,6 @@ import { useNavigation } from '@react-navigation/native'
 
 const FormLoginSignUp = (props) => {
     const navigation = useNavigation()
-    const isSignUp = (props.page === 'signup' ? true : false)
     const dispatch = useDispatch()
     const role = useSelector((state) => state.signUpInfo.role)
 
@@ -28,21 +27,25 @@ const FormLoginSignUp = (props) => {
         <View style={ styles.container }>
             <Formik
                 initialValues={{ username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }}
-                validationSchema={isSignUp ? SignupSchema : null}
+                validationSchema={props.isSignUp ? SignupSchema : null}
+
+                // After Submit
                 onSubmit={ async (values, { resetForm }) => {
                     const payload = {...values, role: role}
-                    if (isSignUp) {
+
+                    // Sign Up Page
+                    if (props.isSignUp) {
                         dispatch(signUpUser(payload)).then((res) => {
-                            console.log(res)
                             if (res && res.payload.token) {
                                 role === 'parent' ? navigation.navigate('ExtraDetailsScreen') : navigation.navigate('HomeScreen')
                             } else {
                                 dispatch(openStatusOverlay())
                             }
                         })
+                    // Login Page
                     } else {
                         dispatch(loginUser(payload)).then((res) => {
-                            res.payload.token ? navigation.navigate('HomeScreen') : dispatch(openStatusOverlay())
+                            res.payload.token ? navigation.navigate('ChatScreen') : dispatch(openStatusOverlay())
                         })
                     }
                     resetForm()
@@ -72,7 +75,7 @@ const FormLoginSignUp = (props) => {
                                 placeholderTextColor={'#aaa'}
                             />
                         </Box>
-                        {isSignUp ? 
+                        {props.isSignUp ? 
                             <Box>
                                 <TextInput
                                     secureTextEntry={true}
@@ -88,7 +91,7 @@ const FormLoginSignUp = (props) => {
                         }
                         <Box style={styles.buttonContainer}>
                             <Pressable onPress={handleSubmit} style={styles.buttonSize}>
-                                {isSignUp ? 
+                                {props.isSignUp ? 
                                     <Text style={styles.buttonText}>Register</Text> :
                                     <Text style={styles.buttonText}>Login</Text>
                                 }

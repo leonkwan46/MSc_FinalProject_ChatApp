@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     backgroundColor: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.65)',
-        paddingTop: '20%',
     },
 })
 

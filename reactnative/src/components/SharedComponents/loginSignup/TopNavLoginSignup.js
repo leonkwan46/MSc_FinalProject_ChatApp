@@ -3,14 +3,11 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Header } from 'react-native-elements'
 
 const TopNavLoginSignup = (props) => {
-    
-    const isLogin = (props.page === 'login' ? true : false)
-
     return (
         <View>
             <Header
                 containerStyle = { styles.container }
-                leftComponent = { isLogin ? { icon: 'menu', color: '#fff' } : {} }
+                leftComponent = { props.isLogin || props.isSignIn ? { icon: 'arrow-back', color: '#fff' } : { icon: 'menu', color: '#fff' } }
             />
         </View>
     )

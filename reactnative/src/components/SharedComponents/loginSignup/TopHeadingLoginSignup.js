@@ -3,12 +3,10 @@ import { View, Text, StyleSheet } from 'react-native'
 
 const TopHeadingLoginSignup = (props) => {
 
-  const isLogin = (props.page === 'login' ? true : false)
-
   return (
     <View style={ styles.container }>
       {
-        isLogin ? 
+        props.isLogin ? 
         <Text style={ styles.text }> Login </Text> :
         <Text style={ styles.text }> Sign Up </Text>
       } 
