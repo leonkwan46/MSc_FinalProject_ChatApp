@@ -8,6 +8,7 @@ const router = express.Router()
 router.post("/", async (req, res, next) => {
     try {
         const { username, password, role } = req.body
+
         // Check if user exists
         let user = await User.findOne({ username: username })
         if (user) throw new Error ("Username already exists")
@@ -42,14 +43,15 @@ router.post("/", async (req, res, next) => {
             invitationCode: user.invitationCode,
         }
         const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1m" })
-        
+
         // Store User
         let storingUser = await user.save()
         if (!storingUser) throw new Error("Failed to store user")
+
         // Update User isRegistered status
     let update = await user.updateOne({ $set: { isRegistered: true } })
     if (!update) throw new Error("Failed to update user isRegistered status")
-    
+
         // Return User
         user = await User.findOne({ username: username })
         user = {
@@ -60,6 +62,7 @@ router.post("/", async (req, res, next) => {
             isInvited: user.isInvited,
             invitationCode: user.invitationCode,
         }
+
         return res.status(200).json({ user, token })
     } catch (err) {
         next(err)
