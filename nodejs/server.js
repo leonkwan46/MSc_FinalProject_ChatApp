@@ -4,8 +4,9 @@ import cors from 'cors'
 import connectDB from "./db/config.js"
 import errorHandler from "./handlers/errorHandler.js"
 import routes from "./routes/index.js"
+import http from 'http'
 import { Server } from "socket.io"
-import { createServer } from "http"
+import connectSocketIO from "./socket/config.js"
 
 // App Config
 const app = express()
@@ -14,22 +15,20 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(bodyParser.json())
 
-// DB Conection
-console.log("Connecting to DB...")
-connectDB()
+// Server
+const server = http.createServer(app)
 
 // Socket.io
-const server = createServer(app)
 const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
   }
 })
+connectSocketIO(io)
 
-io.on('connection', (socket) => {
-  console.log(`a user connected: ${socket.id}`)
-})
+// DB Conection
+connectDB()
 
 // Routes
 app.use(routes)
@@ -37,6 +36,4 @@ app.use(routes)
 // Error Handler, always keep this at the bottom (As it will catch any errors from the routes before)
 app.use(errorHandler)
 
-app.listen(5000, () => {
-  console.log("Server started on port 5000")
-})
+server.listen(process.env.PORT || 5000, () => console.log(`Server running on port ${process.env.PORT || 5000}`))

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { getSocketId } from '../../helpers/socketHelpers'
 import axios from 'axios'
 
 export const signUpUser = createAsyncThunk(
@@ -33,6 +34,7 @@ const authSlice = createSlice({
             _id: '',
             username: '',
             role: '',
+            socketId: '',
         },
         isLoading: false,
         error: null,
@@ -59,6 +61,7 @@ const authSlice = createSlice({
                 state.user.role = action.payload.user.role
                 state.user._id = action.payload.user._id
                 state.user.username = action.payload.user.username
+                state.user.socketId = getSocketId()
                 state.isLoading = false
             })
             .addCase(signUpUser.rejected, (state, action) => {
@@ -81,6 +84,7 @@ const authSlice = createSlice({
                 state.user.role = action.payload.user.role
                 state.user._id = action.payload.user._id
                 state.user.username = action.payload.user.username
+                state.user.socketId = getSocketId()
                 state.isLoading = false
             })
             .addCase(loginUser.rejected, (state, action) => {

@@ -1,4 +1,4 @@
-const authHelper = module.exports = {}
+const authHelper = {}
 
 authHelper.generateRandomCode = () => {
     let code = ''
