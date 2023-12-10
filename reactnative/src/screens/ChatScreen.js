@@ -8,37 +8,28 @@ const ChatScreen = ({ navigation }) => {
     const user = useSelector(state => state.auth.user)
     const { _id, socketId } = user
     const [oldMessages, setOldMessages] = useState([])
-    const [newMessage, setNewMessage] = useState('')
+    const [message, setMessage] = useState('')
 
     const handleSendMessage = async () => {
-        sendMessage(newMessage, socketId, _id)
-        setNewMessage('')
+        sendMessage(message, socketId, _id)
+        setMessage('')
     }
 
     const fetchNewMessage = async () => {
       const received = await receiveMessage()
-      const chatHistory = {
-        // Should be date
-          id: Math.random().toString(),
-          message: received.data.message
-      }
-      setOldMessages([...oldMessages, chatHistory])
+      const { recipientUserId, recipientSocketId, message } = received.data
+      const newMessage = {
+        id: new Date().getTime().toString().slice(0,-3),
+        senderSessionID: recipientSocketId,
+        senderUserID: recipientUserId,
+        message
+    }
+      setOldMessages([...oldMessages, newMessage])
     }
 
     useEffect(() => {
-        const fetchNewMessage = async () => {
-            const data = await receiveMessage()
-            const { recipientUserId, recipientSocketId, message } = data.data
-            const newMessage = {
-                id: new Date().getTime().toString().slice(0,-3),
-                senderSessionID: recipientSocketId,
-                senderUserID: recipientUserId,
-                message
-            }
-            setMessages([...messages, newMessage])
-        }
         fetchNewMessage()
-    }, [messages])
+    }, [oldMessages])
 
     return (
         <View style={{ flex: 1 }}>
@@ -51,8 +42,8 @@ const ChatScreen = ({ navigation }) => {
           />
           <View>
             <TextInput
-              value={newMessage}
-              onChangeText={(text) => setNewMessage(text)}
+              value={message}
+              onChangeText={(text) => setMessage(text)}
               placeholder="Type your message..."
             />
             <Button onPress={handleSendMessage} title="Send Message" />
