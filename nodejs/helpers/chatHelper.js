@@ -10,8 +10,8 @@ chatHelper.handleOnlineSendMessageToOne = (io, senderSocket, recipientSocketId, 
     io.to(recipientSocketId).emit('chat message', { sender: senderSocket.id, message: message })
 }
 
-chatHelper.handleOfflineSendMessageToOne = (io, senderSocket, recipientUserId, message) => {
-    console.log(`Message sent from ${senderSocket.id} to ${recipientUserId}: ${message}`)
+chatHelper.handleOfflineReceiveMessageToOne = (io, senderSocket, recipientUserId, message) => {
+    console.log(`Message received from ${senderSocket.id} to ${recipientUserId}: ${message}`)
     io.emit('chat message', { sender: senderSocket.id, message: message })
 }
 

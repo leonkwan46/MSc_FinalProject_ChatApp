@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, View, StyleSheet } from 'react-native'
+import { Button, View } from 'react-native'
 import { ContainerLoginSignup, TopNavLoginSignup } from "../components/SharedComponents"
 
 const LoginSignUpScreen = ({ navigation }) => {
@@ -15,13 +15,5 @@ const LoginSignUpScreen = ({ navigation }) => {
     </ContainerLoginSignup>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-  },
-})
 
 export default LoginSignUpScreen

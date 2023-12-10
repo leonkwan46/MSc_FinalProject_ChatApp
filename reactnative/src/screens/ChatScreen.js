@@ -1,7 +1,8 @@
 import { Text, View, Button, FlatList, TextInput } from 'react-native'
-import { sendMessage, receiveMessage, disconnectSocket } from '../helpers/socketHelpers'
+import { sendMessage, receiveMessage } from '../helpers/socketHelpers'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import ContainerChatMessage from '../components/chat/ContainerChatMessage'
 
 const ChatScreen = ({ navigation }) => {
     const user = useSelector(state => state.auth.user)
@@ -25,19 +26,27 @@ const ChatScreen = ({ navigation }) => {
     }
 
     useEffect(() => {
+        const fetchNewMessage = async () => {
+            const data = await receiveMessage()
+            const { recipientUserId, recipientSocketId, message } = data.data
+            const newMessage = {
+                id: new Date().getTime().toString().slice(0,-3),
+                senderSessionID: recipientSocketId,
+                senderUserID: recipientUserId,
+                message
+            }
+            setMessages([...messages, newMessage])
+        }
         fetchNewMessage()
-    }, [oldMessages])
+    }, [messages])
 
     return (
         <View style={{ flex: 1 }}>
-          <Text>Chat Screen</Text>
           <FlatList
             data={oldMessages}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View>
-                <Text>{item.message}</Text>
-              </View>
+            renderItem={(item) => (
+              <ContainerChatMessage messageData={item.item} />
             )}
           />
           <View>
