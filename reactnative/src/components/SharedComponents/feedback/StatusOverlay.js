@@ -4,13 +4,10 @@ import { Overlay } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
 
+const failed = require('../../../../assets/images/error.png')
+
 const StatusOverlay = ({message, status}) => {
-    
     const dispatch = useDispatch()
-
-    // Images
-    const failed = require('../../../../assets/images/error.png')
-
     const visible = useSelector((state) => state.signUpInfo.isStatusOverlayOpen)
 
     // useEffect(() => {
@@ -37,6 +34,14 @@ const StatusOverlay = ({message, status}) => {
         </Overlay>
     )
 }
+
+const StatusImage = () => (
+    <View>
+      <Image source={failed} style={styles.image} />
+    </View>
+)
+  
+const TryAgainText = () => <Text style={styles.buttonText}>Try Again</Text>
 
 const styles = StyleSheet.create({
     overlay: {

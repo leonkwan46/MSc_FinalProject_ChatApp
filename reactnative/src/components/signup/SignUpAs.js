@@ -4,13 +4,16 @@ import { useDispatch } from 'react-redux'
 import AttentionOverlay from './AttentionOverlay'
 import { openTeacherOverlay, collectUserRole } from '../../redux/reducer/signUpInfoSlice'
 
+const roles = [
+    { id: 1, name: 'Student / Parents', selected: true },
+    { id: 2, name: 'Teacher', selected: false },
+]
+
 const SignUpAs = () => {
 
     const dispatch = useDispatch()
-    const [selected, setSelected] = useState([
-        { id: 1, name: 'Student / Parents', selected: true },
-        { id: 2, name: 'Teacher', selected: false },
-    ])
+    const [selected, setSelected] = useState(roles)
+    const nameTextStyle = item.selected ? styles.selected : styles.unselected
 
     const handleOnPress = (id) => {
         const newSelected = selected.map((item) => {
@@ -41,10 +44,7 @@ const SignUpAs = () => {
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
                             <Pressable onPress={() => handleOnPress(item.id)} style={styles.selections}>
-                                {item.selected ?
-                                    <Text style={styles.selected}>{item.name}</Text> :                                
-                                    <Text style={styles.unselected}>{item.name}</Text>
-                                }
+                                 <Text style={nameTextStyle}>{item.name}</Text>
                             </Pressable>
                         )}
                     />

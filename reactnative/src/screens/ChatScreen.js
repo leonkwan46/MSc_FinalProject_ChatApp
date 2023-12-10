@@ -6,32 +6,33 @@ import { useEffect, useState } from 'react'
 const ChatScreen = ({ navigation }) => {
     const user = useSelector(state => state.auth.user)
     const { _id, socketId } = user
-    const [messages, setMessages] = useState([])
-    const [message, setMessage] = useState('')
+    const [oldMessages, setOldMessages] = useState([])
+    const [newMessage, setNewMessage] = useState('')
 
     const handleSendMessage = async () => {
-        sendMessage(message, socketId, _id)
-        setMessage('')
+        sendMessage(newMessage, socketId, _id)
+        setNewMessage('')
+    }
+
+    const fetchNewMessage = async () => {
+      const received = await receiveMessage()
+      const chatHistory = {
+        // Should be date
+          id: Math.random().toString(),
+          message: received.data.message
+      }
+      setOldMessages([...oldMessages, chatHistory])
     }
 
     useEffect(() => {
-        const fetchNewMessage = async () => {
-            const data = await receiveMessage()
-            const newMessage = {
-                id: Math.random().toString(),
-                message: data.data.message
-            }
-            setMessages([...messages, newMessage])
-        }
         fetchNewMessage()
-        console.log(messages)
-    }, [messages])
+    }, [oldMessages])
 
     return (
         <View style={{ flex: 1 }}>
           <Text>Chat Screen</Text>
           <FlatList
-            data={messages}
+            data={oldMessages}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View>
@@ -41,8 +42,8 @@ const ChatScreen = ({ navigation }) => {
           />
           <View>
             <TextInput
-              value={message}
-              onChangeText={(text) => setMessage(text)}
+              value={newMessage}
+              onChangeText={(text) => setNewMessage(text)}
               placeholder="Type your message..."
             />
             <Button onPress={handleSendMessage} title="Send Message" />

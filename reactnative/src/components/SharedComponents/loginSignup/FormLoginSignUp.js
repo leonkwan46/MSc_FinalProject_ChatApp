@@ -8,48 +8,51 @@ import { loginUser, signUpUser } from '../../../redux/reducer/authSlice'
 import { openStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
 import { useNavigation } from '@react-navigation/native'
 
+// Validation Schema
+const SignupSchema = Yup.object().shape({
+    username: Yup.string()
+        .required('Required'),
+    password: Yup.string()
+        .required('Required'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+})
+
+const initialValues = { username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }
+
 const FormLoginSignUp = (props) => {
+
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const role = useSelector((state) => state.signUpInfo.role)
-
-    // Validation Schema
-    const SignupSchema = Yup.object().shape({
-        username: Yup.string()
-            .required('Required'),
-        password: Yup.string()
-            .required('Required'),
-        confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    })
+    const onSubmit = async (values, { resetForm }) => {
+        const payload = {...values, role: role}
+        // Sign Up Page
+        if (props.isSignUp) {
+            dispatch(signUpUser(payload)).then((res) => {
+                if (res && res.payload.token) {
+                    role === 'parent' ? navigation.navigate('ExtraDetailsScreen') : navigation.navigate('HomeScreen')
+                } else {
+                    dispatch(openStatusOverlay())
+                }
+            })
+        // Login Page
+        } else {
+            dispatch(loginUser(payload)).then((res) => {
+                res.payload.token ? navigation.navigate('ChatScreen') : dispatch(openStatusOverlay())
+            })
+        }
+        resetForm()
+    }
 
     return (
         <View style={ styles.container }>
             <Formik
-                initialValues={{ username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }}
+                initialValues={initialValues}
                 validationSchema={props.isSignUp ? SignupSchema : null}
 
                 // After Submit
-                onSubmit={ async (values, { resetForm }) => {
-                    const payload = {...values, role: role}
-
-                    // Sign Up Page
-                    if (props.isSignUp) {
-                        dispatch(signUpUser(payload)).then((res) => {
-                            if (res && res.payload.token) {
-                                role === 'parent' ? navigation.navigate('ExtraDetailsScreen') : navigation.navigate('HomeScreen')
-                            } else {
-                                dispatch(openStatusOverlay())
-                            }
-                        })
-                    // Login Page
-                    } else {
-                        dispatch(loginUser(payload)).then((res) => {
-                            res.payload.token ? navigation.navigate('ChatScreen') : dispatch(openStatusOverlay())
-                        })
-                    }
-                    resetForm()
-                }}
+                onSubmit={onSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
 
@@ -66,7 +69,7 @@ const FormLoginSignUp = (props) => {
                         </Box>
                         <Box>
                             <TextInput
-                                secureTextEntry={true}
+                                secureTextEntry
                                 onChangeText={handleChange('password')}
                                 onBlur={handleBlur('password')}
                                 value={values.password}
@@ -78,7 +81,7 @@ const FormLoginSignUp = (props) => {
                         {props.isSignUp ? 
                             <Box>
                                 <TextInput
-                                    secureTextEntry={true}
+                                    secureTextEntry
                                     onChangeText={handleChange('confirmPassword')}
                                     onBlur={handleBlur('confirmPassword')}
                                     value={values.confirmPassword}

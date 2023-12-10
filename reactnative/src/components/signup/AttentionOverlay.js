@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { closeTeacherOverlay } from '../../redux/reducer/signUpInfoSlice'
 import { StyleSheet, View, ImageBackground } from 'react-native'
 
+const image = require('../../../assets/images/overlay.jpg')
+
 const AttentionOverlay = () => {
     const dispatch = useDispatch()
     const visible = useSelector((state) => state.signUpInfo.isTecherOverlayOpen)
-    const image = require('../../../assets/images/overlay.jpg')
 
     return (
             <Overlay isVisible={visible} onBackdropPress={() => dispatch(closeTeacherOverlay())} overlayStyle={styles.overlay} >

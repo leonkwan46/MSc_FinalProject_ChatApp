@@ -11,9 +11,9 @@ const LoginSignUpScreen = (props) => {
         <ContainerLoginSignup>
             <TopNavLoginSignup isLogin />
             <View style={ styles.container }>
-                { isSignIn ? <TopHeadingLoginSignup /> : <TopHeadingLoginSignup isLogin />}
+                <TopHeadingLoginSignup isLogin={!isSignIn} />
                 { isSignIn ? <SignUpAs /> : null }
-                { isSignIn ? <FormLoginSignUp isSignIn /> : <FormLoginSignUp />}
+                <FormLoginSignUp isSignIn={isSignIn} />
                 { isLogin ? <BottomSignInNavigation isLogin /> : null }
             </View>
         </ContainerLoginSignup>

@@ -6,7 +6,7 @@ chatHelper.handleReceiveMessage = (io, socket, message) => {
 }
 
 chatHelper.handleOnlineSendMessageToOne = (io, senderSocket, recipientSocketId, message) => {
-    console.log(`Message sent from ${senderSocket.id} to ${recipientSocketId}: ${msg}`)
+    console.log(`Message sent from ${senderSocket.id} to ${recipientSocketId}: ${message}`)
     io.to(recipientSocketId).emit('chat message', { sender: senderSocket.id, message: message })
 }
 
