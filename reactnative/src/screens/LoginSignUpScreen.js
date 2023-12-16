@@ -5,15 +5,15 @@ import BottomSignInNavigation from '../components/login/BottomSignInNavigation'
 import SignUpAs from '../components/signUp/SignUpAs'
 
 const LoginSignUpScreen = (props) => {
-    const isSignIn = props.route?.params?.isSignIn
+    const isSignUp = props.route?.params?.isSignIn
     const isLogin = props.route?.params?.isLogin
     return (
         <ContainerLoginSignup>
             <TopNavLoginSignup isLogin />
             <View style={ styles.container }>
-                <TopHeadingLoginSignup isLogin={!isSignIn} />
-                { isSignIn ? <SignUpAs /> : null }
-                <FormLoginSignUp isSignIn={isSignIn} />
+                <TopHeadingLoginSignup isLogin={!isSignUp} />
+                { isSignUp ? <SignUpAs /> : null }
+                <FormLoginSignUp isSignUp={isSignUp} />
                 { isLogin ? <BottomSignInNavigation isLogin /> : null }
             </View>
         </ContainerLoginSignup>

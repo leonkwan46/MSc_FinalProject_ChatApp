@@ -20,15 +20,17 @@ const SignupSchema = Yup.object().shape({
 
 const initialValues = { username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }
 
-const FormLoginSignUp = (props) => {
-
+const FormLoginSignUp = ({
+    isSignUp
+}) => {
+    
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const role = useSelector((state) => state.signUpInfo.role)
     const onSubmit = async (values, { resetForm }) => {
         const payload = {...values, role: role}
         // Sign Up Page
-        if (props.isSignUp) {
+        if (isSignUp) {
             dispatch(signUpUser(payload)).then((res) => {
                 if (res && res.payload.token) {
                     role === 'parent' ? navigation.navigate('ExtraDetailsScreen') : navigation.navigate('HomeScreen')
@@ -49,7 +51,7 @@ const FormLoginSignUp = (props) => {
         <View style={ styles.container }>
             <Formik
                 initialValues={initialValues}
-                validationSchema={props.isSignUp ? SignupSchema : null}
+                validationSchema={isSignUp ? SignupSchema : null}
 
                 // After Submit
                 onSubmit={onSubmit}
@@ -78,7 +80,7 @@ const FormLoginSignUp = (props) => {
                                 placeholderTextColor={'#aaa'}
                             />
                         </Box>
-                        {props.isSignUp ? 
+                        {isSignUp ? 
                             <Box>
                                 <TextInput
                                     secureTextEntry
@@ -94,7 +96,7 @@ const FormLoginSignUp = (props) => {
                         }
                         <Box style={styles.buttonContainer}>
                             <Pressable onPress={handleSubmit} style={styles.buttonSize}>
-                                {props.isSignUp ? 
+                                {isSignUp ? 
                                     <Text style={styles.buttonText}>Register</Text> :
                                     <Text style={styles.buttonText}>Login</Text>
                                 }

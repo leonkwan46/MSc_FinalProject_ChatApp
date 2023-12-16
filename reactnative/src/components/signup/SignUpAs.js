@@ -13,7 +13,6 @@ const SignUpAs = () => {
 
     const dispatch = useDispatch()
     const [selected, setSelected] = useState(roles)
-    const nameTextStyle = item.selected ? styles.selected : styles.unselected
 
     const handleOnPress = (id) => {
         const newSelected = selected.map((item) => {
@@ -44,7 +43,7 @@ const SignUpAs = () => {
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
                             <Pressable onPress={() => handleOnPress(item.id)} style={styles.selections}>
-                                 <Text style={nameTextStyle}>{item.name}</Text>
+                                 <Text style={item.selected ? styles.selected : styles.unselected}>{item.name}</Text>
                             </Pressable>
                         )}
                     />
