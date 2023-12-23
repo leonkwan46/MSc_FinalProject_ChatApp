@@ -29,7 +29,7 @@ const AttentionOverlay = () => {
 const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
-        resizeMode: "cover",
+        resizeMode: 'cover',
         overflow: 'hidden',
         borderRadius: 30,
     },

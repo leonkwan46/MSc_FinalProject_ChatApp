@@ -7,8 +7,8 @@ const Tab = createBottomTabNavigator()
 const BottomNav = () => {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomePage} />
-            <Tab.Screen name="Login" component={HomePage} />
+            <Tab.Screen name='Home' component={HomePage} />
+            <Tab.Screen name='Login' component={HomePage} />
         </Tab.Navigator>
     )
 }

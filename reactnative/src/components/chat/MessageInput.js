@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TextInput, StyleSheet, Pressable, Text } from "react-native"
+import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native'
 
 const ContainerChatMessage = ({
     message,
@@ -11,7 +11,7 @@ const ContainerChatMessage = ({
             <View style={styles.textInputContainer} >
                 <TextInput
                     style={styles.textInput}
-                    placeholder="Type your message"
+                    placeholder='Type your message'
                     value={message}
                     onChangeText={setMessage}
                 />

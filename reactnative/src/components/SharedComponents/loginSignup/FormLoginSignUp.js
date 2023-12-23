@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, Text, Pressable, TextInput, StyleSheet } from "react-native"
-import { VStack, Box } from "@react-native-material/core"
+import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native'
+import { VStack, Box } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
@@ -65,7 +65,7 @@ const FormLoginSignUp = ({
                                 onBlur={handleBlur('username')}
                                 value={values.username}
                                 style={errors.username && touched.username ? styles.errors : styles.inputContainer}
-                                placeholder="Username"
+                                placeholder='Username'
                                 placeholderTextColor={'#aaa'}
                             />
                         </Box>
@@ -76,7 +76,7 @@ const FormLoginSignUp = ({
                                 onBlur={handleBlur('password')}
                                 value={values.password}
                                 style={errors.password && touched.password ? styles.errors : styles.inputContainer}
-                                placeholder="Password"
+                                placeholder='Password'
                                 placeholderTextColor={'#aaa'}
                             />
                         </Box>
@@ -88,7 +88,7 @@ const FormLoginSignUp = ({
                                     onBlur={handleBlur('confirmPassword')}
                                     value={values.confirmPassword}
                                     style={errors.confirmPassword && touched.confirmPassword ? styles.errors : styles.inputContainer}
-                                    placeholder="Confirm Password"
+                                    placeholder='Confirm Password'
                                     placeholderTextColor={'#aaa'}
                                 />
                             </Box>

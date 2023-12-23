@@ -1,5 +1,5 @@
 import { useState, React } from 'react'
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native"
+import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AttentionOverlay from './AttentionOverlay'
 import { openTeacherOverlay, collectUserRole } from '../../redux/reducer/signUpInfoSlice'

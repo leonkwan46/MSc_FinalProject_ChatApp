@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, View } from 'react-native'
-import { ContainerLoginSignup, TopNavLoginSignup } from "../components/SharedComponents"
+import { ContainerLoginSignup, TopNavLoginSignup } from '../components/SharedComponents'
 
 const LoginSignUpScreen = ({ navigation }) => {
   return (
@@ -8,7 +8,7 @@ const LoginSignUpScreen = ({ navigation }) => {
         <TopNavLoginSignup />
         <View>
           <Button
-            title="Go to Login"
+            title='Go to Login'
             onPress={() => navigation.navigate('LoginSignUpScreen', { isLogin: true })}
           />
         </View>

@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet} from "react-native"
-import { ContainerLoginSignup, TopHeadingLoginSignup, TopNavLoginSignup, FormLoginSignUp } from "../components/SharedComponents"
+import { View, StyleSheet} from 'react-native'
+import { ContainerLoginSignup, TopHeadingLoginSignup, TopNavLoginSignup, FormLoginSignUp } from '../components/SharedComponents'
 import BottomSignInNavigation from '../components/login/BottomSignInNavigation'
 import SignUpAs from '../components/signUp/SignUpAs'
 
