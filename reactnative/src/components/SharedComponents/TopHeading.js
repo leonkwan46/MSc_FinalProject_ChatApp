@@ -16,8 +16,8 @@ const TopHeading = () => {
   const isLoginRegister = currentScreen === 'LOGIN' || currentScreen === 'REGISTER'
 
   return (
-    <View style={ isLoginRegister ? styles.containerLoginRegister : null }>
-        <Text style={ isLoginRegister ? styles.textLoginRegister : null }> {title} </Text>
+    <View style={ isLoginRegister ? styles.containerLoginRegister : styles.container }>
+        <Text style={ isLoginRegister ? styles.textLoginRegister : styles.text }> {title} </Text>
     </View>
   )
 }
@@ -33,7 +33,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Lemon-Regular',
     fontSize: 50,
     display: 'flex',
-  }
+  },
+  container: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingBottom: 20,
+    marginTop: 40,
+  },
+  text: {
+    color: '#D4AF37',
+    fontFamily: 'Lemon-Regular',
+    fontSize: 40,
+    display: 'flex',
+  },
 })
 
 export default TopHeading
