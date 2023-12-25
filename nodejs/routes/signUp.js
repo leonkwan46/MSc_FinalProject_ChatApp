@@ -49,8 +49,8 @@ router.post("/", async (req, res, next) => {
         if (!storingUser) throw new Error("Failed to store user")
 
         // Update User isRegistered status
-    let update = await user.updateOne({ $set: { isRegistered: true } })
-    if (!update) throw new Error("Failed to update user isRegistered status")
+        let update = await user.updateOne({ $set: { isRegistered: true } })
+        if (!update) throw new Error("Failed to update user isRegistered status")
 
         // Return User
         user = await User.findOne({ username: username })
