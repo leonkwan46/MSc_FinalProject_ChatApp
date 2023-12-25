@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
+const intitialState = {
+    isTecherOverlayOpen: false,
+    isStatusOverlayOpen: false,
+    role: 'parent'
+}
+
 const signUpInfoSlice = createSlice({
     name: 'signUpInfo',
-    initialState: {
-        isTecherOverlayOpen: false,
-        isStatusOverlayOpen: false,
-        role: 'parent'
-    },
+    initialState: {...intitialState},
     reducers: {
         collectUserRole: (state, action) => {
             state.role = action.payload.role

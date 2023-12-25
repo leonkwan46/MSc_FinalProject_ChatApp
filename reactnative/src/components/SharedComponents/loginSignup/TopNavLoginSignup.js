@@ -7,7 +7,7 @@ const TopNavLoginSignup = (props) => {
         <View>
             <Header
                 containerStyle = { styles.container }
-                leftComponent = { props.isLogin || props.isSignIn ? { icon: 'arrow-back', color: '#fff' } : { icon: 'menu', color: '#fff' } }
+                leftComponent = { props.isLogin ? { icon: 'arrow-back', color: '#fff' } : { icon: 'menu', color: '#fff' } }
             />
         </View>
     )

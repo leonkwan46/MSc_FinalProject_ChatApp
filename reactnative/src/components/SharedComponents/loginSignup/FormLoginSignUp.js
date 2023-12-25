@@ -4,9 +4,10 @@ import { VStack, Box } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
-import { loginUser, signUpUser } from '../../../redux/reducer/authSlice'
+import { clearAuthStates, loginUser, signUpUser } from '../../../redux/reducer/authSlice'
 import { openStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
 import { useNavigation } from '@react-navigation/native'
+import { setUser } from '../../../redux/reducer/sessionSlice'
 
 // Validation Schema
 const SignupSchema = Yup.object().shape({
@@ -21,27 +22,32 @@ const SignupSchema = Yup.object().shape({
 const initialValues = { username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }
 
 const FormLoginSignUp = ({
-    isSignUp
+    isLogin
 }) => {
-    
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const role = useSelector((state) => state.signUpInfo.role)
     const onSubmit = async (values, { resetForm }) => {
         const payload = {...values, role: role}
+        // Login Page
+        if (isLogin) {
+            dispatch(loginUser(payload)).then((res) => {
+                const { user, token } = res.payload
+                dispatch(setUser(user))
+                dispatch(clearAuthStates())
+                token ? navigation.navigate('ChatScreen') : dispatch(openStatusOverlay())
+            })
         // Sign Up Page
-        if (isSignUp) {
+        } else {
             dispatch(signUpUser(payload)).then((res) => {
-                if (res && res.payload.token) {
+                const { user, token } = res.payload
+                dispatch(setUser(user))
+                if (token) {
                     role === 'parent' ? navigation.navigate('ExtraDetailsScreen') : navigation.navigate('HomeScreen')
+                    dispatch(clearAuthStates())
                 } else {
                     dispatch(openStatusOverlay())
                 }
-            })
-        // Login Page
-        } else {
-            dispatch(loginUser(payload)).then((res) => {
-                res.payload.token ? navigation.navigate('ChatScreen') : dispatch(openStatusOverlay())
             })
         }
         resetForm()
@@ -51,7 +57,7 @@ const FormLoginSignUp = ({
         <View style={ styles.container }>
             <Formik
                 initialValues={initialValues}
-                validationSchema={isSignUp ? SignupSchema : null}
+                validationSchema={!isLogin ? SignupSchema : null}
 
                 // After Submit
                 onSubmit={onSubmit}
@@ -80,7 +86,7 @@ const FormLoginSignUp = ({
                                 placeholderTextColor={'#aaa'}
                             />
                         </Box>
-                        {isSignUp ? 
+                        {!isLogin ? 
                             <Box>
                                 <TextInput
                                     secureTextEntry
@@ -96,7 +102,7 @@ const FormLoginSignUp = ({
                         }
                         <Box style={styles.buttonContainer}>
                             <Pressable onPress={handleSubmit} style={styles.buttonSize}>
-                                {isSignUp ? 
+                                {!isLogin ? 
                                     <Text style={styles.buttonText}>Register</Text> :
                                     <Text style={styles.buttonText}>Login</Text>
                                 }

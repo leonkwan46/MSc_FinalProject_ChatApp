@@ -2,6 +2,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getSocketId } from '../../helpers/socketHelpers'
 import axios from 'axios'
 
+const initialState = {
+    token: null,
+    user: {
+        _id: '',
+        username: '',
+        role: '',
+        socketId: '',
+    },
+    isLoading: false,
+    error: null,
+}
+
 export const signUpUser = createAsyncThunk(
     'auth/signUpUser',
     async (userData, {rejectWithValue}) => {
@@ -28,19 +40,9 @@ export const loginUser = createAsyncThunk(
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        token: null,
-        user: {
-            _id: '',
-            username: '',
-            role: '',
-            socketId: '',
-        },
-        isLoading: false,
-        error: null,
-    },
+    initialState: {...initialState},
     reducers: {
-        logout: (state) => {
+        clearAuthStates: (state) => {
             state.token = null
             state.user = {
                 _id: '',
@@ -56,21 +58,17 @@ const authSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(signUpUser.fulfilled, (state, action) => {
-                state.error = null
                 state.token = action.payload.token
                 state.user.role = action.payload.user.role
                 state.user._id = action.payload.user._id
                 state.user.username = action.payload.user.username
                 state.user.socketId = getSocketId()
+                state.error = null
                 state.isLoading = false
             })
             .addCase(signUpUser.rejected, (state, action) => {
                 state.token = null
-                state.user = {
-                    _id: '',
-                    username: '',
-                    role: '',
-                }
+                state.user = null
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
@@ -100,5 +98,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { login, logout } = authSlice.actions
+export const { login, clearAuthStates } = authSlice.actions
 export default authSlice.reducer

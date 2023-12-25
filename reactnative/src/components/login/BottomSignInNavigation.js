@@ -7,7 +7,7 @@ const BottomSignInNavigation = () => {
     const navigation = useNavigation()
 
     const handleOnPress = () => {
-        navigation.navigate('LoginSignUpScreen', {isSignIn: true})
+        navigation.navigate('LoginSignUpScreen', {isLogin: false})
     }
 
     return (

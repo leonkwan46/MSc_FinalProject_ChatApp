@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
-import authReducer from './authSlice'
+import authSlice from './authSlice'
 import signUpInfoSlice from './signUpInfoSlice'
+import sessionSlice from './sessionSlice'
 
 const rootReducer = combineReducers({
-    auth: authReducer,
+    auth: authSlice,
     signUpInfo: signUpInfoSlice,
+    session: sessionSlice,
 })
 
 export default rootReducer
