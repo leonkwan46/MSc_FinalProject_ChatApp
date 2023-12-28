@@ -44,6 +44,7 @@ router.post("/", async (req, res, next) => {
         }
         const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1m" })
 
+        
         // Store User
         let storingUser = await user.save()
         if (!storingUser) throw new Error("Failed to store user")

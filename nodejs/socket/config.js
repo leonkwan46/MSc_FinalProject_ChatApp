@@ -1,4 +1,5 @@
 import chatHelper from "../helpers/chatHelper.js"
+import Message from '../db/modals/Message.js'
 
 const connectSocketIO = (io) => {
     let onlineUsers = new Set()
@@ -8,23 +9,44 @@ const connectSocketIO = (io) => {
         onlineUsers.add(socket.id)
         console.log(onlineUsers)
 
+        // Reveive message
         socket.on('message', (message) => {
             chatHelper.handleReceiveMessage(io, socket, message)
         })
+        // // Save message to database
+        // const newMessage = Message({
+        //     sender: userId,
+        //     recipients: [],
+        //     message: message,
+        //     isRead: false,
+        // })
+        // console.log(newMessage)
+        // try {
+        //     await newMessage.save()
+        // } catch (err) {
+        //     console.log(err)
+        // }
 
-        socket.on('sendMessage', (props) => {
-            const { recipientSocketId, userId, message } = props
-            if (recipientSocketId) {
-                chatHelper.handleOnlineSendMessageToOne(io, socket, recipientSocketId, message)
-            } else {
-                chatHelper.handleOfflineSendMessageToOne(io, socket, userId, message)
-            }
+        // Send message
+        socket.on('sendMessage', async (props) => {
+            console.log('===========MSG============')
+            console.log(props)
+            console.log('==========================')
+
+            chatHelper.handleSendMessage(io, socket, props)
         })
 
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.id}`)
             onlineUsers.delete(socket.id)
             console.log(onlineUsers)
+        })
+        
+        socket.on('joinRoom', (room) => {
+            console.log('===========Room============')
+            chatHelper.joinRoom(io, socket, room)
+            console.log('===========================')
+
         })
     })
 }

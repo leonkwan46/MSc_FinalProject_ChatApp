@@ -1,18 +1,15 @@
 const chatHelper = {}
 
-chatHelper.handleReceiveMessage = (io, socket, message) => {
+chatHelper.handleSendMessage = (io, socket, props) => {
+    const { roomId, message, userId } = props
     console.log(`Message received from ${socket.id}:\n${message}`)
-    io.emit('chatMessage', { sender: socket.id, data: message })
+    io.emit('chatMessage', { sender: socket.id, data: props })
 }
 
-chatHelper.handleOnlineSendMessageToOne = (io, senderSocket, recipientSocketId, message) => {
-    console.log(`Message sent from ${senderSocket.id} to ${recipientSocketId}: ${message}`)
-    io.to(recipientSocketId).emit('chat message', { sender: senderSocket.id, message: message })
-}
-
-chatHelper.handleOfflineReceiveMessageToOne = (io, senderSocket, recipientUserId, message) => {
-    console.log(`Message received from ${senderSocket.id} to ${recipientUserId}: ${message}`)
-    io.emit('chat message', { sender: senderSocket.id, message: message })
+chatHelper.joinRoom = (io, socket, room) => {
+    socket.join(room)
+    console.log(`User ${socket.id} joined room ${room}`)
+    io.to(room).emit('roomJoined', { user: socket.id, room: room })
 }
 
 export default chatHelper
