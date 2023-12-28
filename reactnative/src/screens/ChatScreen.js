@@ -1,14 +1,13 @@
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import ContainerChatMessage from '../components/chat/ContainerChatMessage'
-import { useDispatch } from 'react-redux'
-import { setCurrentScreen } from '../redux/reducer/sessionSlice'
+import { useSelector } from 'react-redux'
 
-const ChatScreen = ({ navigation }) => {
-  const dispatch = useDispatch()
-  // Update current screen
-  dispatch(setCurrentScreen('CHAT'))
+const ChatScreen = () => {
+  const roomData = useSelector(state => state.session.currentChatRoom)
+  const { roomId, name, members, messages, createdAt } = roomData
   return (
     <View>
+      <Text>{name}</Text>
       <ContainerChatMessage />
     </View>
   )

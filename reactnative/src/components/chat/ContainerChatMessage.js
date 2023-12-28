@@ -8,24 +8,28 @@ import Message from '../../components/chat/Message'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const ContainerChatMessage = () => {
-    const user = useSelector(state => state.auth.user)
-    const { _id, socketId } = user
+    const user = useSelector(state => state.session.user)
+    const { userId, socketId } = user
+
+    const roomData = useSelector(state => state.session.currentChatRoom)
+    const { roomId, name, members, messages, createdAt } = roomData
+
     const [oldMessages, setOldMessages] = useState([])
     const [message, setMessage] = useState('')
 
     const handleSendMessage = async () => {
-        sendMessage(message, socketId, _id)
+        await sendMessage(roomId, message, userId)
         setMessage('')
     }
 
     const fetchNewMessage = async () => {
-      const received = await receiveMessage()
-      const { recipientUserId, recipientSocketId, message } = received.data
+      const lastestMessage = await receiveMessage()
+      const { message, roomId, userId } = lastestMessage
       const newMessage = {
         id: new Date().getTime().toString(),
-        senderSessionID: recipientSocketId,
-        senderUserID: recipientUserId,
-        message
+        message,
+        roomId,
+        senderId: userId,
     }
       setOldMessages([...oldMessages, newMessage])
     }
@@ -39,7 +43,7 @@ const ContainerChatMessage = () => {
             <ScrollView style={styles.messageList} >
                 <FlatList
                     data={oldMessages}
-                    renderItem={({ item }) => <Message messageData={item} />}
+                    renderItem={ item => <Message messageData={item} />}
                     keyExtractor={item => item.id}
                 />
             </ScrollView>

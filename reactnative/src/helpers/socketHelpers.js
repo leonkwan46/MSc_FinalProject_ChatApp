@@ -10,16 +10,23 @@ const disconnectSocket = () => {
   socket.disconnect()
 }
 
-const sendMessage = (message, recipientSocketId, recipientUserId) => {
-  socket.emit('message', { message, recipientSocketId, recipientUserId })
+const sendMessage = (roomId, message, userId) => {
+  socket.emit('sendMessage', { roomId, message, userId })
 }
 
 const receiveMessage = () => {
   return new Promise((resolve) => {
-    socket.on('chatMessage', (data) => {
-      resolve(data)
+    socket.on('chatMessage', (res) => {
+      resolve(res.data)
     })
   })
 }
 
-export { getSocketId, disconnectSocket, sendMessage, receiveMessage }
+const joinRoom = (room) => {
+  socket.emit('joinRoom', room)
+  socket.on('roomJoined', (data) => {
+    console.log('JOIN LIAO LAH - ', data)
+  })
+}
+
+export { getSocketId, disconnectSocket, sendMessage, receiveMessage, joinRoom }

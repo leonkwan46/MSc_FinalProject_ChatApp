@@ -1,17 +1,21 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { View } from 'react-native'
 import { setCurrentScreen } from '../redux/reducer/sessionSlice'
 import { useDispatch } from 'react-redux'
+import ContainerMessages from '../components/chat/ContainerMessages'
+import TopHeading from '../components/SharedComponents/TopHeading'
 
 const MessageScreen = () => {
     const dispatch = useDispatch()
+    
     // Update current screen
-    dispatch(setCurrentScreen('MESSAGES'))
+    useEffect(() => {
+        dispatch(setCurrentScreen('MESSAGES'))
+    }, [])
     return (
         <View>
-            <Text>
-                Message Screen
-            </Text>
+            <TopHeading />
+            <ContainerMessages />
         </View>
     )
 }

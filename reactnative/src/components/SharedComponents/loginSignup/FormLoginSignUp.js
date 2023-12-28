@@ -19,6 +19,7 @@ const SignupSchema = Yup.object().shape({
         .oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 
+// For testing
 const initialValues = { username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }
 
 const FormLoginSignUp = ({
@@ -35,7 +36,7 @@ const FormLoginSignUp = ({
                 const { user, token } = res.payload
                 dispatch(setUser(user))
                 dispatch(clearAuthStates())
-                token ? navigation.navigate('ChatScreen') : dispatch(openStatusOverlay())
+                token ? navigation.navigate('MessageScreen') : dispatch(openStatusOverlay())
             })
         // Sign Up Page
         } else {

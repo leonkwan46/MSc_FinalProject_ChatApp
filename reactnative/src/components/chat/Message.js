@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux'
 const Message = ({
     messageData
 }) => {
-    const { senderSessionID, senderUserID, message } = messageData
-    const user = useSelector(state => state.auth.user)
-    const isSender = user._id === senderUserID
+    const { message, senderId, roomId } = messageData.item
+    const user = useSelector(state => state.session.user)
+    const isSender = user.userId === senderId
 
     return (
         <View style={ isSender ? styles.senderContainer : styles.receiverContainer }>
