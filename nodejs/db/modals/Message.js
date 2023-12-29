@@ -1,12 +1,12 @@
 import mongoose from "mongoose"
 
 const messageSchema = new mongoose.Schema({
-    sender: {
+    senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
-    room:{
+    roomId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Room",
         required: true,
@@ -19,7 +19,7 @@ const messageSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    createAt: {
+    sentAt: {
         type: Number,
         default: Date.now,
         required: true,

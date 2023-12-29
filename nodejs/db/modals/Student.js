@@ -10,6 +10,10 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Teacher",
     },
+    instrument: {
+        type: [String],
+        required: true,
+    },
 })
 
 export default User.discriminator("Student", studentSchema)

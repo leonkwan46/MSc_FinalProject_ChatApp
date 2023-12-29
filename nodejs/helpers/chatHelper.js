@@ -1,14 +1,31 @@
+import { Message } from '../db/modals/index.js'
+
 const chatHelper = {}
 
-chatHelper.handleSendMessage = (io, socket, props) => {
+chatHelper.handleSendMessage = async (io, socket, props) => {
     const { roomId, message, userId } = props
-    console.log(`Message received from ${socket.id}:\n${message}`)
-    io.emit('chatMessage', { sender: socket.id, data: props })
+
+    const newMessage = Message({
+        message,
+        senderId: userId,
+        roomId,
+        sentAt: Date.now(),
+        isRead: false,
+    })
+    // Save message to database
+    // try {
+    //     await newMessage.save()
+    //     console.log('=======================')
+    //     console.log('Message saved to database')
+    //     console.log('=======================')
+    // } catch (err) {
+    //     console.log(err)
+    // }
+    io.emit('chatMessage', { sender: socket.id, data: newMessage })
 }
 
 chatHelper.joinRoom = (io, socket, room) => {
     socket.join(room)
-    console.log(`User ${socket.id} joined room ${room}`)
     io.to(room).emit('roomJoined', { user: socket.id, room: room })
 }
 

@@ -1,14 +1,24 @@
 import mongoose from "mongoose"
 
 const userSchema = new mongoose.Schema({
-    username: {
+    email: {
       type: String,
-      require: true,
       unique: true,
+      require: true,
     },
     hashPassword: {
       type: String,
       require: true,
+    },
+    name: {
+      type: String,
+      require: true,
+    },
+    gender: {
+      type: String,
+    },
+    DoB: {
+      type: Date,
     },
     role: {
       type: String,
@@ -18,7 +28,7 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
-    isVerifiend: {
+    isFilledDetails: {
       type: Boolean,
       default: false,
     },
