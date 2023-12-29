@@ -6,12 +6,12 @@ const getSocketId = () => {
   return socket.id
 }
 
-const disconnectSocket = () => {
-  socket.disconnect()
+const disconnectSocket = async () => {
+  await socket.disconnect()
 }
 
-const sendMessage = (roomId, message, userId) => {
-  socket.emit('sendMessage', { roomId, message, userId })
+const sendMessage = async (roomId, message, userId) => {
+  await socket.emit('sendMessage', { roomId, message, userId })
 }
 
 const receiveMessage = () => {
@@ -22,9 +22,9 @@ const receiveMessage = () => {
   })
 }
 
-const joinRoom = (room) => {
-  socket.emit('joinRoom', room)
-  socket.on('roomJoined', (data) => {
+const joinRoom = async(room) => {
+  await socket.emit('joinRoom', room)
+  await socket.on('roomJoined', (data) => {
     console.log('JOIN LIAO LAH - ', data)
   })
 }

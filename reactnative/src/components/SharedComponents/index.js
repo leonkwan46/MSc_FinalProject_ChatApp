@@ -1,7 +1,6 @@
 // Login Signup Components
 import ContainerLoginSignup from './loginSignup/ContainerLoginSignup'
 import FormLoginSignUp from './loginSignup/FormLoginSignUp'
-import TopHeadingLoginSignup from './loginSignup//TopHeadingLoginSignup'
 import TopNavLoginSignup from './loginSignup//TopNavLoginSignup'
 
 // Feedback Components
@@ -16,6 +15,5 @@ export {
     FormLoginSignUp,
     Loading,
     StatusOverlay,
-    TopHeadingLoginSignup,
     TopNavLoginSignup,
 }

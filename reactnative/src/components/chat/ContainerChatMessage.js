@@ -17,19 +17,19 @@ const ContainerChatMessage = () => {
     const [oldMessages, setOldMessages] = useState([])
     const [message, setMessage] = useState('')
 
-    const handleSendMessage = async () => {
-        await sendMessage(roomId, message, userId)
+    const handleSendMessage = () => {
+        sendMessage(roomId, message, userId)
         setMessage('')
     }
 
     const fetchNewMessage = async () => {
       const lastestMessage = await receiveMessage()
-      const { message, roomId, userId } = lastestMessage
+      const { message, roomId, senderId } = lastestMessage
       const newMessage = {
         id: new Date().getTime().toString(),
         message,
         roomId,
-        senderId: userId,
+        senderId,
     }
       setOldMessages([...oldMessages, newMessage])
     }

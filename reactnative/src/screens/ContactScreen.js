@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { setCurrentScreen } from '../redux/reducer/sessionSlice'
@@ -8,7 +8,9 @@ import ContactList from '../components/contact/ContactList'
 const ContactScreen = () => {
   const dispatch = useDispatch()
   // Update current screen
-  dispatch(setCurrentScreen('CONTACTS'))
+  useEffect(() => {
+    dispatch(setCurrentScreen({ title: 'CONTACTS' }))
+  }, [])
   return (
     <View style={styles.container}>
       <TopHeading />

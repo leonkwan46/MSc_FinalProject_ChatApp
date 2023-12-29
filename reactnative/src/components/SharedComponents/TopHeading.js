@@ -6,18 +6,20 @@ const TITLES = {
     HOME: 'Home',
     LOGIN: 'Login',
     REGISTER: 'Register',
+    EXTRADETAILS: 'Extra Details',
     CONTACTS: 'Contacts',
     MESSAGES: 'Messages',
 }
 
 const TopHeading = () => {
   const currentScreen = useSelector(state => state.session.currentScreen)
-  const title = TITLES[Object.keys(TITLES).find((item) => item === currentScreen)]
-  const isLoginRegister = currentScreen === 'LOGIN' || currentScreen === 'REGISTER'
+  const { title, subtitle } = currentScreen
+  const currentTitle = TITLES[Object.keys(TITLES).find((item) => item === title)]
+  const isLoginRegister = title === 'LOGIN' || title === 'REGISTER'
 
   return (
     <View style={ isLoginRegister ? styles.containerLoginRegister : styles.container }>
-        <Text style={ isLoginRegister ? styles.textLoginRegister : styles.text }> {title} </Text>
+        <Text style={ isLoginRegister ? styles.textLoginRegister : styles.text }> {currentTitle} </Text>
     </View>
   )
 }

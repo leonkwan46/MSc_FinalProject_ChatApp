@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet} from 'react-native'
-import { ContainerLoginSignup, TopHeadingLoginSignup, TopNavLoginSignup, FormLoginSignUp } from '../components/SharedComponents'
+import { ContainerLoginSignup, TopNavLoginSignup, FormLoginSignUp } from '../components/SharedComponents'
 import BottomSignInNavigation from '../components/login/BottomSignInNavigation'
 import SignUpAs from '../components/register/SignUpAs'
 import { setCurrentScreen } from '../redux/reducer/sessionSlice'
@@ -10,8 +10,9 @@ import TopHeading from '../components/SharedComponents/TopHeading'
 const LoginSignUpScreen = (props) => {
     const isLogin = props.route?.params?.isLogin
     const dispatch = useDispatch()
-    // Update current screen
-    dispatch(setCurrentScreen(isLogin ? 'LOGIN' : 'REGISTER'))
+    useEffect(() => {
+        dispatch(setCurrentScreen({ title: (isLogin ? 'LOGIN' : 'REGISTER') }))
+    }, [isLogin])
     return (
         <ContainerLoginSignup>
             <TopNavLoginSignup isLogin />

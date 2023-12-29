@@ -10,7 +10,7 @@ const MessageScreen = () => {
     
     // Update current screen
     useEffect(() => {
-        dispatch(setCurrentScreen('MESSAGES'))
+        dispatch(setCurrentScreen({ title: 'MESSAGES' }))
     }, [])
     return (
         <View>

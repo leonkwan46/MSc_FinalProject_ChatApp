@@ -15,7 +15,10 @@ const initialState = {
         messages: [],
         createdAt: '',
     },
-    currentScreen: '',
+    currentScreen: {
+        title: '',
+        subtitle: '',
+    },
     isLoading: false,
     error: null,
 }
@@ -38,7 +41,8 @@ const sessionSlice = createSlice({
             state.currentChatRoom.createdAt = action.payload.createdAt
         },
         setCurrentScreen: (state, action) => {
-            state.currentScreen = action.payload
+            state.currentScreen.title = action.payload.title
+            state.currentScreen.subtitle = action.payload.subtitle
         },
     }
 })
