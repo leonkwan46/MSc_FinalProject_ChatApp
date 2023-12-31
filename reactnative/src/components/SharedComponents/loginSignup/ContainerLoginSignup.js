@@ -6,7 +6,7 @@ import { Loading, StatusOverlay } from '../index'
 const image = require('../../../../assets/images/login-signup-bg-img.jpg')
 
 const ContainerLoginSignup = ({ children }) => {
-  const { isLoading, error, token } = useSelector((state) => state.auth)
+  const { isLoading, error, token } = useSelector(state => state.auth)
   const status = error && !token ? true : false
   return (
       <ImageBackground

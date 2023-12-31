@@ -9,6 +9,8 @@ import { StyleSheet, View } from 'react-native'
 const ExtraDetailsScreen = () => {
     const dispatch = useDispatch()
     const role = useSelector(state => state.session.user.role)
+    const isGeneralFormComplete = useSelector(state => state.signUpInfo.isGeneralFormComplete)
+
     useEffect(() => {
         dispatch(setCurrentScreen({ title: 'EXTRADETAILS', subtitle: `for ${role}s` }))
     }, [])
@@ -17,7 +19,7 @@ const ExtraDetailsScreen = () => {
         <ContainerExtraDetails>
             <View style={ styles.container }>
                 <TopHeading />
-                <FormGeneral />
+                { !isGeneralFormComplete && <FormGeneral /> }
             </View>
         </ContainerExtraDetails>
     )

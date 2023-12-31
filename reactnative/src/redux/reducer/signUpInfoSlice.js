@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const intitialState = {
     isTecherOverlayOpen: false,
     isStatusOverlayOpen: false,
-    role: 'parent'
+    role: 'parent',
+    isGeneralFormComplete: false,
 }
 
 const signUpInfoSlice = createSlice({
@@ -26,8 +27,18 @@ const signUpInfoSlice = createSlice({
         closeStatusOverlay: (state) => {
             state.isStatusOverlayOpen = false
         },
+        updateGeneralFormState: (state, action) => {
+            state.isGeneralFormComplete = action.payload
+        }
     }
 })
 
-export const { collectUserRole, openTeacherOverlay, closeTeacherOverlay, openStatusOverlay, closeStatusOverlay } = signUpInfoSlice.actions
+export const {
+    collectUserRole,
+    openTeacherOverlay,
+    closeTeacherOverlay,
+    openStatusOverlay,
+    closeStatusOverlay,
+    updateGeneralFormState
+} = signUpInfoSlice.actions
 export default signUpInfoSlice.reducer

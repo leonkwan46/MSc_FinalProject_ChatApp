@@ -3,6 +3,7 @@ import { Button, View } from 'react-native'
 import { ContainerLoginSignup, TopNavLoginSignup } from '../components/SharedComponents'
 import { setCurrentScreen } from '../redux/reducer/sessionSlice'
 import { useDispatch } from 'react-redux'
+import UploadDocument from '../components/extraDetails/UploadDocument'
 
 const LoginSignUpScreen = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -19,6 +20,8 @@ const LoginSignUpScreen = ({ navigation }) => {
             title='Go to Login'
             onPress={() => navigation.navigate('LoginSignUpScreen', { isLogin: true })}
           />
+          {/* Still developing - Upload System */}
+          {/* <UploadDocument /> */}
         </View>
     </ContainerLoginSignup>
   )

@@ -28,7 +28,7 @@ const FormLoginSignUp = ({
 }) => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    const role = useSelector((state) => state.signUpInfo.role)
+    const role = useSelector(state => state.signUpInfo.role)
     const onSubmit = async (values, { resetForm }) => {
         const payload = {...values, role: role}
         // Login Page

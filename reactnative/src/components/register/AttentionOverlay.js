@@ -9,7 +9,7 @@ const image = require('../../../assets/images/overlay.jpg')
 
 const AttentionOverlay = () => {
     const dispatch = useDispatch()
-    const visible = useSelector((state) => state.signUpInfo.isTecherOverlayOpen)
+    const visible = useSelector(state => state.signUpInfo.isTecherOverlayOpen)
 
     return (
             <Overlay isVisible={visible} onBackdropPress={() => dispatch(closeTeacherOverlay())} overlayStyle={styles.overlay} >

@@ -1,3 +1,4 @@
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getSocketId } from '../../helpers/socketHelpers'
 import axios from 'axios'
@@ -48,7 +49,8 @@ export const updateUser = createAsyncThunk(
             const response = await axios.post('http://localhost:5000/signup/extra_details', userData)
             return response.data
         } catch (error) {
-            return rejectWithValue(error.response.data)
+            throw error
+            // return rejectWithValue(error.response.data)
         }
     }
 )
@@ -126,13 +128,14 @@ const authSlice = createSlice({
                 state.user.gender = action.payload.gender,
                 state.isLoading = false
             })
-            .addCase(updateUser.rejected, (state) => {
+            .addCase(updateUser.rejected, (state, action) => {
                 state.user = {
                     ...state.user,
                     name: '',
                     DoB: '',
                     gender: '',
                 }
+                state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
     }

@@ -4,8 +4,9 @@ import * as Yup from 'yup'
 import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateExtraDetails, updateUser } from '../../redux/reducer/authSlice'
+import { updateUser } from '../../redux/reducer/authSlice'
 import { getUser } from '../../redux/stateHelper'
+import { updateGeneralFormState } from '../../redux/reducer/signUpInfoSlice'
 
 // Validation Schema
 const validationSchema = Yup.object().shape({
@@ -17,17 +18,26 @@ const validationSchema = Yup.object().shape({
         .required('Required'),
 })
 // For testing
-const initialValues = { name: 'Nani', DoB: Date.now(), gender: 'Nani' }
+const initialValues = { name: 'Nani', DoB: Date.now().toString(), gender: 'Nani' }
 // const initialValues = { name: '', DoB: '', gender: '' }
 
 const FormGeneral = () => {
     const dispatch = useDispatch()
     const user = getUser()
+    const hasError = useSelector(state => state.auth.error)
 
-    const onSubmit = (values, { resetForm }) => {
+    const onSubmit = async (values, { resetForm }) => {
         values = {...values, userId: user.userId }
-        dispatch(updateUser(values))
-        console.log(user)
+        try {
+            await dispatch(updateUser(values))
+            console.log('User updated')
+        } catch (error) {
+            console.log(error)
+        }
+
+        // NEED TO FIX THIS AFTER BUILDING OTHER PAGES
+        // if (hasError) return
+        // dispatch(updateGeneralFormState(true))
         resetForm()
     }
 
@@ -54,6 +64,7 @@ const FormGeneral = () => {
                             <TextInput
                                 onChangeText={handleChange('DoB')}
                                 onBlur={handleBlur('DoB')}
+                                keyboardType="numeric"
                                 value={values.DoB}
                                 style={errors.DoB && touched.DoB ? styles.errors : styles.inputContainer}
                                 placeholder='Date of Birth'

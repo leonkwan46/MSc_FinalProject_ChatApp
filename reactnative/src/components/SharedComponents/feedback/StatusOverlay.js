@@ -8,7 +8,7 @@ const failed = require('../../../../assets/images/error.png')
 
 const StatusOverlay = ({message, status}) => {
     const dispatch = useDispatch()
-    const visible = useSelector((state) => state.signUpInfo.isStatusOverlayOpen)
+    const visible = useSelector(state => state.signUpInfo.isStatusOverlayOpen)
 
     // useEffect(() => {
     //     const timer = setTimeout(() => {
