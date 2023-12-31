@@ -4,7 +4,7 @@ import { getSocketId } from "../../helpers/socketHelpers";
 const initialState = {
     user: {
         userId: '',
-        username: '',
+        email: '',
         role: '',
         socketId: '',
     },
@@ -29,7 +29,7 @@ const sessionSlice = createSlice({
     reducers: {
         setUser: (state, action) => {
             state.user.userId = action.payload.userId,
-            state.user.username = action.payload.username,
+            state.user.email = action.payload.email,
             state.user.role = action.payload.role,
             state.user.socketId = getSocketId()
         },

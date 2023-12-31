@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, StyleSheet, ImageBackground, ScrollView, SafeAreaViewComponent, SafeAreaView} from 'react-native'
+import { StyleSheet, ImageBackground, ScrollView, SafeAreaView} from 'react-native'
 
 const image = require('../../../assets/images/dark-piano.png')
+
 
 const ContainerExtraDetails = ({ children }) => {
     return (

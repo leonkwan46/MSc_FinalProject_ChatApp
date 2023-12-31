@@ -5,6 +5,7 @@ import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateExtraDetails, updateUser } from '../../redux/reducer/authSlice'
+import { getUser } from '../../redux/stateHelper'
 
 // Validation Schema
 const validationSchema = Yup.object().shape({
@@ -21,13 +22,12 @@ const initialValues = { name: 'Nani', DoB: Date.now(), gender: 'Nani' }
 
 const FormGeneral = () => {
     const dispatch = useDispatch()
-    const user = useSelector((state) => state.auth.user)
+    const user = getUser()
 
     const onSubmit = (values, { resetForm }) => {
         values = {...values, userId: user.userId }
         dispatch(updateUser(values))
-        
-        dispatch(updateExtraDetails(values))
+        console.log(user)
         resetForm()
     }
 

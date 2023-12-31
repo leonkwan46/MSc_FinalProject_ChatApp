@@ -6,7 +6,7 @@ const initialState = {
     token: null,
     user: {
         userId: '',
-        username: '',
+        email: '',
         role: '',
         socketId: '',
         name: '',
@@ -61,16 +61,13 @@ const authSlice = createSlice({
             state.token = null
             state.user = {
                 userId: '',
-                username: '',
+                email: '',
                 role: '',
                 socketId: '',
                 name: '',
                 DoB: '',
                 gender: '',
             }
-        },
-        updateExtraDetails: (state, action) => {
-
         }
     },
     extraReducers: (builder) => {
@@ -83,7 +80,7 @@ const authSlice = createSlice({
                 state.token = action.payload.token
                 state.user.role = action.payload.user.role
                 state.user.userId = action.payload.user.userId
-                state.user.username = action.payload.user.username
+                state.user.email = action.payload.user.email
                 state.user.socketId = getSocketId()
                 state.error = null
                 state.isLoading = false
@@ -103,7 +100,7 @@ const authSlice = createSlice({
                 state.token = action.payload.token
                 state.user.role = action.payload.user.role
                 state.user.userId = action.payload.user.userId
-                state.user.username = action.payload.user.username
+                state.user.email = action.payload.user.email
                 state.user.socketId = getSocketId()
                 state.isLoading = false
             })
@@ -112,7 +109,7 @@ const authSlice = createSlice({
                 state.user = {
                     ...state.user,
                     userId: '',
-                    username: '',
+                    email: '',
                     role: '',
                 }
                 state.error = action?.payload?.message || action.error.message
@@ -129,7 +126,7 @@ const authSlice = createSlice({
                 state.user.gender = action.payload.gender,
                 state.isLoading = false
             })
-            .addCase(updateUser.rejected, (state, action) => {
+            .addCase(updateUser.rejected, (state) => {
                 state.user = {
                     ...state.user,
                     name: '',
@@ -141,5 +138,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { login, clearAuthStates, updateExtraDetails } = authSlice.actions
+export const { login, clearAuthStates } = authSlice.actions
 export default authSlice.reducer

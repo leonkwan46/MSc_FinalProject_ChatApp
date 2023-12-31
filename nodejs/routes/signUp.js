@@ -87,6 +87,7 @@ router.post('/extra_details', async (req, res, next) => {
         let savingUser = await user.save()
         if (!savingUser) throw new Error("Failed to save user")
 
+        return res.status(200).json({ name, DoB, gender, userId })
     } catch (err) {
         next(err)
     }
