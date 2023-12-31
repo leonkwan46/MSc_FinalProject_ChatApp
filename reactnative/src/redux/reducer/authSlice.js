@@ -5,10 +5,13 @@ import axios from 'axios'
 const initialState = {
     token: null,
     user: {
-        _id: '',
+        userId: '',
         username: '',
         role: '',
         socketId: '',
+        name: '',
+        DoB: '',
+        gender: '',
     },
     isLoading: false,
     error: null,
@@ -38,6 +41,18 @@ export const loginUser = createAsyncThunk(
     }
 )
 
+export const updateUser = createAsyncThunk(
+    'auth/updateUser',
+    async (userData, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('http://localhost:5000/signup/extra_details', userData)
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: {...initialState},
@@ -45,10 +60,17 @@ const authSlice = createSlice({
         clearAuthStates: (state) => {
             state.token = null
             state.user = {
-                _id: '',
+                userId: '',
                 username: '',
                 role: '',
+                socketId: '',
+                name: '',
+                DoB: '',
+                gender: '',
             }
+        },
+        updateExtraDetails: (state, action) => {
+
         }
     },
     extraReducers: (builder) => {
@@ -60,7 +82,7 @@ const authSlice = createSlice({
             .addCase(signUpUser.fulfilled, (state, action) => {
                 state.token = action.payload.token
                 state.user.role = action.payload.user.role
-                state.user._id = action.payload.user._id
+                state.user.userId = action.payload.user.userId
                 state.user.username = action.payload.user.username
                 state.user.socketId = getSocketId()
                 state.error = null
@@ -80,7 +102,7 @@ const authSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.token = action.payload.token
                 state.user.role = action.payload.user.role
-                state.user._id = action.payload.user._id
+                state.user.userId = action.payload.user.userId
                 state.user.username = action.payload.user.username
                 state.user.socketId = getSocketId()
                 state.isLoading = false
@@ -88,15 +110,36 @@ const authSlice = createSlice({
             .addCase(loginUser.rejected, (state, action) => {
                 state.token = null
                 state.user = {
-                    _id: '',
+                    ...state.user,
+                    userId: '',
                     username: '',
                     role: '',
                 }
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
+
+            // Update Status
+            .addCase(updateUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.user.name = action.payload.name,
+                state.user.DoB = action.payload.DoB,
+                state.user.gender = action.payload.gender,
+                state.isLoading = false
+            })
+            .addCase(updateUser.rejected, (state, action) => {
+                state.user = {
+                    ...state.user,
+                    name: '',
+                    DoB: '',
+                    gender: '',
+                }
+                state.isLoading = false
+            })
     }
 })
 
-export const { login, clearAuthStates } = authSlice.actions
+export const { login, clearAuthStates, updateExtraDetails } = authSlice.actions
 export default authSlice.reducer

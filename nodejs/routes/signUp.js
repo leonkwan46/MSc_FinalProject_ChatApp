@@ -7,11 +7,10 @@ const router = express.Router()
 
 router.post("/", async (req, res, next) => {
     try {
-        const { username, password, role } = req.body
-
+        const { email, password, role } = req.body
         // Check if user exists
-        let user = await User.findOne({ username: username })
-        if (user) throw new Error ("Username already exists")
+        let user = await User.findOne({ email })
+        if (user) throw new Error ("User already exists")
         
         // Hash Password
         const salt = await bcrypt.genSalt(10)
@@ -20,44 +19,45 @@ router.post("/", async (req, res, next) => {
         // Create users based on role
         if (role === "parent") {
             const invitationCode = Math.random(100000, 999999).toString().substring(2, 7)
-            user = await new Parent({
-                username,
+            user = new Parent({
+                email,
                 hashPassword,
                 role,
                 invitationCode,
+                isRegistered: true,
             })
         } else if (role === "teacher") {
-            user = await new Teacher({
-                username,
+            user = new Teacher({
+                email,
                 hashPassword,
                 role,
+                isRegistered: true,
             })
         }
         
         // Generate Token
         const tokenPayload = {
-            username: user.username,
+            email: user.email,
             role: user.role,
             isRegistered: user.isRegistered,
             isInvited: user.isInvited,
             invitationCode: user.invitationCode,
         }
         const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1m" })
-
         
         // Store User
         let storingUser = await user.save()
         if (!storingUser) throw new Error("Failed to store user")
-
+        
         // Update User isRegistered status
         let update = await user.updateOne({ $set: { isRegistered: true } })
         if (!update) throw new Error("Failed to update user isRegistered status")
 
         // Return User
-        user = await User.findOne({ username: username })
+        user = await User.findOne({ email })
         user = {
-            _id: user._id,
-            username: user.username,
+            userId: user._id,
+            email,
             role: user.role,
             isRegistered: user.isRegistered,
             isInvited: user.isInvited,
@@ -65,6 +65,28 @@ router.post("/", async (req, res, next) => {
         }
 
         return res.status(200).json({ user, token })
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.post('/extra_details', async (req, res, next) => {
+    try {
+        const { name, DoB, gender, userId } = req.body
+
+        // Find user
+        let user = await User.findById(userId)
+        if (!user) throw new Error("User not found")
+
+        // Update user
+        user.name = name
+        user.DoB = DoB
+        user.gender = gender
+
+        // Save user
+        let savingUser = await user.save()
+        if (!savingUser) throw new Error("Failed to save user")
+
     } catch (err) {
         next(err)
     }

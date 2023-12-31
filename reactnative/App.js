@@ -11,13 +11,13 @@ const App = () => {
   return (
     <Provider store={store} >
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name='HomeScreen' component={HomeScreen} />
+          <Stack.Screen name='ExtraDetailsScreen' component={ExtraDetailsScreen} />
           <Stack.Screen name='LoginSignUpScreen' component={LoginSignUpScreen} />
+          <Stack.Screen name='ContactScreen' component={ContactScreen} />
           <Stack.Screen name='MessageScreen' component={MessageScreen} />
           <Stack.Screen name='ChatScreen' component={ChatScreen} />
-          <Stack.Screen name='ContactScreen' component={ContactScreen} />
-          <Stack.Screen name='ExtraDetailsScreen' component={ExtraDetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

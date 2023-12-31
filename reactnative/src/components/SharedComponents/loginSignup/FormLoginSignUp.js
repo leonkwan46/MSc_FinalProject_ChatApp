@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native'
 import { VStack, Box } from '@react-native-material/core'
 import { Formik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
+import { useDispatch, useSelector } from 'react-redux'
 import { clearAuthStates, loginUser, signUpUser } from '../../../redux/reducer/authSlice'
 import { openStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
 import { useNavigation } from '@react-navigation/native'
@@ -11,7 +11,8 @@ import { setUser } from '../../../redux/reducer/sessionSlice'
 
 // Validation Schema
 const SignupSchema = Yup.object().shape({
-    username: Yup.string()
+    email: Yup.string()
+        .email('Invalid email')
         .required('Required'),
     password: Yup.string()
         .required('Required'),
@@ -20,7 +21,7 @@ const SignupSchema = Yup.object().shape({
 })
 
 // For testing
-const initialValues = { username: 'qwe', password: 'qwe', confirmPassword: 'qwe' }
+const initialValues = { email: 'qwe@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
 
 const FormLoginSignUp = ({
     isLogin
@@ -43,12 +44,7 @@ const FormLoginSignUp = ({
             dispatch(signUpUser(payload)).then((res) => {
                 const { user, token } = res.payload
                 dispatch(setUser(user))
-                if (token) {
-                    role === 'parent' ? navigation.navigate('ExtraDetailsScreen') : navigation.navigate('HomeScreen')
-                    dispatch(clearAuthStates())
-                } else {
-                    dispatch(openStatusOverlay())
-                }
+                token ? navigation.navigate('ExtraDetailsScreen') : dispatch(openStatusOverlay())
             })
         }
         resetForm()
@@ -68,11 +64,11 @@ const FormLoginSignUp = ({
                     <VStack spacing={20}>
                         <Box>
                             <TextInput 
-                                onChangeText={handleChange('username')}
-                                onBlur={handleBlur('username')}
-                                value={values.username}
-                                style={errors.username && touched.username ? styles.errors : styles.inputContainer}
-                                placeholder='Username'
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                value={values.email}
+                                style={errors.email && touched.email ? styles.errors : styles.inputContainer}
+                                placeholder='Email'
                                 placeholderTextColor={'#aaa'}
                             />
                         </Box>
@@ -154,7 +150,7 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 14,
         fontFamily: 'Lemon-Regular',
-        borderColor: 'red',
+        borderColor: '#f00',
         borderWidth: 1,
     }
 })

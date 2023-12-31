@@ -19,7 +19,12 @@ const TopHeading = () => {
 
   return (
     <View style={ isLoginRegister ? styles.containerLoginRegister : styles.container }>
-        <Text style={ isLoginRegister ? styles.textLoginRegister : styles.text }> {currentTitle} </Text>
+        <Text style={ isLoginRegister ? styles.titleLoginRegister : styles.title }> {currentTitle} </Text>
+        { subtitle && 
+            <View>
+                <Text style={ styles.subtitle }> {subtitle} </Text>
+            </View>
+        }
     </View>
   )
 }
@@ -30,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingBottom: 20,
   },
-  textLoginRegister: {
+  titleLoginRegister: {
     color: '#fff',
     fontFamily: 'Lemon-Regular',
     fontSize: 50,
@@ -42,10 +47,16 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginTop: 40,
   },
-  text: {
+  title: {
     color: '#D4AF37',
     fontFamily: 'Lemon-Regular',
     fontSize: 40,
+    display: 'flex',
+  },
+  subtitle: {
+    color: '#D4AF37',
+    fontFamily: 'Lemon-Regular',
+    fontSize: 20,
     display: 'flex',
   },
 })

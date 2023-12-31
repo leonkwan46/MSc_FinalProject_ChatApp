@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
+    createAt: {
+      type: Number,
+      default: Date.now,
+    },
   })
 
 export default mongoose.model("User", userSchema)

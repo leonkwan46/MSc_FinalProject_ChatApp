@@ -13,20 +13,20 @@ const ContainerLoginSignup = ({ children }) => {
         source={image}
         style={styles.container}
       >
-        {isLoading ? <Loading /> : null}
-        {status ? <StatusOverlay message={error} /> : null}
+          {isLoading ? <Loading /> : null}
+          {status ? <StatusOverlay message={error} /> : null}
 
-        <SafeAreaView style={ styles.backgroundColor }>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps='handled'
-          >
-            {children}
-          </ScrollView>
-        </SafeAreaView>
+          <SafeAreaView style={ styles.backgroundColor }>
+              <ScrollView
+                contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps='handled'
+              >
+                  {children}
+              </ScrollView>
+          </SafeAreaView>
       </ImageBackground>
   )
-  }
+}
 
 const styles = StyleSheet.create({
     container: {

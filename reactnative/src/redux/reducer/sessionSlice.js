@@ -28,13 +28,13 @@ const sessionSlice = createSlice({
     initialState: {...initialState},
     reducers: {
         setUser: (state, action) => {
-            state.user.userId = action.payload._id,
+            state.user.userId = action.payload.userId,
             state.user.username = action.payload.username,
             state.user.role = action.payload.role,
             state.user.socketId = getSocketId()
         },
         setCurrentChatRoom: (state, action) => {
-            state.currentChatRoom.roomId = action.payload._id,
+            state.currentChatRoom.roomId = action.payload.userId,
             state.currentChatRoom.name = action.payload.name,
             state.currentChatRoom.members = action.payload.members,
             state.currentChatRoom.messages = action.payload.messages,
