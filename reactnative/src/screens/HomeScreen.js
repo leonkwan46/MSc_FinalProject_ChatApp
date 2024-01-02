@@ -20,8 +20,6 @@ const LoginSignUpScreen = ({ navigation }) => {
             title='Go to Login'
             onPress={() => navigation.navigate('LoginSignUpScreen', { isLogin: true })}
           />
-          {/* Still developing - Upload System */}
-          {/* <UploadDocument /> */}
         </View>
     </ContainerLoginSignup>
   )

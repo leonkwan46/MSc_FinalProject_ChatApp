@@ -93,4 +93,25 @@ router.post('/extra_details', async (req, res, next) => {
     }
 })
 
+router.post('/extra_details/upload', async (req, res, next) => {
+    try {
+        const { userId, file } = req.body
+
+        // Find user
+        let user = await User.findById(userId)
+        if (!user) throw new Error("User not found")
+
+        // Update user
+        user.isDocUploaded = true
+
+        // Save user
+        let savingUser = await user.save()
+        if (!savingUser) throw new Error("Failed to save user")
+
+        return res.status(200).json({ userId, file })
+    } catch (err) {
+        next(err)
+    }
+})
+
 export default router

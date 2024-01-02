@@ -5,6 +5,7 @@ import { setCurrentScreen } from '../redux/reducer/sessionSlice'
 import TopHeading from '../components/SharedComponents/TopHeading'
 import FormGeneral from '../components/extraDetails/FormGeneral'
 import { StyleSheet, View } from 'react-native'
+import FormTeacher from '../components/extraDetails/FormTeacher'
 
 const ExtraDetailsScreen = () => {
     const dispatch = useDispatch()
@@ -19,7 +20,8 @@ const ExtraDetailsScreen = () => {
         <ContainerExtraDetails>
             <View style={ styles.container }>
                 <TopHeading />
-                { !isGeneralFormComplete && <FormGeneral /> }
+                <FormTeacher />
+                {/* { !isGeneralFormComplete && <FormGeneral /> } */}
             </View>
         </ContainerExtraDetails>
     )
