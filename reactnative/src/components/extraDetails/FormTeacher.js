@@ -4,15 +4,24 @@ import { getUser } from '../../redux/stateHelper'
 import { Formik } from 'formik'
 import UploadDocument from './UploadDocument'
 import { Box, VStack } from '@react-native-material/core'
+import { updateTeacherDocuments } from '../../redux/reducer/authSlice'
+import { useDispatch } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 
 const initialValues = {}
 
 const FormTeacher = () => {
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
     const user = getUser()
+    const { userId } = user
     const [selectedDBS, setSelectedDBS] = useState(null)
-    const [selectedDegree, setSelectedDegree] = useState(null)
+    const [selectedID, setSelectedID] = useState(null)
+    const [selectedProfessionalCert, setSelectedProfessionalCert] = useState(null)
 
     const handleOnSubmit = async () => {
+        const result = await dispatch(updateTeacherDocuments({ userId, selectedDBS, selectedID, selectedProfessionalCert }))
+        if (!result.error) navigation.navigate('MessageScreen')
     }
         
     return (
@@ -24,12 +33,16 @@ const FormTeacher = () => {
             {({ handleSubmit }) => (
                 <VStack spacing={20}>
                     <Box>
-                        <Text style={styles.docTitle}>DBS Cert</Text>
-                        <UploadDocument title="Choose DBS Cert" setSelectedDocument={setSelectedDBS} selectedDocument={selectedDBS} />
+                        <Text style={styles.docTitle}>Enhanced DBS Cert</Text>
+                        <UploadDocument title="Choose file" setSelectedDocument={setSelectedDBS} selectedDocument={selectedDBS} />
                     </Box>
                     <Box>
-                        <Text style={styles.docTitle}>Degree Cert</Text>
-                        <UploadDocument title="Choose Degree Cert" setSelectedDocument={setSelectedDegree} selectedDocument={selectedDegree} />
+                        <Text style={styles.docTitle}>Proof of ID</Text>
+                        <UploadDocument title="Choose file" setSelectedDocument={setSelectedID} selectedDocument={selectedID} />
+                    </Box>
+                    <Box>
+                        <Text style={styles.docTitle}>Professional Qualification Cert</Text>
+                        <UploadDocument title="Choose file" setSelectedDocument={setSelectedProfessionalCert} selectedDocument={selectedProfessionalCert} />
                     </Box>
                     <Box style={styles.buttonContainer}>
                         <Pressable onPress={handleSubmit} style={styles.buttonSize}>

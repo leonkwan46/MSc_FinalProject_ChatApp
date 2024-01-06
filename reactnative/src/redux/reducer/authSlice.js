@@ -49,8 +49,19 @@ export const updateUser = createAsyncThunk(
             const response = await axios.post('http://localhost:5000/signup/extra_details', userData)
             return response.data
         } catch (error) {
-            throw error
-            // return rejectWithValue(error.response.data)
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const updateTeacherDocuments = createAsyncThunk(
+    'auth/updateTeacherDocuments',
+    async (teacherData, {rejectWithValue}) => {
+        try {
+            const response = await axios.post('http://localhost:5000/signup/extra_details/upload', teacherData)
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data)
         }
     }
 )
@@ -69,6 +80,15 @@ const authSlice = createSlice({
                 name: '',
                 DoB: '',
                 gender: '',
+            }
+        },
+        testTeacher: (state) => {
+            state.user = {
+                name: 'John Doe',
+                email: 'qwe@gmail.com',
+                role: 'parent',
+                userId: '659557157a99873163408d14',
+                socketId: '',
             }
         }
     },
@@ -118,7 +138,7 @@ const authSlice = createSlice({
                 state.isLoading = false
             })
 
-            // Update Status
+            // Update User Status
             .addCase(updateUser.pending, (state) => {
                 state.isLoading = true
             })
@@ -138,8 +158,20 @@ const authSlice = createSlice({
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
+
+            // Update Teacher Status
+            .addCase(updateTeacherDocuments.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateTeacherDocuments.fulfilled, (state) => {
+                state.isLoading = false
+            })
+            .addCase(updateTeacherDocuments.rejected, (state, action) => {
+                state.error = action?.payload?.message || action.error.message
+                state.isLoading = false
+            })
     }
 })
 
-export const { login, clearAuthStates } = authSlice.actions
+export const { clearAuthStates, testTeacher } = authSlice.actions
 export default authSlice.reducer

@@ -12,7 +12,7 @@ import connectSocketIO from "./socket/config.js"
 const app = express()
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(express.json({ limit: '5mb' }))
 app.use(bodyParser.json())
 
 // Server

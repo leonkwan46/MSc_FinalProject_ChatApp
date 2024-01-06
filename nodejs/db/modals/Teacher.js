@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import User from "./User.js"
+import { User } from "./index.js"
 
 const teacherSchema = new mongoose.Schema({
     isDocUploaded: {
@@ -9,6 +9,10 @@ const teacherSchema = new mongoose.Schema({
     isDocVerified: {
         type: Boolean,
         default: false,
+    },
+    documents: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Document",
     },
 })
 

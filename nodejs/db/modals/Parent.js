@@ -1,19 +1,15 @@
 import mongoose from "mongoose"
-import User from "./User.js"
+import { User } from "./index.js"
 
 const parentSchema = new mongoose.Schema({
-    isVerifiedCode: {
-        type: Boolean,
-        default: false,
-    },
     isInvited: {
         type: Boolean,
         default: false,
     },
-    invitationCode: {
-        type: String,
-        unique: true,
-    },
+    InvitationCode: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "InvitationCode",
+    }
 })
 
 export default User.discriminator("Parent", parentSchema)

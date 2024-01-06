@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
 import * as Yup from 'yup'
 import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { updateUser } from '../../redux/reducer/authSlice'
 import { getUser } from '../../redux/stateHelper'
 import { updateGeneralFormState } from '../../redux/reducer/signUpInfoSlice'
@@ -24,20 +24,11 @@ const initialValues = { name: 'Nani', DoB: Date.now().toString(), gender: 'Nani'
 const FormGeneral = () => {
     const dispatch = useDispatch()
     const user = getUser()
-    const hasError = useSelector(state => state.auth.error)
 
     const onSubmit = async (values, { resetForm }) => {
         values = {...values, userId: user.userId }
-        try {
-            await dispatch(updateUser(values))
-            console.log('User updated')
-        } catch (error) {
-            console.log(error)
-        }
-
-        // NEED TO FIX THIS AFTER BUILDING OTHER PAGES
-        // if (hasError) return
-        // dispatch(updateGeneralFormState(true))
+        const result = await dispatch(updateUser(values))
+        if (!result.error) dispatch(updateGeneralFormState(true))
         resetForm()
     }
 
