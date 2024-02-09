@@ -17,7 +17,7 @@ router.post('/create_room', async (req, res, next) => {
     }
 })
 
-router.get("/rooms", async (req, res, next) => {
+router.get('/rooms', async (req, res, next) => {
     try {
         const rooms = await Room.find()
         return res.status(200).json(rooms)
@@ -26,7 +26,7 @@ router.get("/rooms", async (req, res, next) => {
     }
 })
 
-router.get("/:roomId", async (req, res, next) => {
+router.get('/:roomId', async (req, res, next) => {
     console.log('=======================')
     console.log(req.params.roomId)
     console.log('=======================')

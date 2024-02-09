@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
 import * as Yup from 'yup'
 import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch } from 'react-redux'
-import { updateUser } from '../../redux/reducer/authSlice'
+import { testTeacher, updateUser } from '../../redux/reducer/authSlice'
 import { getUser } from '../../redux/stateHelper'
 import { updateGeneralFormState } from '../../redux/reducer/signUpInfoSlice'
 
@@ -24,7 +24,6 @@ const initialValues = { name: 'Nani', DoB: Date.now().toString(), gender: 'Nani'
 const FormGeneral = () => {
     const dispatch = useDispatch()
     const user = getUser()
-
     const onSubmit = async (values, { resetForm }) => {
         values = {...values, userId: user.userId }
         const result = await dispatch(updateUser(values))

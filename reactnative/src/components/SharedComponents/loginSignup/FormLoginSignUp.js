@@ -35,7 +35,7 @@ const FormLoginSignUp = ({
         if (isLogin) {
             dispatch(loginUser(payload)).then((res) => {
                 const { user, token } = res.payload
-                dispatch(setUser(user))
+                dispatch(setUser(user, token))
                 dispatch(clearAuthStates())
                 token ? navigation.navigate('MessageScreen') : dispatch(openStatusOverlay())
             })
@@ -43,7 +43,7 @@ const FormLoginSignUp = ({
         } else {
             dispatch(signUpUser(payload)).then((res) => {
                 const { user, token } = res.payload
-                dispatch(setUser(user))
+                dispatch(setUser({user,}))
                 token ? navigation.navigate('ExtraDetailsScreen') : dispatch(openStatusOverlay())
             })
         }

@@ -84,7 +84,16 @@ const authSlice = createSlice({
         },
         testTeacher: (state) => {
             state.user = {
-                name: 'John Doe',
+                name: 'Teacher Doe',
+                email: 'qwe@gmail.com',
+                role: 'teacher',
+                userId: '659557157a99873163408d14',
+                socketId: '',
+            }
+        },
+        testParent: (state) => {
+            state.user = {
+                name: 'Papa Doe',
                 email: 'qwe@gmail.com',
                 role: 'parent',
                 userId: '659557157a99873163408d14',
@@ -173,5 +182,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { clearAuthStates, testTeacher } = authSlice.actions
+export const { clearAuthStates, testTeacher, testParent } = authSlice.actions
 export default authSlice.reducer

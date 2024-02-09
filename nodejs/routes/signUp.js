@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 const router = express.Router()
 
-router.post("/", async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
         const { email, password, role } = req.body
         // Check if user exists

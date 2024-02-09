@@ -4,9 +4,8 @@ import authHandler from "../handlers/authHandler.js"
 
 const router = express.Router()
 
-router.post('/authInvitationCode', authHandler, async (req, res, next) => {    
+router.post('/', authHandler, async (req, res, next) => {  
     const user = req.user
-
     try {
         const { invitationCode } = req.body
 
