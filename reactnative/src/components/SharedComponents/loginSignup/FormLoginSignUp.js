@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { VStack, Box } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
@@ -89,9 +89,9 @@ const FormLoginSignUp = ({
                         }
                         <Box style={styles.buttonContainer}>
                             <Button onPress={handleSubmit} color='primary' size='xl' >
-                                {!isLogin ? 
-                                    <>Register</> :
-                                    <>Login</>
+                                {isLogin ? 
+                                    <Typography size='lg'>Login</Typography> :
+                                    <Typography size='lg'>Register</Typography>
                                 }
                             </Button>
                         </Box>

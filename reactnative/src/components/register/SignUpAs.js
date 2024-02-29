@@ -1,9 +1,9 @@
 import { useState, React } from 'react'
-import { View, FlatList, StyleSheet, Pressable } from 'react-native'
+import { View, FlatList, StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AttentionOverlay from './AttentionOverlay'
 import { openTeacherOverlay, collectUserRole } from '../../redux/reducer/signUpInfoSlice'
-import { Typography } from '../../compLib'
+import { Button, Typography } from '../../compLib'
 
 const roles = [
     { id: 1, name: 'Student / Parents', selected: true },
@@ -32,37 +32,33 @@ const SignUpAs = () => {
     }
 
     return (
-        <View style={ styles.borderline }>
-            <View style={ styles.container }>
-                <View style={styles.textAsContainer}>
-                    <Typography size='xl' color='secondary'>As: </Typography>
-                </View>
-                <View style={styles.selectionContainer}>
-                    <FlatList
-                        scrollEnabled={false}
-                        data={selected}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <Pressable onPress={() => handleOnPress(item.id)} style={styles.selections}>
-                                 <Typography color='secondary' selected={item.selected}>{item.name}</Typography>
-                            </Pressable>
-                        )}
-                    />
-                    <AttentionOverlay />
-                </View>
+        <View style={ styles.container }>
+            <View style={styles.textAsContainer}>
+                <Typography size='xl' color='secondary'>As: </Typography>
+            </View>
+            <View style={styles.selectionContainer}>
+                <FlatList
+                    scrollEnabled={false}
+                    data={selected}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <Button onPress={() => handleOnPress(item.id)} color='invisible'>
+                                <Typography color='secondary' selected={item.selected}>{item.name}</Typography>
+                        </Button>
+                    )}
+                />
+                <AttentionOverlay />
             </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    borderline: {
+    container: {
         borderWidth: 2,
         borderColor: '#D4AF37',
         borderRadius: 10,
         marginBottom: 20,
-    },
-    container: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -74,11 +70,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: '100%',
-    },
-    selections: {
-        display: 'flex',
-        alignItems: 'center',
-        margin: (0, 10)
     },
     textAsContainer: {
         display: 'flex',

@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { closeTeacherOverlay } from '../../redux/reducer/signUpInfoSlice'
 import { useDispatch } from 'react-redux'
+import { Button, Typography } from '../../compLib'
 
 const OverlayInfo = () => {
     const dispatch = useDispatch()
@@ -24,12 +25,13 @@ const OverlayInfo = () => {
                     <Text style={styles.text}>3. Professional Qualification Certificates</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Pressable
-                        style={styles.button}
+                    <Button
                         onPress={() => dispatch(closeTeacherOverlay())}
+                        color='info'
+                        fill={false}
                         >
-                        <Text>Ready!</Text>
-                    </Pressable>
+                        <Typography>Ready!</Typography>
+                    </Button>
                 </View>
             </View>
     )
@@ -85,15 +87,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: '20%',
-    },
-    button: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '50%',
-        height: '40%',
-        borderRadius: 10,
-        borderWidth: 1,
     },
 })
 

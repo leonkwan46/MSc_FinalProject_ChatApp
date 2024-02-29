@@ -7,30 +7,29 @@ interface ButtonProps {
     children: string
     color?: string
     size?: string
+    fill?: boolean
+    extraStyles?: object
     onPress: () => void
 }
 
-const Button: FC<ButtonProps> = ({ children, color, size, onPress }) => {
-    const { fontLoaded } = useFont('Lemon-Regular')
-    const { containerStyle, fontStyle } = getButtonStyle({ size, color })
-    const { fontFamily, fontSize } = fontStyle
+const Button: FC<ButtonProps> = ({
+    children,
+    color,
+    size,
+    fill,
+    extraStyles,
+    onPress
+}) => {
+    const { containerStyle } = getButtonStyle({ size, color, fill })
+    const style = {
+        ...containerStyle,
+        ...extraStyles
+    }
     return (
         <View>
-            {fontLoaded ? (
-                <Pressable onPress={onPress} style={containerStyle}>
-                    <Text style={{ fontFamily, fontSize }}>
-                        {children}
-                    </Text>
-                </Pressable>
-            ) : (
-                <Pressable onPress={onPress} style={containerStyle}>
-                    <Text>
-                        {children}
-                    </Text>
-                </Pressable>
-            
-            )}
-
+            <Pressable onPress={onPress} style={style}>
+                {children}
+            </Pressable>
         </View>
     )
 }

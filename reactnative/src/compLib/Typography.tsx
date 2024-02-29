@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { type FC } from 'react'
 import { Text, View } from 'react-native'
 import useFont from '../SharedHooks/useFont'
 import { getColor, getFontSize } from '../helpers/styleHelper'

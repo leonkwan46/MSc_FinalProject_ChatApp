@@ -6,10 +6,14 @@ const getColor = (color) => {
             return 'white'
         case 'error':
             return 'red'
+        case 'warning':
+            return 'orange'
         case 'success':
             return 'green'
         case 'info':
             return 'black'
+        case 'invisible':
+            return 'transparent'
         default:
             return 'black'
     }
@@ -63,29 +67,32 @@ const getContainerStyle = ({ size, hasError=false }) => {
     return hasError ? { ...defaultSize, ...errorSize, ...selectedSize } : { ...defaultSize, ...selectedSize }
 }
 
-const getButtonStyle = ({ size, color }) => {
+const getButtonStyle = ({ size, color, fill=true }) => {
     const sizes = {
-        xs: { height: 25, paddingVertical: 5, paddingHorizontal: 10, fontSize: 12 },
-        sm: { height: 30, paddingVertical: 7, paddingHorizontal: 12, fontSize: 13 },
-        md: { height: 40, paddingVertical: 8, paddingHorizontal: 15, fontSize: 14 },
-        lg: { height: 60, paddingVertical: 12, paddingHorizontal: 20, fontSize: 18 },
-        xl: { height: 70, paddingVertical: 15, paddingHorizontal: 25, fontSize: 22 },
-        default: { height: 50, paddingVertical: 10, paddingHorizontal: 18, fontSize: 14 }
+        xs: { height: 25, paddingVertical: 5, paddingHorizontal: 10 },
+        sm: { height: 30, paddingVertical: 7, paddingHorizontal: 12 },
+        md: { height: 40, paddingVertical: 8, paddingHorizontal: 15 },
+        lg: { height: 60, paddingVertical: 12, paddingHorizontal: 20 },
+        xl: { height: 70, paddingVertical: 15, paddingHorizontal: 25 },
+        default: { height: 50, paddingVertical: 10, paddingHorizontal: 18 }
     }
 
     const colors = getColor(color)
 
     const defaultContainerStyle = {
         backgroundColor: colors,
+        borderColor: '',
         borderRadius: 5,
+        borderWidth: 0,
         justifyContent: 'center',
         alignItems: 'center',
     }
 
-    const defaultFontStyle = {
-        color: '#000',
-        fontSize: 18,
-        fontFamily: 'Lemon-Regular',
+    if (!fill) {
+        defaultContainerStyle.backgroundColor = getColor('invisible')
+        defaultContainerStyle.borderColor = colors
+        defaultContainerStyle.borderWidth = 2
+        defaultContainerStyle.borderRadius = 10
     }
 
     const selectedSize = sizes[size] || sizes.default
@@ -94,13 +101,10 @@ const getButtonStyle = ({ size, color }) => {
         containerStyle: {
             ...defaultContainerStyle,
             ...selectedSize,
-        },
-        fontStyle: {
-            ...defaultFontStyle,
-            fontSize: selectedSize.fontSize,
-        },
+        }
     }
 }
+
 
 
 
