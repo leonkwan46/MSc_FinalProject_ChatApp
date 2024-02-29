@@ -1,31 +1,23 @@
 import React from 'react'
-import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { VStack, Box } from '@react-native-material/core'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearAuthStates, loginUser, signUpUser } from '../../../redux/reducer/authSlice'
 import { openStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
 import { useNavigation } from '@react-navigation/native'
 import { setUser } from '../../../redux/reducer/sessionSlice'
-
-// Validation Schema
-const SignupSchema = Yup.object().shape({
-    email: Yup.string()
-        .email('Invalid email')
-        .required('Required'),
-    password: Yup.string()
-        .required('Required'),
-    confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Passwords must match')
-})
+import { LoginSchema, SignupSchema } from '../../../helpers/validationHelpers'
+import { Button, TextInput, Typography } from '../../../compLib'
 
 // For testing
 const initialValues = { email: 'qwe@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
+// const initialValues = {}
 
 const FormLoginSignUp = ({
     isLogin
 }) => {
+    const validationSchema = isLogin ? LoginSchema : SignupSchema
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const role = useSelector(state => state.signUpInfo.role)
@@ -34,16 +26,16 @@ const FormLoginSignUp = ({
         // Login Page
         if (isLogin) {
             dispatch(loginUser(payload)).then((res) => {
-                const { user, token } = res.payload
-                dispatch(setUser(user, token))
+                const { token } = res.payload
+                dispatch(setUser(res.payload))
                 dispatch(clearAuthStates())
                 token ? navigation.navigate('MessageScreen') : dispatch(openStatusOverlay())
             })
         // Sign Up Page
         } else {
             dispatch(signUpUser(payload)).then((res) => {
-                const { user, token } = res.payload
-                dispatch(setUser({user,}))
+                const { token } = res.payload
+                dispatch(setUser(res.payload))
                 token ? navigation.navigate('ExtraDetailsScreen') : dispatch(openStatusOverlay())
             })
         }
@@ -54,8 +46,7 @@ const FormLoginSignUp = ({
         <View style={ styles.container }>
             <Formik
                 initialValues={initialValues}
-                validationSchema={!isLogin ? SignupSchema : null}
-
+                validationSchema={validationSchema}
                 // After Submit
                 onSubmit={onSubmit}
             >
@@ -67,9 +58,9 @@ const FormLoginSignUp = ({
                                 onChangeText={handleChange('email')}
                                 onBlur={handleBlur('email')}
                                 value={values.email}
-                                style={errors.email && touched.email ? styles.errors : styles.inputContainer}
+                                size='lg'
+                                hasError={errors.email && touched.email ? true : false}
                                 placeholder='Email'
-                                placeholderTextColor={'#aaa'}
                             />
                         </Box>
                         <Box>
@@ -78,32 +69,31 @@ const FormLoginSignUp = ({
                                 onChangeText={handleChange('password')}
                                 onBlur={handleBlur('password')}
                                 value={values.password}
-                                style={errors.password && touched.password ? styles.errors : styles.inputContainer}
+                                size='lg'
+                                hasError={errors.password && touched.password ? true : false}
                                 placeholder='Password'
-                                placeholderTextColor={'#aaa'}
                             />
                         </Box>
-                        {!isLogin ? 
+                        {!isLogin &&
                             <Box>
                                 <TextInput
                                     secureTextEntry
                                     onChangeText={handleChange('confirmPassword')}
                                     onBlur={handleBlur('confirmPassword')}
                                     value={values.confirmPassword}
-                                    style={errors.confirmPassword && touched.confirmPassword ? styles.errors : styles.inputContainer}
+                                    hasError={errors.confirmPassword || touched.confirmPassword ? true : false}
+                                    size='lg'
                                     placeholder='Confirm Password'
-                                    placeholderTextColor={'#aaa'}
                                 />
                             </Box>
-                            : null
                         }
                         <Box style={styles.buttonContainer}>
-                            <Pressable onPress={handleSubmit} style={styles.buttonSize}>
+                            <Button onPress={handleSubmit} color='primary' size='xl' >
                                 {!isLogin ? 
-                                    <Text style={styles.buttonText}>Register</Text> :
-                                    <Text style={styles.buttonText}>Login</Text>
+                                    <>Register</> :
+                                    <>Login</>
                                 }
-                            </Pressable>
+                            </Button>
                         </Box>
                     </VStack>
                 )}
@@ -117,42 +107,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 10,
     },
-    inputContainer: {
-        backgroundColor: '#fff',
-        height: 50,
-        borderRadius: 10,
-        padding: 10,
-        fontSize: 14,
-        fontFamily: 'Lemon-Regular',
-    },
     buttonContainer: {
         display: 'flex',
         alignItems: 'flex-end',
     },
-    buttonSize: {
-        height: 50,
-        width: '60%',
-        backgroundColor: '#D4AF37',
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#000',
-        fontSize: 18,
-        fontWeight: 'bold',
-        fontFamily: 'Lemon-Regular',
-    },
-    errors: {
-        backgroundColor: '#fff',
-        height: 50,
-        borderRadius: 10,
-        padding: 10,
-        fontSize: 14,
-        fontFamily: 'Lemon-Regular',
-        borderColor: '#f00',
-        borderWidth: 1,
-    }
 })
 
 export default FormLoginSignUp

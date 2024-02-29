@@ -49,7 +49,6 @@ const sessionSlice = createSlice({
     initialState: {...initialState},
     reducers: {
         setUser: (state, action) => {
-            console.log(action.payload)
             state.user.userId = action.payload.user._id,
             state.user.email = action.payload.user.email,
             state.user.role = action.payload.user.role,

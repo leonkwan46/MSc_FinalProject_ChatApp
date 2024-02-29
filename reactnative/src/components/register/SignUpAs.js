@@ -1,8 +1,9 @@
 import { useState, React } from 'react'
-import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native'
+import { View, FlatList, StyleSheet, Pressable } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AttentionOverlay from './AttentionOverlay'
 import { openTeacherOverlay, collectUserRole } from '../../redux/reducer/signUpInfoSlice'
+import { Typography } from '../../compLib'
 
 const roles = [
     { id: 1, name: 'Student / Parents', selected: true },
@@ -34,16 +35,16 @@ const SignUpAs = () => {
         <View style={ styles.borderline }>
             <View style={ styles.container }>
                 <View style={styles.textAsContainer}>
-                    <Text style={styles.textAs}>As: </Text>
+                    <Typography size='xl' color='secondary'>As: </Typography>
                 </View>
                 <View style={styles.selectionContainer}>
                     <FlatList
                         scrollEnabled={false}
                         data={selected}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <Pressable onPress={() => handleOnPress(item.id)} style={styles.selections}>
-                                 <Text style={item.selected ? styles.selected : styles.unselected}>{item.name}</Text>
+                                 <Typography color='secondary' selected={item.selected}>{item.name}</Typography>
                             </Pressable>
                         )}
                     />
@@ -86,25 +87,6 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '20%',
         marginRight: 20,
-    },
-    textAs: {
-        fontFamily: 'Lemon-Regular',
-        fontSize: '25px',
-        color: '#D4AF37',
-    },
-    selected: {
-        fontFamily: 'Lemon-Regular',
-        fontSize: '20px',
-        color: '#D4AF37',
-    },
-    unselected: {
-        fontFamily: 'Lemon-Regular',
-        fontSize: '20px',
-        color: 'rgba(212, 175, 55, 0.5)',
-    },
-    divider: {
-        height: 2,
-        backgroundColor: '#D4AF37',
     },
 })
 export default SignUpAs

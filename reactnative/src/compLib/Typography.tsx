@@ -1,53 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
-import * as Font from 'expo-font'
+import useFont from '../SharedHooks/useFont'
+import { getColor, getFontSize } from '../helpers/styleHelper'
 
 interface TypographyProps {
     children: string
     color?: string
-    size?: number
-    onClick?: () => void
+    size?: string
+    selected?: boolean
 }
 
-const Typography: React.FC<TypographyProps> = ({ children, color }) => {
-    const [fontLoaded, setFontLoaded] = useState(false)
-    const customFont = {
-        'Lemon-Regular': require('../../assets/fonts/Lemon-Regular.ttf'),
-    }
+const Typography: FC<TypographyProps> = ({ children, color, size, selected }) => {
+    const { fontLoaded } = useFont('Lemon-Regular')
 
-    useEffect(() => {
-        const loadFont = async () => {
-            await Font.loadAsync(customFont)
-            setFontLoaded(true)
-        }
-        loadFont()
-    }, [])
+    let selectedSize = getFontSize(size)
+    let selectedColour = getColor(color)
+    if (selected) selectedColour = getColor('primary')
 
-    let colour = ''
-    switch (color) {
-        case 'primary' :
-            colour = '#D4AF37'
-            break
-        case 'secondary' :
-            colour = 'white'
-            break
-        case 'error' :
-            colour = 'red'
-            break
-        case 'success' :
-            colour = 'green'
-            break
-        case 'info' :
-            colour = 'black'
-            break
-        default:
-            colour = 'black'
+    const textStyle = {
+        fontFamily: 'Lemon-Regular',
+        color: selectedColour,
+        fontSize: selectedSize
     }
     
     return (
         <View>
             {fontLoaded ? (
-                <Text style={{ fontFamily: 'Lemon-Regular' }}>{children}</Text>
+                <Text style={textStyle}>{children}</Text>
             ) : (
                 <Text>{children}</Text>
             )}

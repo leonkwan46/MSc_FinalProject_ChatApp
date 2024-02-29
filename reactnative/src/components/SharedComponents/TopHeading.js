@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
+import { Typography } from '../../compLib'
 
 const TITLES = {
     HOME: 'Home',
@@ -19,10 +20,10 @@ const TopHeading = () => {
 
   return (
     <View style={ isLoginRegister ? styles.containerLoginRegister : styles.container }>
-        <Text style={ isLoginRegister ? styles.titleLoginRegister : styles.title }> {currentTitle} </Text>
+        <Typography color='secondary' size='title' > {currentTitle} </Typography>
         { subtitle && 
             <View>
-                <Text style={ styles.subtitle }> {subtitle} </Text>
+                <Typography style={ styles.subtitle }> {subtitle} </Typography>
             </View>
         }
     </View>

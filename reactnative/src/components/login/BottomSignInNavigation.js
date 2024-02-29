@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { Typography } from '../../compLib'
 
 const BottomSignInNavigation = () => {
     
@@ -12,14 +13,14 @@ const BottomSignInNavigation = () => {
 
     return (
         <View style= {styles.container }>
-            <Text>
-                <Text style={ styles.text }>Don't have an account? </Text>
+            <Typography>
+                <Typography size='md' color='secondary'>Don't have an account? </Typography>
                 <View style={ styles.linkContainer }>
                     <Pressable onPress={handleOnPress}>
-                        <Text style={ styles.linkText }> Sign up!</Text>
+                        <Typography size='sm' color='secondary'> Sign up!</Typography>
                     </Pressable>
                 </View>
-            </Text>
+            </Typography>
         </View>
     )
 }
@@ -29,11 +30,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         marginTop: 100,
-    },
-    text: {
-        fontFamily: 'Lemon-Regular',
-        fontSize: 16,
-        color: 'white',
     },
     linkContainer : {
         borderRadius: 50,
@@ -45,10 +41,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    linkText: {
-        fontFamily: 'Lemon-Regular',
-        fontSize: 16,
-        color: '#D4AF37',
-    }
 })
 export default BottomSignInNavigation
