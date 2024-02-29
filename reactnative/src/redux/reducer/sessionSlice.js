@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { getSocketId } from "../../helpers/socketHelpers"
-import axios from "axios";
-import persistReducer from "redux-persist/es/persistReducer"
-import storage from 'redux-persist/lib/storage/session'
+import axios from "axios"
 
 const initialState = {
     user: {
@@ -45,12 +43,6 @@ export const authInvitationCode = createAsyncThunk(
         }
     }
 )
-
-const persistConfig = {
-    key: 'session',
-    storage,
-    whitelist: ['user'], // only 'user' will be persisted
-}
 
 const sessionSlice = createSlice({
     name: 'session',
@@ -116,4 +108,4 @@ const sessionSlice = createSlice({
 
 export const { setUser, setCurrentScreen, setCurrentChatRoom, testTeacherSesh, testParentSesh } = sessionSlice.actions
 const sessionReducer = sessionSlice.reducer
-export default persistReducer(persistConfig, sessionReducer)
+export default sessionReducer

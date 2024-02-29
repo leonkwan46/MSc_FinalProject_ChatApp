@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 10,
-        borderBlockColor: 'grey',
+        borderColor: 'grey',
         borderWidth: 1,
     },
     sendButtonContainer: {

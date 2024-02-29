@@ -21,13 +21,13 @@ const ContainerMessages = () => {
 
     return (
         <View>
-            <ScrollView>
+            <View>
                 <FlatList
                     data={rooms}
                     renderItem={item => <Room roomData={item} />}
                     keyExtractor={item => item.createAt}
                 />
-            </ScrollView>
+            </View>
         </View>
     )
 }

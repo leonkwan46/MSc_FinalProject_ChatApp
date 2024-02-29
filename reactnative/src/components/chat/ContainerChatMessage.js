@@ -40,13 +40,13 @@ const ContainerChatMessage = () => {
 
     return (
         <View style={styles.messageContainer}>
-            <ScrollView style={styles.messageList} >
+            <View style={styles.messageList} >
                 <FlatList
                     data={oldMessages}
                     renderItem={ item => <Message messageData={item} />}
                     keyExtractor={item => item.id}
                 />
-            </ScrollView>
+            </View>
             <View>
                 <MessageInput
                     message={message}
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'black',
         // Fix later
-        height: '90vh',
+        height: '100%',
     },
     sendButtonContainer: {
         padding: 10,

@@ -1,7 +1,8 @@
 import React from 'react'
 import { ImageBackground, ScrollView, StyleSheet, SafeAreaView } from 'react-native'
 import { useSelector } from 'react-redux'
-import { Loading, StatusOverlay } from '../index'
+import StatusOverlay from '../feedback/StatusOverlay'
+import Loading from '../feedback/Loading'
 
 const image = require('../../../../assets/images/login-signup-bg-img.jpg')
 
