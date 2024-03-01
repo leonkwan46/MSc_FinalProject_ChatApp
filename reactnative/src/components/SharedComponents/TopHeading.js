@@ -1,64 +1,45 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { useSelector } from 'react-redux'
+import { View, StyleSheet } from 'react-native'
 import { Typography } from '../../compLib'
+import useFont from '../../SharedHooks/useFont'
 
-const TITLES = {
-    HOME: 'Home',
-    LOGIN: 'Login',
-    REGISTER: 'Register',
-    EXTRADETAILS: 'Extra Details',
-    CONTACTS: 'Contacts',
-    MESSAGES: 'Messages',
-}
 
-const TopHeading = () => {
-  const currentScreen = useSelector(state => state.session.currentScreen)
-  const { title, subtitle } = currentScreen
-  const currentTitle = TITLES[Object.keys(TITLES).find((item) => item === title)]
-  const isLoginRegister = title === 'LOGIN' || title === 'REGISTER'
+const TopHeading = (props) => {
+  const { title, subtitle } = props
+  const { fontLoaded } = useFont('Lemon-Regular')
 
   return (
-    <View style={ isLoginRegister ? styles.containerLoginRegister : styles.container }>
-        <Typography color='secondary' size='title' > {currentTitle} </Typography>
-        { subtitle && 
-            <View>
-                <Typography style={ styles.subtitle }> {subtitle} </Typography>
-            </View>
-        }
+    <View style={ styles.container }>
+      { fontLoaded ?  (
+        <View>
+            <Typography color='primary' size='title'>{title}</Typography>
+            { subtitle && 
+                <View>
+                    <Typography color='primary' size='subtitle'>{subtitle}</Typography>
+                </View>
+            }
+        </View>
+      ) : (
+        <View>
+          <Typography color='primary' size='title' >{title}</Typography>
+          { subtitle && 
+              <View>
+                  <Typography color='primary' size='subtitle'>{subtitle}</Typography>
+              </View>
+          }
+        </View>
+      )}
     </View>
+
   )
 }
 
 const styles = StyleSheet.create({
-  containerLoginRegister: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    paddingBottom: 20,
-  },
-  titleLoginRegister: {
-    color: '#fff',
-    fontFamily: 'Lemon-Regular',
-    fontSize: 50,
-    display: 'flex',
-  },
   container: {
     display: 'flex',
     justifyContent: 'flex-end',
     paddingBottom: 20,
     marginTop: 40,
-  },
-  title: {
-    color: '#D4AF37',
-    fontFamily: 'Lemon-Regular',
-    fontSize: 40,
-    display: 'flex',
-  },
-  subtitle: {
-    color: '#D4AF37',
-    fontFamily: 'Lemon-Regular',
-    fontSize: 20,
-    display: 'flex',
   },
 })
 

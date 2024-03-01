@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View, FlatList } from 'react-native'
+import { View, FlatList } from 'react-native'
 import Room from './Room'
 import axios from 'axios'
 

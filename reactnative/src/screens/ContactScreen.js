@@ -1,30 +1,27 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useDispatch } from 'react-redux'
-import { setCurrentScreen } from '../redux/reducer/sessionSlice'
+import { ScrollView } from 'react-native'
 import TopHeading from '../components/SharedComponents/TopHeading'
 import ContactList from '../components/contact/ContactList'
+import { useNavigation } from '@react-navigation/native'
+import { LoggedInContainer } from '../components/SharedComponents'
+import AddBadge from '../components/contact/AddBadge'
 
 const ContactScreen = () => {
-  const dispatch = useDispatch()
-  // Update current screen
+  const navigation = useNavigation()
+
+  // Not allowing users to swipe back
   useEffect(() => {
-    dispatch(setCurrentScreen({ title: 'CONTACTS' }))
+    navigation.setOptions({ gestureEnabled: false })
   }, [])
   return (
-    <View style={styles.container}>
-      <TopHeading />
-      <ContactList />
-    </View>
+    <LoggedInContainer>
+      <ScrollView>
+        <TopHeading title='Contact' />
+        <ContactList />
+      </ScrollView>
+      <AddBadge />
+    </LoggedInContainer>
   )
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 30,
-  },
-})
 
 export default ContactScreen

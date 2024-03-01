@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, ScrollView, StyleSheet, SafeAreaView } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, SafeAreaView, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import StatusOverlay from '../feedback/StatusOverlay'
 import Loading from '../feedback/Loading'
@@ -14,17 +14,11 @@ const ContainerLoginSignup = ({ children }) => {
         source={image}
         style={styles.container}
       >
-          {isLoading ? <Loading /> : null}
-          {status ? <StatusOverlay message={error} /> : null}
-
-          <SafeAreaView style={ styles.backgroundColor }>
-              <ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
-                keyboardShouldPersistTaps='handled'
-              >
-                  {children}
-              </ScrollView>
-          </SafeAreaView>
+        {isLoading ? <Loading /> : null}
+        {status ? <StatusOverlay message={error} /> : null}
+        <SafeAreaView style={ styles.backgroundColor }>
+          {children}
+        </SafeAreaView>
       </ImageBackground>
   )
 }

@@ -17,10 +17,6 @@ const initialState = {
         messages: [],
         createdAt: '',
     },
-    currentScreen: {
-        title: '',
-        subtitle: '',
-    },
     isLoading: false,
     error: null,
 }
@@ -62,10 +58,6 @@ const sessionSlice = createSlice({
             state.currentChatRoom.messages = action.payload.messages,
             state.currentChatRoom.createdAt = action.payload.createdAt
         },
-        setCurrentScreen: (state, action) => {
-            state.currentScreen.title = action.payload.title
-            state.currentScreen.subtitle = action.payload.subtitle
-        },
         testTeacherSesh: (state) => {
             state.user = {
                 name: 'Teacher Doe',
@@ -105,6 +97,6 @@ const sessionSlice = createSlice({
     }
 })
 
-export const { setUser, setCurrentScreen, setCurrentChatRoom, testTeacherSesh, testParentSesh } = sessionSlice.actions
+export const { setUser, setCurrentChatRoom, testTeacherSesh, testParentSesh } = sessionSlice.actions
 const sessionReducer = sessionSlice.reducer
 export default sessionReducer

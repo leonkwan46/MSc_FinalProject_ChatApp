@@ -1,6 +1,6 @@
 import React, { type FC } from 'react'
 import { TextInput, View } from 'react-native'
-import { getContainerStyle } from '../helpers/styleHelper'
+import { getTextInputStyle } from '../helpers/styleHelper'
 import useFont from '../SharedHooks/useFont'
 
 interface TextInputProps {
@@ -25,13 +25,13 @@ const CustomTextInput: FC<TextInputProps> = ({
     onBlur
 }) => {
     const { fontLoaded } = useFont('Lemon-Regular')
-    const containerStyle = getContainerStyle({size, hasError})
+    const textInputStyle = getTextInputStyle({size, hasError})
     return (
         <View>
             {fontLoaded ? (
                 <TextInput
                     value={value}
-                    style={containerStyle}
+                    style={textInputStyle}
                     placeholder={placeholder}
                     secureTextEntry={secureTextEntry}
                     placeholderTextColor={placeholderTextColor}

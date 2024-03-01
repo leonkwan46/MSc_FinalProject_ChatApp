@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCurrentScreen, testParentSesh, testTeacherSesh } from '../redux/reducer/sessionSlice'
+import { testParentSesh, testTeacherSesh } from '../redux/reducer/sessionSlice'
 import ContainerExtraDetails from '../components/extraDetails/ContainerExtraDetails'
 import TopHeading from '../components/SharedComponents/TopHeading'
 import FormGeneral from '../components/extraDetails/FormGeneral'
 import FormTeacher from '../components/extraDetails/FormTeacher'
 import FormParent from '../components/extraDetails/FormParent'
 import { testParent, testTeacher } from '../redux/reducer/authSlice'
+import { useNavigation } from '@react-navigation/native'
 
 const ExtraDetailsScreen = () => {
     const dispatch = useDispatch()
+    const navigation = useNavigation()
     const role = useSelector(state => state.session.user.role)
     const isGeneralFormComplete = useSelector(state => state.signUpInfo.isGeneralFormComplete)
     const [isTeacher, setIsTeacher] = useState(false)
@@ -28,13 +30,13 @@ const ExtraDetailsScreen = () => {
         // dispatch(testParent())
         // dispatch(testParentSesh())
 
-        dispatch(setCurrentScreen({ title: 'EXTRADETAILS', subtitle: `for ${role}s` }))
+        navigation.setOptions({ gestureEnabled: false })
     }, [])
 
     return (
         <ContainerExtraDetails>
             <View style={ styles.container }>
-                <TopHeading />
+                <TopHeading title='Extra Details' subtitle={`for ${role}s`} />
                 { !isGeneralFormComplete && <FormGeneral /> }
                 { isTeacher && <FormTeacher /> }
                 { isParent && <FormParent /> }

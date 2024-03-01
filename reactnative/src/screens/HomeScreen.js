@@ -1,25 +1,22 @@
 import React, { useEffect } from 'react'
-import { Button, View } from 'react-native'
+import { View } from 'react-native'
 import { ContainerLoginSignup, TopNavLoginSignup } from '../components/SharedComponents'
-import { setCurrentScreen } from '../redux/reducer/sessionSlice'
 import { useDispatch } from 'react-redux'
-import UploadDocument from '../components/extraDetails/UploadDocument'
+import { Button, Typography } from '../compLib'
 
 const LoginSignUpScreen = ({ navigation }) => {
   const dispatch = useDispatch()
 
-  // Update current screen
-  useEffect(() => {
-    dispatch(setCurrentScreen({ title: 'HOME' }))
-}, [])
   return (
     <ContainerLoginSignup>
         <TopNavLoginSignup />
         <View>
           <Button
-            title='Go to Login'
+            color='primary'
             onPress={() => navigation.navigate('LoginSignUpScreen', { isLogin: true })}
-          />
+          >
+            <Typography>Go to Login</Typography>
+          </Button>
         </View>
     </ContainerLoginSignup>
   )

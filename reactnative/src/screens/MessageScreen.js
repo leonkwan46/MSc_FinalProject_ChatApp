@@ -1,22 +1,24 @@
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
-import { setCurrentScreen } from '../redux/reducer/sessionSlice'
 import { useDispatch } from 'react-redux'
 import ContainerMessages from '../components/chat/ContainerMessages'
 import TopHeading from '../components/SharedComponents/TopHeading'
+import { useNavigation } from '@react-navigation/native'
+import { LoggedInContainer } from '../components/SharedComponents'
 
 const MessageScreen = () => {
     const dispatch = useDispatch()
+    const navigation = useNavigation()
     
-    // Update current screen
+    // Not allowing users to swipe back
     useEffect(() => {
-        dispatch(setCurrentScreen({ title: 'MESSAGES' }))
+        navigation.setOptions({ gestureEnabled: false })
     }, [])
+
     return (
-        <View>
-            <TopHeading />
+        <LoggedInContainer>
+            <TopHeading title='Messages' />
             <ContainerMessages />
-        </View>
+        </LoggedInContainer>
     )
 }
 

@@ -7,8 +7,11 @@ import TopNavLoginSignup from './loginSignup//TopNavLoginSignup'
 import Loading from './feedback/Loading'
 import StatusOverlay from './feedback/StatusOverlay'
 
-// // Styled Components
-// import Typography from './styled/Typography'
+// Logged In Components
+import LoggedInContainer from './loggedIn/LoggedInContainer'
+
+// Global Components
+import TopHeading from './TopHeading'
 
 export {
     ContainerLoginSignup,
@@ -16,4 +19,6 @@ export {
     Loading,
     StatusOverlay,
     TopNavLoginSignup,
+    LoggedInContainer,
+    TopHeading
 }

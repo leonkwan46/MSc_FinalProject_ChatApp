@@ -18,8 +18,8 @@ const validationSchema = Yup.object().shape({
         .required('Required'),
 })
 // For testing
-const initialValues = { name: 'Nani', DoB: Date.now().toString(), gender: 'Nani' }
-// const initialValues = { name: '', DoB: '', gender: '' }
+// const initialValues = { name: 'Nani', DoB: Date.now().toString(), gender: 'Nani' }
+const initialValues = { name: '', DoB: '', gender: '' }
 
 const FormGeneral = () => {
     const dispatch = useDispatch()

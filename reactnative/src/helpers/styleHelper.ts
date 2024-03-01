@@ -32,15 +32,15 @@ const getFontSize = (size) => {
         case 'xl':
             return 25
         case 'title':
-            return 50
+            return 45
         case 'subtitle':
-            return 30
+            return 25
         default:
             return 15
     }
 }
 
-const getContainerStyle = ({ size, hasError=false }) => {
+const getTextInputStyle = ({ size, hasError=false }) => {
     const sizes = {
         xs: { height: 25, padding: 5, fontSize: 12 },
         sm: { height: 30, padding: 7, fontSize: 13 },
@@ -72,9 +72,9 @@ const getButtonStyle = ({ size, color, fill=true }) => {
         xs: { height: 25, paddingVertical: 5, paddingHorizontal: 10 },
         sm: { height: 30, paddingVertical: 7, paddingHorizontal: 12 },
         md: { height: 40, paddingVertical: 8, paddingHorizontal: 15 },
-        lg: { height: 60, paddingVertical: 12, paddingHorizontal: 20 },
-        xl: { height: 70, paddingVertical: 15, paddingHorizontal: 25 },
-        default: { height: 50, paddingVertical: 10, paddingHorizontal: 18 }
+        lg: { height: 50, paddingVertical: 12, paddingHorizontal: 20 },
+        xl: { height: 60, paddingVertical: 15, paddingHorizontal: 25 },
+        default: { height: 45, paddingVertical: 10, paddingHorizontal: 18 }
     }
 
     const colors = getColor(color)
@@ -109,4 +109,4 @@ const getButtonStyle = ({ size, color, fill=true }) => {
 
 
 
-export { getColor, getFontSize, getContainerStyle, getButtonStyle }
+export { getColor, getFontSize, getTextInputStyle, getButtonStyle }

@@ -29,7 +29,7 @@ const FormLoginSignUp = ({
                 const { token } = res.payload
                 dispatch(setUser(res.payload))
                 dispatch(clearAuthStates())
-                token ? navigation.navigate('MessageScreen') : dispatch(openStatusOverlay())
+                token ? navigation.navigate('LoggedInTabs') : dispatch(openStatusOverlay())
             })
         // Sign Up Page
         } else {
