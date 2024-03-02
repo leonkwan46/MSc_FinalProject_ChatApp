@@ -16,20 +16,25 @@ router.post('/', async (req, res, next) => {
         if (!isMatch) throw new Error("Invalid Username/Password")
         // Check if user is registered
         if (!user.isRegistered) throw new Error("User is not registered")
-        
+
         // Generate Token
         const tokenPayload = {
-            username: user.username,
+            _id: user._id,
+            email: user.email,
+            hashPassword: user.hashPassword,
             role: user.role,
+            gender: user.gender,
+            name: user.name,
             isRegistered: user.isRegistered,
             isInvited: user.isInvited,
             invitationCode: user.invitationCode,
         }
-        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1m" })
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1d" })
         // Return User
         user = {
             _id: user._id,
-            username: user.username,
+            email: user.email,
+            hashPassword: user.hashPassword,
             role: user.role,
             isRegistered: user.isRegistered,
             isInvited: user.isInvited,
