@@ -1,66 +1,17 @@
 import express from "express"
-import { User, Parent, Teacher, InvitationCode, Document } from "../db/modals/index.js"
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import { User, Document } from "../db/modals/index.js"
+import authHelper from "../helpers/authHelper.js"
 
 const router = express.Router()
 
 router.post('/', async (req, res, next) => {
     try {
         const { email, password, role } = req.body
-        // Check if user exists
-        let user = await User.findOne({ email })
-        if (user) throw new Error ("User already exists")
-        
-        // Hash Password
-        const salt = await bcrypt.genSalt(10)
-        const hashPassword = await bcrypt.hash(password, salt)
-        
-        // Create users based on role
-        if (role === "parent") {
-            const code = Math.random(100000, 999999).toString().substring(2, 7)
-            let invitationCode = new InvitationCode({
-                code,
-                isUsed: false,
-                isVerified: false
-            })
-            user = new Parent({
-                email,
-                hashPassword,
-                role,
-                invitationCode,
-                isRegistered: true,
-            })
-        } else if (role === "teacher") {
-            user = new Teacher({
-                email,
-                hashPassword,
-                role,
-                isRegistered: true,
-            })
-        }
-        
-        // Generate Token
-        const tokenPayload = {
-            email: user.email,
-            role: user.role,
-            isRegistered: user.isRegistered,
-            isInvited: user.isInvited,
-            invitationCode: user.invitationCode,
-        }
-        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1m" })
-        
-        // Store User
-        let storingUser = await user.save()
-        if (!storingUser) throw new Error("Failed to store user")
-        
-        // Update User isRegistered status
-        let update = await user.updateOne({ $set: { isRegistered: true } })
-        if (!update) throw new Error("Failed to update user isRegistered status")
+        const { user, token } = await authHelper.createAccount(email, password, role)
 
         // Return User
-        user = await User.findOne({ email })
-        user = {
+        let userData = await User.findOne({ email })
+        userData = {
             userId: user._id,
             email,
             role: user.role,
@@ -69,7 +20,7 @@ router.post('/', async (req, res, next) => {
             invitationCode: user.invitationCode,
         }
 
-        return res.status(200).json({ user, token })
+        return res.status(200).json({ user: userData, token })
     } catch (err) {
         next(err)
     }

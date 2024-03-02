@@ -12,9 +12,6 @@ OTPHelper.verifyOTP = async (otp, secret) => {
     return await totp.verify({ token: otp, secret })
 }
 
-OTPHelper.sendOTPBySMS = (mobileNum, code) => {
-}
-
 OTPHelper.sendOTPByEmail = async (email, code) => {
     const details = OTPEmail(code)
     await mailerHelper.sendEmail({ email, details })

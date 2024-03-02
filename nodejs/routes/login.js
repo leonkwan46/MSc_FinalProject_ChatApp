@@ -1,37 +1,16 @@
 import expres from "express"
-import User from "../db/modals/User.js"
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import authHelper from "../helpers/authHelper.js"
 
 const router = expres.Router()
 
 router.post('/', async (req, res, next) => {
     try {
-        const { username, password } = req.body
-        // Check if user exists
-        let user = await User.findOne({ username })
-        if (!user) throw new Error("Invalid Username/Password")
-        // Check if password is correct
-        const isMatch = await bcrypt.compare(password, user.hashPassword)
-        if (!isMatch) throw new Error("Invalid Username/Password")
-        // Check if user is registered
-        if (!user.isRegistered) throw new Error("User is not registered")
+        const { email, password } = req.body
+        const user = await authHelper.validateUser(email)
+        await authHelper.validatePassword(password, user.hashPassword)
+        const authToken = authHelper.generateAuthToken(user)
 
-        // Generate Token
-        const tokenPayload = {
-            _id: user._id,
-            email: user.email,
-            hashPassword: user.hashPassword,
-            role: user.role,
-            gender: user.gender,
-            name: user.name,
-            isRegistered: user.isRegistered,
-            isInvited: user.isInvited,
-            invitationCode: user.invitationCode,
-        }
-        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "1d" })
-        // Return User
-        user = {
+        const userData = {
             _id: user._id,
             email: user.email,
             hashPassword: user.hashPassword,
@@ -41,9 +20,9 @@ router.post('/', async (req, res, next) => {
             invitationCode: user.invitationCode,
         }
 
-        return res.status(200).json({ user, token })
+        return res.status(200).json({ user: userData, token: authToken })
     } catch (err) {
-        next(err, err.code = 999)
+        next(err)
     }
 })
 
