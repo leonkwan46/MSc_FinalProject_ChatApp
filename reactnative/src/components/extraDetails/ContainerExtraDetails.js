@@ -1,8 +1,7 @@
 import React from 'react'
 import { StyleSheet, ImageBackground, ScrollView, SafeAreaView} from 'react-native'
 
-const image = require('../../../assets/images/overlay.jpg')
-
+const image = require('../../../assets/images/piano-dark.jpg')
 
 const ContainerExtraDetails = ({ children }) => {
     return (

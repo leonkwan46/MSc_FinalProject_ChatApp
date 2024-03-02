@@ -16,7 +16,6 @@ const testValues = {
 const AddStudentPopover = (props) => {
     const dispatch = useDispatch()
     const { token } = getLoggedInUser()
-    console.log('token', token)
     const { isPopoverVisible, handleClosePopover } = props
     const handleSendInvitationCode = (values, { resetForm }) => {
         dispatch(sendInvitationCode({ email: values.email, token }))
@@ -32,7 +31,7 @@ const AddStudentPopover = (props) => {
         >
             <View style={styles.modalContainer}>
                 <ImageBackground
-                    source={require('../../../assets/images/login-signup-bg-img.jpg')}
+                    source={require('../../../assets/images/piano-dark.jpg')}
                     style={styles.backgroundImage}
                 >
                     <View style={styles.popoverContainer}>
