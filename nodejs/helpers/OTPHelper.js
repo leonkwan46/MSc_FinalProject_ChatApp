@@ -1,6 +1,6 @@
 import { totp } from "otplib"
 import mailerHelper from "./mailerHelper.js"
-import OTPEmail from "../mailer/templates/OTP/OTPEmail.js"
+import OTPEmail from "../mailer/templates/OTPEmail.js"
 
 const OTPHelper = {}
 
