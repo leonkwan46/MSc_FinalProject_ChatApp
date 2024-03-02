@@ -28,8 +28,8 @@ const App = () => {
     <Provider store={store} >
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='LoggedInTabs' component={LoggedInTabs} />
             <Stack.Screen name={SCREEN_NAMES.HOME} component={HomeScreen} />
+            <Stack.Screen name='LoggedInTabs' component={LoggedInTabs} options={{gestureEnabled: false}} />
             <Stack.Screen name={SCREEN_NAMES.EXTRA_DETAILS} component={ExtraDetailsScreen} />
             <Stack.Screen name={SCREEN_NAMES.CHAT} component={ChatScreen} />
             <Stack.Screen name={SCREEN_NAMES.LOGIN_REGISTER} component={LoginSignUpScreen} />

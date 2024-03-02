@@ -9,10 +9,6 @@ import AddBadge from '../components/contact/AddBadge'
 const ContactScreen = () => {
   const navigation = useNavigation()
 
-  // Not allowing users to swipe back
-  useEffect(() => {
-    navigation.setOptions({ gestureEnabled: false })
-  }, [])
   return (
     <LoggedInContainer>
       <ScrollView>

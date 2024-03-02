@@ -6,4 +6,9 @@ const getUser = () => {
     return authUser || sessionUser
 }
 
-export { getUser }
+const getLoggedInUser = () => {
+    const user = useSelector(state => state.session.user)
+    return user
+}
+
+export { getUser, getLoggedInUser }

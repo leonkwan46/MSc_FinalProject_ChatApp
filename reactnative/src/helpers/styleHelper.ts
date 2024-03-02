@@ -42,18 +42,19 @@ const getFontSize = (size) => {
 
 const getTextInputStyle = ({ size, hasError=false }) => {
     const sizes = {
-        xs: { height: 25, padding: 5, fontSize: 12 },
-        sm: { height: 30, padding: 7, fontSize: 13 },
-        md: { height: 40, padding: 8, fontSize: 14 },
-        lg: { height: 60, padding: 12, fontSize: 16 },
-        xl: { height: 70, padding: 15, fontSize: 18 },
-        default: { height: 50, padding: 10, fontSize: 14 }
+        xs: { height: 25, padding: 5, fontSize: 9 },
+        sm: { height: 30, padding: 7, fontSize: 10 },
+        md: { height: 40, padding: 8, fontSize: 11 },
+        lg: { height: 60, padding: 12, fontSize: 12 },
+        xl: { height: 70, padding: 15, fontSize: 13 },
+        default: { height: 50, padding: 10, fontSize: 12 }
     }
 
     const defaultSize = {
         backgroundColor: '#fff',
         borderRadius: 10,
         fontFamily: 'Lemon-Regular',
+        width: '100%',
         ...sizes.default
     }
 

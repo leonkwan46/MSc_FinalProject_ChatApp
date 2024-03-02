@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getSocketId } from '../../helpers/socketHelpers'
 import axios from 'axios'
@@ -13,6 +12,7 @@ const initialState = {
         name: '',
         DoB: '',
         gender: '',
+        token: '',
     },
     isLoading: false,
     error: null,
@@ -89,6 +89,7 @@ const authSlice = createSlice({
                 role: 'teacher',
                 userId: '659557157a99873163408d14',
                 socketId: '',
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVhY2hlciIsImlzUmVnaXN0ZXJlZCI6dHJ1ZSwiaWF0IjoxNzA5MzE2ODEyLCJleHAiOjE3MDkzMTY4NzJ9.yKBOW571mkYdhfw4sIjJkRT7IB4zY3DzGQOVfpR34Sc'
             }
         },
         testParent: (state) => {

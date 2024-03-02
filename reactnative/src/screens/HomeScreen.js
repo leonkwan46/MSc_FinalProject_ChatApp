@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { ContainerLoginSignup, TopNavLoginSignup } from '../components/SharedComponents'
-import { useDispatch } from 'react-redux'
 import { Button, Typography } from '../compLib'
 
 const LoginSignUpScreen = ({ navigation }) => {
-  const dispatch = useDispatch()
 
   return (
     <ContainerLoginSignup>

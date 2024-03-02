@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import ContainerMessages from '../components/chat/ContainerMessages'
 import TopHeading from '../components/SharedComponents/TopHeading'
@@ -8,11 +8,6 @@ import { LoggedInContainer } from '../components/SharedComponents'
 const MessageScreen = () => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
-    
-    // Not allowing users to swipe back
-    useEffect(() => {
-        navigation.setOptions({ gestureEnabled: false })
-    }, [])
 
     return (
         <LoggedInContainer>

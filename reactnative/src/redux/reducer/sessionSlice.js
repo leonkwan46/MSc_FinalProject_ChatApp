@@ -30,11 +30,29 @@ export const authInvitationCode = createAsyncThunk(
         try {
             const response = await axios.post('http://localhost:5000/extra_details', invitationCode, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'authorization': `Bearer ${token}`
                 }
             })
             return response.data
         } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const sendInvitationCode = createAsyncThunk(
+    'session/sendInvitationCode',
+    async (codeData, {rejectWithValue}) => {
+        const { email, token } = codeData
+        try {
+            const response = await axios.post('http://localhost:5000/contacts', { email }, {
+                headers: {
+                    'authorization': `Bearer ${token}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            console.log('error', error)
             return rejectWithValue(error.response.data)
         }
     }
@@ -89,6 +107,22 @@ const sessionSlice = createSlice({
                 state.isLoading = false
             })
             .addCase(authInvitationCode.rejected, (state, action) => {
+                console.log('rejected')
+                console.log(action.error)
+                state.error = action?.payload?.message || action.error.message
+                state.isLoading = false
+            })
+
+            .addCase(sendInvitationCode.pending, (state) => {
+                console.log('loading')
+                state.isLoading = true
+            })
+            .addCase(sendInvitationCode.fulfilled, (state, action) => {
+                console.log('fulfilled')
+                state.error = null
+                state.isLoading = false
+            })
+            .addCase(sendInvitationCode.rejected, (state, action) => {
                 console.log('rejected')
                 console.log(action.error)
                 state.error = action?.payload?.message || action.error.message

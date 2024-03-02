@@ -1,6 +1,5 @@
 import React, { type FC } from 'react'
-import { Pressable, Text, View } from 'react-native'
-import useFont from '../SharedHooks/useFont'
+import { TouchableOpacity, View } from 'react-native'
 import { getButtonStyle } from '../helpers/styleHelper'
 
 interface ButtonProps {
@@ -27,9 +26,9 @@ const Button: FC<ButtonProps> = ({
     }
     return (
         <View>
-            <Pressable onPress={onPress} style={style}>
+            <TouchableOpacity onPress={onPress} style={style}>
                 {children}
-            </Pressable>
+            </TouchableOpacity>
         </View>
     )
 }
