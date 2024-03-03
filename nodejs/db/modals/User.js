@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
       type: String,
       require: true,
     },
+    role: {
+      type: String,
+      enum: ["student", "parent", "teacher",  "admin"],
+    },
+
     name: {
       type: String,
       require: true,
@@ -20,18 +25,19 @@ const userSchema = new mongoose.Schema({
     DoB: {
       type: Date,
     },
-    role: {
-      type: String,
-      enum: ["student", "parent", "teacher",  "admin"],
-    },
+
     isRegistered: {
       type: Boolean,
       default: false,
     },
-    isFilledDetails: {
+    isGeneralFormComplete: {
       type: Boolean,
       default: false,
     },
+
+
+
+
     createAt: {
       type: Number,
       default: Date.now,

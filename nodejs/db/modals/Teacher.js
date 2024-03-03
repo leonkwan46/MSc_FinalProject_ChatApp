@@ -8,7 +8,8 @@ const teacherSchema = new mongoose.Schema({
     },
     isDocVerified: {
         type: Boolean,
-        default: false,
+        // Default set to True for dev purpose
+        default: true,
     },
     documents: {
         type: mongoose.Schema.Types.ObjectId,

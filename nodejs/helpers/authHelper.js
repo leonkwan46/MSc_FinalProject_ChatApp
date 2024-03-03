@@ -4,15 +4,13 @@ import jwt from 'jsonwebtoken'
 
 const authHelper = {}
 
-authHelper.validateUser = async (email) => {
+authHelper.validateUser = async (email, isLogin=false) => {
     let user = await User.findOne({ email })
-    const { isRegistered, isInvited } = user
 
-    if (!isRegistered) {
-        if (user) throw new Error("User already exists")
-    } else {
+    if (isLogin) {
         if (!user) throw new Error("Invalid Username/Password")
-        if (!user.isRegistered) throw new Error("User is not registered")
+    } else {
+        if (user) throw new Error("User already exists")
     }
     return user
 }

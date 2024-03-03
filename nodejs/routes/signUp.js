@@ -28,7 +28,7 @@ router.post('/', async (req, res, next) => {
 
 router.post('/extra_details', async (req, res, next) => {
     try {
-        const { name, DoB, gender, userId } = req.body
+        const { name, DoB, gender, userId, isGeneralFormComplete } = req.body
 
         // Find user
         let user = await User.findById(userId)
@@ -38,12 +38,13 @@ router.post('/extra_details', async (req, res, next) => {
         user.name = name
         user.DoB = DoB
         user.gender = gender
+        user.isGeneralFormComplete = isGeneralFormComplete
 
         // Save user
         let savingUser = await user.save()
         if (!savingUser) throw new Error("Failed to save user")
 
-        return res.status(200).json({ name, DoB, gender, userId })
+        return res.status(200).json({ name, DoB, gender, userId, isGeneralFormComplete })
     } catch (err) {
         next(err)
     }

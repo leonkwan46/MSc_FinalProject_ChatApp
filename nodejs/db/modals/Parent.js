@@ -6,10 +6,10 @@ const parentSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    InvitationCode: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "InvitationCode",
-    }
+    isInvitationVerified: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 export default User.discriminator("Parent", parentSchema)
