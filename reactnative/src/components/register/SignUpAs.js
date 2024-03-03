@@ -2,7 +2,7 @@ import { useState, React } from 'react'
 import { View, FlatList, StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AttentionOverlay from './AttentionOverlay'
-import { openTeacherOverlay, collectUserRole } from '../../redux/reducer/signUpInfoSlice'
+import { openTeacherOverlay, collectUserRole } from '../../redux/reducer/registerInfoSlice'
 import { Button, Typography } from '../../compLib'
 
 const roles = [

@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Overlay } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
+import { closeStatusOverlay } from '../../../redux/reducer/registerInfoSlice'
 
 const failed = require('../../../../assets/images/error.png')
 
 const StatusOverlay = ({message, status}) => {
     const dispatch = useDispatch()
-    const visible = useSelector(state => state.signUpInfo.isStatusOverlayOpen)
+    const visible = useSelector(state => state.registerInfo.isStatusOverlayOpen)
 
     // useEffect(() => {
     //     const timer = setTimeout(() => {

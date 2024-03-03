@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import { closeTeacherOverlay } from '../../redux/reducer/signUpInfoSlice'
+import { closeTeacherOverlay } from '../../redux/reducer/registerInfoSlice'
 import { useDispatch } from 'react-redux'
 import { Button, Typography } from '../../compLib'
 

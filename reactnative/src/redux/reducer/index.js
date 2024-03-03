@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import authSlice from './authSlice'
-import signUpInfoSlice from './signUpInfoSlice'
+import registerInfoSlice from './registerInfoSlice'
 import sessionSlice from './sessionSlice'
 
 const rootReducer = combineReducers({
     auth: authSlice,
-    signUpInfo: signUpInfoSlice,
+    registerInfo: registerInfoSlice,
     session: sessionSlice,
 })
 

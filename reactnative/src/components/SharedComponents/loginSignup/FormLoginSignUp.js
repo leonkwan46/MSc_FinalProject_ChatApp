@@ -4,7 +4,7 @@ import { VStack, Box } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearAuthStates, loginUser, signUpUser } from '../../../redux/reducer/authSlice'
-import { openStatusOverlay } from '../../../redux/reducer/signUpInfoSlice'
+import { openStatusOverlay } from '../../../redux/reducer/registerInfoSlice'
 import { useNavigation } from '@react-navigation/native'
 import { setUser } from '../../../redux/reducer/sessionSlice'
 import { LoginSchema, SignupSchema } from '../../../helpers/validationHelpers'
@@ -20,22 +20,26 @@ const FormLoginSignUp = ({
     const validationSchema = isLogin ? LoginSchema : SignupSchema
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    const role = useSelector(state => state.signUpInfo.role)
+    const role = useSelector(state => state.registerInfo.role)
     const onSubmit = async (values, { resetForm }) => {
         const payload = {...values, role: role}
         // Login Page
         if (isLogin) {
             dispatch(loginUser(payload)).then((res) => {
-                const { token } = res.payload
-                dispatch(setUser(res.payload))
-                dispatch(clearAuthStates())
-                token ? navigation.navigate('LoggedInTabs') : dispatch(openStatusOverlay())
+                const { token, user } = res.payload
+                const { role, isInvitationVerified } = user
+                if (role === 'parent' && !isInvitationVerified) {
+                    return navigation.navigate('ExtraDetailsScreen')
+                } else {
+                    dispatch(setUser(res.payload))
+                    dispatch(clearAuthStates())
+                    token ? navigation.navigate('LoggedInTabs') : dispatch(openStatusOverlay())
+                }
             })
-        // Sign Up Page
+        // Register Page
         } else {
             dispatch(signUpUser(payload)).then((res) => {
                 const { token } = res.payload
-                dispatch(setUser(res.payload))
                 token ? navigation.navigate('ExtraDetailsScreen') : dispatch(openStatusOverlay())
             })
         }

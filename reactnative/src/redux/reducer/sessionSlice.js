@@ -66,7 +66,8 @@ const sessionSlice = createSlice({
             state.user.userId = action.payload.user._id,
             state.user.email = action.payload.user.email,
             state.user.role = action.payload.user.role,
-            state.user.socketId = getSocketId()
+            state.user.isInvited = action.payload.user.isInvited,
+            state.user.socketId = getSocketId(),
             state.user.token = action.payload.token
         },
         setCurrentChatRoom: (state, action) => {
@@ -76,24 +77,6 @@ const sessionSlice = createSlice({
             state.currentChatRoom.messages = action.payload.messages,
             state.currentChatRoom.createdAt = action.payload.createdAt
         },
-        testTeacherSesh: (state) => {
-            state.user = {
-                name: 'Teacher Doe',
-                email: 'qwe@gmail.com',
-                role: 'teacher',
-                userId: '659557157a99873163408d14',
-                socketId: '',
-            }
-        },
-        testParentSesh: (state) => {
-            state.user = {
-                name: 'Papa Doe',
-                email: 'qwe@gmail.com',
-                role: 'parent',
-                userId: '659557157a99873163408d14',
-                socketId: '',
-            }
-        }
     },
     extraReducers: (builder) => {
         builder

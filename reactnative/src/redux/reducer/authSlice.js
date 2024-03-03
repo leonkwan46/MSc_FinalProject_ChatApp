@@ -12,7 +12,12 @@ const initialState = {
         name: '',
         DoB: '',
         gender: '',
-        token: '',
+        
+        isRegistered: '',
+        isInvited: '',
+        isGeneralFormComplete: '',
+        isInvitationVerified: '',
+
     },
     isLoading: false,
     error: null,
@@ -82,25 +87,6 @@ const authSlice = createSlice({
                 gender: '',
             }
         },
-        testTeacher: (state) => {
-            state.user = {
-                name: 'Teacher Doe',
-                email: 'qwe@gmail.com',
-                role: 'teacher',
-                userId: '659557157a99873163408d14',
-                socketId: '',
-                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVhY2hlciIsImlzUmVnaXN0ZXJlZCI6dHJ1ZSwiaWF0IjoxNzA5MzE2ODEyLCJleHAiOjE3MDkzMTY4NzJ9.yKBOW571mkYdhfw4sIjJkRT7IB4zY3DzGQOVfpR34Sc'
-            }
-        },
-        testParent: (state) => {
-            state.user = {
-                name: 'Papa Doe',
-                email: 'qwe@gmail.com',
-                role: 'parent',
-                userId: '659557157a99873163408d14',
-                socketId: '',
-            }
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -114,12 +100,25 @@ const authSlice = createSlice({
                 state.user.userId = action.payload.user.userId
                 state.user.email = action.payload.user.email
                 state.user.socketId = getSocketId()
+                state.user.isInvited = action.payload.user.isInvited
+                state.user.isRegistered = action.payload.user.isRegistered
                 state.error = null
                 state.isLoading = false
             })
             .addCase(signUpUser.rejected, (state, action) => {
-                state.token = null
-                state.user = null
+                state.token = ''
+                state.user = {
+                    userId: '',
+                    email: '',
+                    role: '',
+                    socketId: '',
+                    isInvited: '',
+                    isRegistered: '',
+                    name: '',
+                    DoB: '',
+                    gender: '',
+                    token: '',
+                }
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
@@ -130,14 +129,24 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.token = action.payload.token
-                state.user.role = action.payload.user.role
                 state.user.userId = action.payload.user.userId
                 state.user.email = action.payload.user.email
+                state.user.role = action.payload.user.role
                 state.user.socketId = getSocketId()
+                state.user.name = action.payload.user.name
+                state.user.DoB = action.payload.user.DoB
+                state.user.gender = action.payload.user.gender
+
+                state.user.isInvited = action.payload.user.isInvited
+                state.user.isRegistered = action.payload.user.isRegistered
+                state.user.isInvitationVerified = action.payload.user.isInvitationVerified
+                state.user.isGeneralFormComplete = action.payload.user.isGeneralFormComplete
+
+                state.error = null
                 state.isLoading = false
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.token = null
+                state.token = ''
                 state.user = {
                     ...state.user,
                     userId: '',
@@ -156,6 +165,7 @@ const authSlice = createSlice({
                 state.user.name = action.payload.name,
                 state.user.DoB = action.payload.DoB,
                 state.user.gender = action.payload.gender,
+                state.user.isGeneralFormComplete = action.payload.isGeneralFormComplete
                 state.isLoading = false
             })
             .addCase(updateUser.rejected, (state, action) => {

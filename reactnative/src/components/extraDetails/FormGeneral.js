@@ -5,8 +5,7 @@ import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch } from 'react-redux'
 import { testTeacher, updateUser } from '../../redux/reducer/authSlice'
-import { getUser } from '../../redux/stateHelper'
-import { updateGeneralFormState } from '../../redux/reducer/signUpInfoSlice'
+import { getRegisteringUser } from '../../redux/stateHelper'
 
 // Validation Schema
 const validationSchema = Yup.object().shape({
@@ -23,11 +22,10 @@ const initialValues = { name: '', DoB: '', gender: '' }
 
 const FormGeneral = () => {
     const dispatch = useDispatch()
-    const user = getUser()
+    const user = getRegisteringUser()
     const onSubmit = async (values, { resetForm }) => {
-        values = {...values, userId: user.userId }
-        const result = await dispatch(updateUser(values))
-        if (!result.error) dispatch(updateGeneralFormState(true))
+        values = {...values, userId: user.userId, isGeneralFormComplete: true}
+        await dispatch(updateUser(values))
         resetForm()
     }
 

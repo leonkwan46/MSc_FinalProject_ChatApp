@@ -1,14 +1,11 @@
 import { useSelector } from 'react-redux'
 
-const getUser = () => {
-    const authUser = useSelector(state => state.auth.user)
-    const sessionUser = useSelector(state => state.session.user)
-    return authUser || sessionUser
+const getRegisteringUser = () => {
+    return useSelector(state => state.auth.user)
 }
 
 const getLoggedInUser = () => {
-    const user = useSelector(state => state.session.user)
-    return user
+    return useSelector(state => state.session.user)
 }
 
-export { getUser, getLoggedInUser }
+export { getRegisteringUser, getLoggedInUser }

@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { Formik } from 'formik'
 import { TextInput } from 'react-native'
 import { Box, VStack } from '@react-native-material/core'
-import { getUser } from '../../redux/stateHelper'
+import { getRegisteringUser } from '../../redux/stateHelper'
 import { useDispatch } from 'react-redux'
 import { authInvitationCode } from '../../redux/reducer/sessionSlice'
 
 const FormParent = () => {
-    const user = getUser()
+    const user = getRegisteringUser()
     const dispatch = useDispatch()
     const handleOnSubmit = async (values, { resetForm }) => {
         values = { ...values, token: user.token }
