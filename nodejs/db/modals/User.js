@@ -4,20 +4,20 @@ const userSchema = new mongoose.Schema({
     email: {
       type: String,
       unique: true,
-      require: true,
+      requiredd: true,
     },
     hashPassword: {
       type: String,
-      require: true,
+      required: true,
     },
     role: {
       type: String,
       enum: ["student", "parent", "teacher",  "admin"],
+      required: true,
     },
 
     name: {
       type: String,
-      require: true,
     },
     gender: {
       type: String,
@@ -34,8 +34,6 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
-
-
 
 
     createAt: {

@@ -12,6 +12,7 @@ interface TextInputProps {
     placeholderTextColor?: string
     onChangeText: (text: string) => void
     onBlur?: () => void
+    onFocus?: () => void
 }
 
 const CustomTextInput: FC<TextInputProps> = ({
@@ -22,7 +23,8 @@ const CustomTextInput: FC<TextInputProps> = ({
     secureTextEntry,
     placeholderTextColor = '#aaa',
     onChangeText,
-    onBlur
+    onBlur,
+    onFocus
 }) => {
     const { fontLoaded } = useFont('Lemon-Regular')
     const textInputStyle = getTextInputStyle({size, hasError})
@@ -36,6 +38,7 @@ const CustomTextInput: FC<TextInputProps> = ({
                     secureTextEntry={secureTextEntry}
                     placeholderTextColor={placeholderTextColor}
                     onChangeText={onChangeText}
+                    onFocus={onFocus}
                     onBlur={onBlur}
                 />
             ) : (
@@ -45,6 +48,7 @@ const CustomTextInput: FC<TextInputProps> = ({
                     secureTextEntry={secureTextEntry}
                     placeholderTextColor={placeholderTextColor}
                     onChangeText={onChangeText}
+                    onFocus={onFocus}
                     onBlur={onBlur}
                 />
             )}

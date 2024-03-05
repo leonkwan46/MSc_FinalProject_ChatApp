@@ -15,7 +15,7 @@ const BottomSignInNavigation = () => {
         <View style= {styles.container }>
             <Typography>
                 <Typography size='md' color='secondary'>Don't have an account? </Typography>
-                    <Button onPress={handleOnPress} size='sm' color='primary' fill={false}>
+                    <Button onPress={handleOnPress} size='sm' color='primary' fill={false} extraStyles={{ width: '100%' }}>
                         <Typography size='sm' color='secondary'> Sign up!</Typography>
                     </Button>
             </Typography>

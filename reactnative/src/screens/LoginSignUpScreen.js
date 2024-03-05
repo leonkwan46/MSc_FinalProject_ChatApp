@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet} from 'react-native'
+import { StyleSheet, ScrollView} from 'react-native'
 import { ContainerLoginSignup, FormLoginSignUp } from '../components/SharedComponents'
 import BottomSignInNavigation from '../components/login/BottomSignInNavigation'
 import SignUpAs from '../components/register/SignUpAs'
@@ -10,12 +10,12 @@ const LoginSignUpScreen = (props) => {
 
     return (
         <ContainerLoginSignup>
-            <View style={ styles.container }>
+            <ScrollView contentContainerStyle={ styles.container }>
                 <TopHeading title={isLogin ? 'Login' : 'Register'} />
                 { !isLogin ? <SignUpAs /> : null }
                 <FormLoginSignUp isLogin={isLogin} />
                 { isLogin ? <BottomSignInNavigation isLogin /> : null }
-            </View>
+            </ScrollView>
         </ContainerLoginSignup>
     )
 }

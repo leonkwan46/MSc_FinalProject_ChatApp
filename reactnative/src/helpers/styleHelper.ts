@@ -70,8 +70,8 @@ const getTextInputStyle = ({ size, hasError=false }) => {
 
 const getButtonStyle = ({ size, color, fill=true }) => {
     const sizes = {
-        xs: { height: 25, paddingVertical: 5, paddingHorizontal: 10 },
-        sm: { height: 30, paddingVertical: 7, paddingHorizontal: 12 },
+        xs: { width: '25%', height: 25, paddingVertical: 5, paddingHorizontal: 10 },
+        sm: { width: '25%', height: 30, paddingVertical: 7, paddingHorizontal: 12 },
         md: { height: 40, paddingVertical: 8, paddingHorizontal: 15 },
         lg: { height: 50, paddingVertical: 12, paddingHorizontal: 20 },
         xl: { height: 60, paddingVertical: 15, paddingHorizontal: 25 },
@@ -87,6 +87,7 @@ const getButtonStyle = ({ size, color, fill=true }) => {
         borderWidth: 0,
         justifyContent: 'center',
         alignItems: 'center',
+        width: '50%'
     }
 
     if (!fill) {

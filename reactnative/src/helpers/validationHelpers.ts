@@ -24,4 +24,13 @@ const sendEmailSchema = Yup.object().shape({
         .required('Required')
 })
 
-export { SignupSchema, LoginSchema, sendEmailSchema }
+const GeneralFormSchema = Yup.object().shape({
+    name: Yup.string()
+        .required('Required'),
+    DoB: Yup.string()
+        .required('Required'),
+    gender: Yup.string()
+        .required('Required'),
+})
+
+export { SignupSchema, LoginSchema, sendEmailSchema, GeneralFormSchema }

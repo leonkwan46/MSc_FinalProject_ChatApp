@@ -11,7 +11,9 @@ import { LoginSchema, SignupSchema } from '../../../helpers/validationHelpers'
 import { Button, TextInput, Typography } from '../../../compLib'
 
 // For testing
-const initialValues = { email: 'qwe@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
+const initialValues = { email: 'lk370.chatapp@gmail.com', password: '123456', confirmPassword: '123456' }
+// const initialValues = { email: 'teacher@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
+
 // const initialValues = {}
 
 const FormLoginSignUp = ({
@@ -27,11 +29,13 @@ const FormLoginSignUp = ({
         if (isLogin) {
             dispatch(loginUser(payload)).then((res) => {
                 const { token, user } = res.payload
-                const { role, isInvitationVerified } = user
-                if (role === 'parent' && !isInvitationVerified) {
+                const { role, isInvitationVerified, isDocVerified, isGeneralFormComplete } = user
+
+                if ((role === 'parent' && (!isInvitationVerified || !isGeneralFormComplete))
+                    || (role === 'teacher' && (!isDocVerified || !isGeneralFormComplete))) {
                     return navigation.navigate('ExtraDetailsScreen')
                 } else {
-                    dispatch(setUser(res.payload))
+                    dispatch(setUser(user))
                     dispatch(clearAuthStates())
                     token ? navigation.navigate('LoggedInTabs') : dispatch(openStatusOverlay())
                 }

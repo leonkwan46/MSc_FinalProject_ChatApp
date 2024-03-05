@@ -15,10 +15,10 @@ const testValues = {
 
 const AddStudentPopover = (props) => {
     const dispatch = useDispatch()
-    const { token } = getLoggedInUser()
+    const { userId, token } = getLoggedInUser()
     const { isPopoverVisible, handleClosePopover } = props
     const handleSendInvitationCode = (values, { resetForm }) => {
-        dispatch(sendInvitationCode({ email: values.email, token }))
+        dispatch(sendInvitationCode({ email: values.email, userId, token }))
         resetForm()
     }
 

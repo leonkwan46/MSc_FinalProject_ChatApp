@@ -21,6 +21,31 @@ authHelper.validatePassword = async (password, hashPassword) => {
     return isMatch
 }
 
+authHelper.returnUserData = (user) => {
+    const defaultUserData = {
+        userId: user._id,
+        email: user.email,
+        role: user.role,
+        isRegistered: user.isRegistered,
+        isGeneralFormComplete: user.isGeneralFormComplete,
+    }
+    if (user.role === "parent") {
+        return {
+            ...defaultUserData,
+            isInvited: user.isInvited,
+            isInvitationVerified: user.isInvitationVerified,
+        }
+    } else if (user.role === "teacher") {
+        return {
+            ...defaultUserData,
+            isDocUploaded: user.isDocUploaded,
+            isDocVerified: user.isDocVerified,
+        }
+    } else {
+        return defaultUserData
+    }
+}
+
 authHelper.generateHashPassword = async (password) => {
     const salt = await bcrypt.genSalt(10)
     return await bcrypt.hash(password, salt)
@@ -63,6 +88,9 @@ authHelper.createAccount = async (email, password, role) => {
     // Store User
     const storingUser = await user.save()
     if (!storingUser) throw new Error("Failed to store user")
+
+    // Find User
+    user = await User.findOne({ email })
     // Generate Token
     const token = await authHelper.generateAuthToken(user)
 

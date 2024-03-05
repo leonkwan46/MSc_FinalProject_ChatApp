@@ -1,5 +1,5 @@
 import React, { type FC } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { getButtonStyle } from '../helpers/styleHelper'
 
 interface ButtonProps {
@@ -25,11 +25,9 @@ const Button: FC<ButtonProps> = ({
         ...extraStyles
     }
     return (
-        <View>
-            <TouchableOpacity onPress={onPress} style={style}>
-                {children}
-            </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={style} onPress={onPress}>
+            {children}
+        </TouchableOpacity>
     )
 }
 

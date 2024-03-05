@@ -1,6 +1,8 @@
 import express from "express"
-import { User, Document } from "../db/modals/index.js"
+import { User, Document, Parent } from "../db/modals/index.js"
 import authHelper from "../helpers/authHelper.js"
+import authHandler from "../handlers/authHandler.js"
+import OTPHelper from "../helpers/OTPHelper.js"
 
 const router = express.Router()
 
@@ -16,8 +18,6 @@ router.post('/', async (req, res, next) => {
             email,
             role: user.role,
             isRegistered: user.isRegistered,
-            isInvited: user.isInvited,
-            invitationCode: user.invitationCode,
         }
 
         return res.status(200).json({ user: userData, token })
@@ -41,8 +41,7 @@ router.post('/extra_details', async (req, res, next) => {
         user.isGeneralFormComplete = isGeneralFormComplete
 
         // Save user
-        let savingUser = await user.save()
-        if (!savingUser) throw new Error("Failed to save user")
+        await user.save()
 
         return res.status(200).json({ name, DoB, gender, userId, isGeneralFormComplete })
     } catch (err) {
@@ -72,10 +71,25 @@ router.post('/extra_details/upload', async (req, res, next) => {
         user.documents = savingDocuments
 
         // Save user
-        let savingUser = await user.save()
-        if (!savingUser) throw new Error("Failed to save user")
+        await user.save()
 
         return res.status(200).json({ userId })
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.post('/extra_details/auth_invitation', authHandler, async (req, res, next) => {  
+    try {
+        const user = req.user
+        const { invitationCode } = req.body
+
+        await OTPHelper.verifyOTP(invitationCode, user.hashPassword)
+
+        const isUpdated = await Parent.findOneAndUpdate({ email: user.email }, { isInvitationVerified: true })
+        if (!isUpdated) throw new Error("Failed to update user")
+        
+        return res.status(200).json({ message: "Success" })
     } catch (err) {
         next(err)
     }

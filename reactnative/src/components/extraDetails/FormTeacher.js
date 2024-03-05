@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { getRegisteringUser } from '../../redux/stateHelper'
 import { Formik } from 'formik'
 import UploadDocument from './UploadDocument'
@@ -7,6 +7,7 @@ import { Box, VStack } from '@react-native-material/core'
 import { updateTeacherDocuments } from '../../redux/reducer/authSlice'
 import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
+import { Button, Typography } from '../../compLib'
 
 const initialValues = {}
 
@@ -33,21 +34,21 @@ const FormTeacher = () => {
             {({ handleSubmit }) => (
                 <VStack spacing={20}>
                     <Box>
-                        <Text style={styles.docTitle}>Enhanced DBS Cert</Text>
+                        <Typography size='lg'>Enhanced DBS Cert</Typography>
                         <UploadDocument title="Choose file" setSelectedDocument={setSelectedDBS} selectedDocument={selectedDBS} />
                     </Box>
                     <Box>
-                        <Text style={styles.docTitle}>Proof of ID</Text>
+                        <Typography size='lg'>Proof of ID</Typography>
                         <UploadDocument title="Choose file" setSelectedDocument={setSelectedID} selectedDocument={selectedID} />
                     </Box>
                     <Box>
-                        <Text style={styles.docTitle}>Professional Qualification Cert</Text>
+                        <Typography size='lg'>Professional Qualification Cert</Typography>
                         <UploadDocument title="Choose file" setSelectedDocument={setSelectedProfessionalCert} selectedDocument={selectedProfessionalCert} />
                     </Box>
                     <Box style={styles.buttonContainer}>
-                        <Pressable onPress={handleSubmit} style={styles.buttonSize}>
-                            <Text style={styles.buttonText}>Complete</Text>
-                        </Pressable>
+                        <Button onPress={handleSubmit} color='primary' size='xl' >
+                            <Typography>Complete</Typography>
+                        </Button>
                     </Box>
                 </VStack>
             )}
@@ -61,27 +62,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
         borderRadius: 10,
-    },
-    docTitle: {
-        fontSize: 20,
-        fontFamily: 'Lemon-Regular',
+        marginTop: 30,
     },
     buttonContainer: {
         alignItems: 'flex-end',
     },
-    buttonSize: {
-        height: 50,
-        width: '50%',
-        backgroundColor: '#D4AF37',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 5,
-    },
-    buttonText: {
-        fontSize: 18,
-        fontFamily: 'Lemon-Regular',
-        color: '#000'
-    }
 })
 
 export default FormTeacher

@@ -1,33 +1,47 @@
 import { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ContainerExtraDetails from '../components/extraDetails/ContainerExtraDetails'
 import TopHeading from '../components/SharedComponents/TopHeading'
 import FormGeneral from '../components/extraDetails/FormGeneral'
 import FormTeacher from '../components/extraDetails/FormTeacher'
 import FormParent from '../components/extraDetails/FormParent'
+import { useNavigation } from '@react-navigation/native'
+import { setUser } from '../redux/reducer/sessionSlice'
+import { clearAuthStates } from '../redux/reducer/authSlice'
 
 const ExtraDetailsScreen = () => {
-    const { role, isInvited, isGeneralFormComplete } = useSelector(state => state.auth.user)
-    const shouldSkipGeneralForm = isGeneralFormComplete && isInvited
+    const navigation = useNavigation()
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.auth.user)
+    const { role, isGeneralFormComplete, isInvited, isInvitationVerified, isDocVerified } = user
 
     const [isTeacher, setIsTeacher] = useState(false)
     const [isParent, setIsParent] = useState(false)
+
+    const shouldSkipGeneralForm = isParent && isGeneralFormComplete && isInvited
+    const isFullFormComplete = isGeneralFormComplete && (isTeacher && isDocVerified || isParent && isInvitationVerified)
 
     useEffect(() => {
         if (role === 'teacher' && isGeneralFormComplete) setIsTeacher(true)
         if (role === 'parent' && isGeneralFormComplete) setIsParent(true)
     }, [isGeneralFormComplete])
-    console.log('isInvited', isInvited)
-    console.log('shouldSkipGeneralForm', shouldSkipGeneralForm)
-    console.log('isGeneralFormComplete', isGeneralFormComplete)
+
+    useEffect(() => {
+        if (isFullFormComplete) {
+            dispatch(setUser(user))
+            dispatch(clearAuthStates())
+            navigation.navigate('LoggedInTabs')
+        }
+    }, [isFullFormComplete])
+
     return (
         <ContainerExtraDetails>
             <View style={ styles.container }>
                 <TopHeading title='Extra Details' subtitle={`for ${role}s`} />
-                { (!isGeneralFormComplete || !shouldSkipGeneralForm) && <FormGeneral /> }
-                { (isTeacher || isTeacher&&shouldSkipGeneralForm) && <FormTeacher /> }
-                { (isParent || isParent&&shouldSkipGeneralForm) && <FormParent /> }
+                { (!isGeneralFormComplete) && <FormGeneral /> }
+                { (isTeacher) && <FormTeacher /> }
+                { (isParent || shouldSkipGeneralForm) && <FormParent /> }
             </View>
         </ContainerExtraDetails>
     )

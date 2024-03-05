@@ -42,7 +42,7 @@ const SignUpAs = () => {
                     data={selected}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
-                        <Button onPress={() => handleOnPress(item.id)} color='invisible'>
+                        <Button onPress={() => handleOnPress(item.id)} color='invisible' extraStyles={{width: '100%'}}>
                                 <Typography color='secondary' selected={item.selected}>{item.name}</Typography>
                         </Button>
                     )}

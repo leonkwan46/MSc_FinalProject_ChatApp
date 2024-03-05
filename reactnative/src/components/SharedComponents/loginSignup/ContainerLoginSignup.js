@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, SafeAreaView } from 'react-native'
+import { ImageBackground, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
 import StatusOverlay from '../feedback/StatusOverlay'
 import Loading from '../feedback/Loading'

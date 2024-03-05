@@ -1,28 +1,48 @@
-import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
-import * as Yup from 'yup'
+import React, { useState } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { Button, TextInput, Typography } from '../../compLib'
 import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch } from 'react-redux'
-import { testTeacher, updateUser } from '../../redux/reducer/authSlice'
+import { updateUser } from '../../redux/reducer/authSlice'
 import { getRegisteringUser } from '../../redux/stateHelper'
+import dayjs from 'dayjs'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { Picker } from '@react-native-picker/picker'
+import { GeneralFormSchema } from '../../helpers/validationHelpers'
 
 // Validation Schema
-const validationSchema = Yup.object().shape({
-    name: Yup.string()
-        .required('Required'),
-    DoB: Yup.string()
-        .required('Required'),
-    gender: Yup.string()
-        .required('Required'),
-})
+const validationSchema = GeneralFormSchema
+
 // For testing
-// const initialValues = { name: 'Nani', DoB: Date.now().toString(), gender: 'Nani' }
-const initialValues = { name: '', DoB: '', gender: '' }
+const initialValues = { name: 'Leeeo', DoB: '04-04-2024', gender: 'Female' }
+// const initialValues = { name: '', DoB: '', gender: '' }
 
 const FormGeneral = () => {
     const dispatch = useDispatch()
     const user = getRegisteringUser()
+
+    const [selectedGender, setSelectedGender] = useState()
+    const [showGenderPicker, setShowGenderPicker] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(dayjs().toDate())
+    const [showDatePicker, setShowDatePicker] = useState(false)
+
+    const handleOnFocusDatePicker = () => {
+        setShowDatePicker(true)
+    }
+
+    const handleOnBlurDatePicker = () => {
+        setShowDatePicker(false)
+    }
+
+    const handleOnFocusGenderPicker = () => {
+        setShowGenderPicker(true)
+    }
+
+    const handleOnBlurGenderPicker = () => {
+        setShowGenderPicker(false)
+    }
+
     const onSubmit = async (values, { resetForm }) => {
         values = {...values, userId: user.userId, isGeneralFormComplete: true}
         await dispatch(updateUser(values))
@@ -43,36 +63,69 @@ const FormGeneral = () => {
                                 onChangeText={handleChange('name')}
                                 onBlur={handleBlur('name')}
                                 value={values.name}
-                                style={errors.name && touched.name ? styles.errors : styles.inputContainer}
+                                size='lg'
+                                hasError={errors.name && touched.name ? true : false}
                                 placeholder='Name'
-                                placeholderTextColor={'#aaa'}
                             />
                         </Box>
                         <Box>
                             <TextInput
                                 onChangeText={handleChange('DoB')}
-                                onBlur={handleBlur('DoB')}
                                 keyboardType="numeric"
                                 value={values.DoB}
-                                style={errors.DoB && touched.DoB ? styles.errors : styles.inputContainer}
+                                size='lg'
+                                hasError={errors.DoB && touched.DoB ? true : false}
                                 placeholder='Date of Birth'
-                                placeholderTextColor={'#aaa'}
+                                onFocus={handleOnFocusDatePicker}
+                                onBlur={handleOnBlurDatePicker}
                             />
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={selectedDate}
+                                    mode="date"
+                                    display="spinner"
+                                    textColor='#fff'
+                                    onChange={(event, choosenDate) => {
+                                        const currentDate = choosenDate || dayjs().toDate()
+                                        setSelectedDate(currentDate)
+                                        values.DoB = dayjs(currentDate).format('DD-MM-YYYY')
+                                    }}
+                                />
+                            )}
+                            
                         </Box>
                         <Box>
                             <TextInput
                                 onChange={handleChange('gender')}
-                                onBlur={handleBlur('gender')}
                                 value={values.gender}
-                                style={errors.gender && touched.gender ? styles.errors : styles.inputContainer}
+                                size='lg'
+                                hasError={errors.gender && touched.gender ? true : false}
                                 placeholder='Gender'
-                                placeholderTextColor={'#aaa'}
+                                onFocus={handleOnFocusGenderPicker}
+                                onBlur={handleOnBlurGenderPicker}
                             />
+                            {showGenderPicker && (
+                                <Picker
+                                    style={styles.genderPicker}
+                                    selectedValue={selectedGender}
+                                    itemStyle={{ color: '#fff' }}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        setSelectedGender(itemValue)
+                                        values.gender = itemValue
+                                    }}
+                                >
+                                    <Picker.Item label="Select Gender" value="" />
+                                    <Picker.Item label="Male" value="Male" />
+                                    <Picker.Item label="Female" value="Female" />
+                                    <Picker.Item label="Other" value="Other" />
+                                </Picker>
+                            )}
                         </Box>
                         <Box style={styles.buttonContainer}>
-                            <Pressable onPress={handleSubmit} style={styles.buttonSize}>
-                                <Text style={styles.buttonText}>Next</Text>
-                            </Pressable>
+                            <Button onPress={handleSubmit} size='xl' color='primary'>
+                                <Typography style={styles.buttonText}>Next</Typography>
+                            </Button>
                         </Box>
                     </VStack>
                 )}
@@ -86,39 +139,12 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 50,
     },
-    inputContainer: {
-        backgroundColor: '#fff',
-        height: 60,
-        borderRadius: 10,
-        padding: 10,
-        fontSize: 20,
-        fontFamily: 'Lemon-Regular',
-    },
-    errors: {
-        backgroundColor: '#fff',
-        height: 60,
-        borderRadius: 10,
-        borderWidth: 1,
-        padding: 10,
-        fontSize: 20,
-        fontFamily: 'Lemon-Regular',
-        borderColor: '#f00',
-    },
     buttonContainer: {
         alignItems: 'flex-end',
     },
-    buttonSize: {
-        height: 50,
-        width: '50%',
-        backgroundColor: '#D4AF37',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 5,
-    },
-    buttonText: {
-        fontSize: 18,
-        fontFamily: 'Lemon-Regular',
-        color: '#000'
+    genderPicker: {
+        marginTop: -70,
+        marginBottom: -40,
     }
 })
 

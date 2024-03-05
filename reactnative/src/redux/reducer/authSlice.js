@@ -3,21 +3,27 @@ import { getSocketId } from '../../helpers/socketHelpers'
 import axios from 'axios'
 
 const initialState = {
-    token: null,
     user: {
         userId: '',
         email: '',
         role: '',
         socketId: '',
+        token: '',
+
+        // Basic
         name: '',
         DoB: '',
         gender: '',
-        
         isRegistered: '',
-        isInvited: '',
         isGeneralFormComplete: '',
+
+        // Parent
+        isInvited: '',
         isInvitationVerified: '',
 
+        // Teacher
+        isDocUploaded: '',
+        isDocVerified: '',
     },
     isLoading: false,
     error: null,
@@ -59,6 +65,25 @@ export const updateUser = createAsyncThunk(
     }
 )
 
+export const authInvitationCode = createAsyncThunk(
+    'session/authInvitationCode',
+    async (codeData, {rejectWithValue}) => {
+        const { token, invitationCode } = codeData
+        // TODO: add token -> Async storage OR redux persist
+        // The current way of storing token in redux is not secure
+        try {
+            const response = await axios.post('http://localhost:5000/signup/extra_details/auth_invitation', { invitationCode }, {
+                headers: {
+                    'authorization': `Bearer ${token}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
 export const updateTeacherDocuments = createAsyncThunk(
     'auth/updateTeacherDocuments',
     async (teacherData, {rejectWithValue}) => {
@@ -76,16 +101,24 @@ const authSlice = createSlice({
     initialState: {...initialState},
     reducers: {
         clearAuthStates: (state) => {
-            state.token = null
             state.user = {
                 userId: '',
                 email: '',
                 role: '',
                 socketId: '',
+                token: '',
                 name: '',
                 DoB: '',
                 gender: '',
+                isRegistered: '',
+                isGeneralFormComplete: '',
+                isInvited: '',
+                isInvitationVerified: '',
+                isDocUploaded: '',
+                isDocVerified: '',
             }
+            state.isLoading = false
+            state.error = null
         },
     },
     extraReducers: (builder) => {
@@ -95,29 +128,48 @@ const authSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(signUpUser.fulfilled, (state, action) => {
-                state.token = action.payload.token
-                state.user.role = action.payload.user.role
+                state.user.token = action.payload.token
                 state.user.userId = action.payload.user.userId
                 state.user.email = action.payload.user.email
+                state.user.role = action.payload.user.role
                 state.user.socketId = getSocketId()
-                state.user.isInvited = action.payload.user.isInvited
+
+                // Basic Info
+                state.user.name = action.payload.user.name
+                state.user.DoB = action.payload.user.DoB
+                state.user.gender = action.payload.user.gender
                 state.user.isRegistered = action.payload.user.isRegistered
+                state.user.isGeneralFormComplete = action.payload.user.isGeneralFormComplete
+                
+                if (action.payload.user.role === 'teacher') {
+                    // Teacher Info
+                    state.user.isDocUploaded = action.payload.user.isDocUploaded
+                    state.user.isDocVerified = action.payload.user.isDocVerified
+                } else if (action.payload.user.role === 'parent') {
+                    // Parent Info
+                    state.user.isInvited = action.payload.user.isInvited
+                    state.user.isInvitationVerified = action.payload.user.isInvitationVerified
+                }
+
                 state.error = null
                 state.isLoading = false
             })
             .addCase(signUpUser.rejected, (state, action) => {
-                state.token = ''
                 state.user = {
                     userId: '',
                     email: '',
                     role: '',
                     socketId: '',
-                    isInvited: '',
-                    isRegistered: '',
+                    token: '',
                     name: '',
                     DoB: '',
                     gender: '',
-                    token: '',
+                    isRegistered: '',
+                    isGeneralFormComplete: '',
+                    isInvited: '',
+                    isInvitationVerified: '',
+                    isDocUploaded: '',
+                    isDocVerified: '',
                 }
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
@@ -128,30 +180,48 @@ const authSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.token = action.payload.token
+                state.user.token = action.payload.token
                 state.user.userId = action.payload.user.userId
                 state.user.email = action.payload.user.email
                 state.user.role = action.payload.user.role
                 state.user.socketId = getSocketId()
+                
+                // Basic Info
                 state.user.name = action.payload.user.name
                 state.user.DoB = action.payload.user.DoB
                 state.user.gender = action.payload.user.gender
-
-                state.user.isInvited = action.payload.user.isInvited
                 state.user.isRegistered = action.payload.user.isRegistered
-                state.user.isInvitationVerified = action.payload.user.isInvitationVerified
                 state.user.isGeneralFormComplete = action.payload.user.isGeneralFormComplete
+                
+                if (action.payload.user.role === 'teacher') {
+                    // Teacher Info
+                    state.user.isDocUploaded = action.payload.user.isDocUploaded
+                    state.user.isDocVerified = action.payload.user.isDocVerified
+                } else if (action.payload.user.role === 'parent') {
+                    // Parent Info
+                    state.user.isInvited = action.payload.user.isInvited
+                    state.user.isInvitationVerified = action.payload.user.isInvitationVerified
+                }
 
                 state.error = null
                 state.isLoading = false
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.token = ''
                 state.user = {
-                    ...state.user,
                     userId: '',
                     email: '',
                     role: '',
+                    socketId: '',
+                    token: '',
+                    name: '',
+                    DoB: '',
+                    gender: '',
+                    isRegistered: '',
+                    isGeneralFormComplete: '',
+                    isInvited: '',
+                    isInvitationVerified: '',
+                    isDocUploaded: '',
+                    isDocVerified: '',
                 }
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
@@ -179,11 +249,30 @@ const authSlice = createSlice({
                 state.isLoading = false
             })
 
+            // Auth Invitation Code
+            .addCase(authInvitationCode.pending, (state) => {
+                console.log('loading')
+                state.isLoading = true
+            })
+            .addCase(authInvitationCode.fulfilled, (state, action) => {
+                console.log('fulfilled')
+                state.user.isInvitationVerified = true
+                state.error = null
+                state.isLoading = false
+            })
+            .addCase(authInvitationCode.rejected, (state, action) => {
+                console.log('rejected')
+                console.log(action.error)
+                state.error = action?.payload?.message || action.error.message
+                state.isLoading = false
+            })
+
             // Update Teacher Status
             .addCase(updateTeacherDocuments.pending, (state) => {
                 state.isLoading = true
             })
             .addCase(updateTeacherDocuments.fulfilled, (state) => {
+                state.user.isDocUploaded = true
                 state.isLoading = false
             })
             .addCase(updateTeacherDocuments.rejected, (state, action) => {
