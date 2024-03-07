@@ -11,7 +11,7 @@ router.post('/', async (req, res, next) => {
         await authHelper.validatePassword(password, user.hashPassword)
 
         const authToken = await authHelper.generateAuthToken(user)
-        const userData = authHelper.returnUserData(user)
+        const userData = await authHelper.returnUserData(user, true)
 
         return res.status(200).json({ user: userData, token: authToken })
     } catch (err) {

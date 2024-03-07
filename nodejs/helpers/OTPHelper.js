@@ -28,7 +28,6 @@ OTPHelper.sendOTPByEmail = async (email, code) => {
     const isUpdated = await Parent.findOneAndUpdate({ email: email }, { isInvited: true })
     if (!isUpdated) throw new Error("Failed to update user")
 
-
     const details = OTPEmail(code)
     await mailerHelper.sendEmail({ email, details })
 }

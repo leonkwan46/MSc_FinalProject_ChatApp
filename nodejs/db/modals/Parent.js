@@ -10,6 +10,14 @@ const parentSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    teachers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Teacher",
+    }],
+    children: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+    }],
 })
 
 export default User.discriminator("Parent", parentSchema)

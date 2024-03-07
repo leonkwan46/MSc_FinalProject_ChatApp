@@ -9,16 +9,20 @@ import FormParent from '../components/extraDetails/FormParent'
 import { useNavigation } from '@react-navigation/native'
 import { setUser } from '../redux/reducer/sessionSlice'
 import { clearAuthStates } from '../redux/reducer/authSlice'
+import FormStudent from '../components/extraDetails/FormStudent'
 
-const ExtraDetailsScreen = () => {
+const ExtraDetailsScreen = (props) => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    const user = useSelector(state => state.auth.user)
+
+    const loggedInUser = useSelector(state => state.session.user)
+    const { user, token } = useSelector(state => state.auth)
     const { role, isGeneralFormComplete, isInvited, isInvitationVerified, isDocVerified } = user
 
     const [isTeacher, setIsTeacher] = useState(false)
     const [isParent, setIsParent] = useState(false)
 
+    const isStudentCreation = props.route?.params?.isStudent && loggedInUser.role === 'parent'
     const shouldSkipGeneralForm = isParent && isGeneralFormComplete && isInvited
     const isFullFormComplete = isGeneralFormComplete && (isTeacher && isDocVerified || isParent && isInvitationVerified)
 
@@ -29,7 +33,7 @@ const ExtraDetailsScreen = () => {
 
     useEffect(() => {
         if (isFullFormComplete) {
-            dispatch(setUser(user))
+            dispatch(setUser({ user, token }))
             dispatch(clearAuthStates())
             navigation.navigate('LoggedInTabs')
         }
@@ -38,10 +42,11 @@ const ExtraDetailsScreen = () => {
     return (
         <ContainerExtraDetails>
             <View style={ styles.container }>
-                <TopHeading title='Extra Details' subtitle={`for ${role}s`} />
-                { (!isGeneralFormComplete) && <FormGeneral /> }
+                <TopHeading title={isStudentCreation ? 'Create Account' : 'Extra Details'} subtitle={isStudentCreation ? 'for student' : `for ${role}s`} />
+                { (isStudentCreation) && <FormStudent /> }
+                { (!isGeneralFormComplete && !isStudentCreation) && <FormGeneral /> }
                 { (isTeacher) && <FormTeacher /> }
-                { (isParent || shouldSkipGeneralForm) && <FormParent /> }
+                { ((isParent || shouldSkipGeneralForm) && !isStudentCreation) && <FormParent /> }
             </View>
         </ContainerExtraDetails>
     )

@@ -15,6 +15,10 @@ const teacherSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Document",
     },
+    parents: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Parent",
+    }],
 })
 
 export default User.discriminator("Teacher", teacherSchema)

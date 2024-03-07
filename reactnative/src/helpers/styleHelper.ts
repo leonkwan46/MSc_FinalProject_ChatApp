@@ -31,6 +31,8 @@ const getFontSize = (size) => {
             return 20
         case 'xl':
             return 25
+        case 'xxl':
+            return 35
         case 'title':
             return 45
         case 'subtitle':

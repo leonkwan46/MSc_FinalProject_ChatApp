@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ScrollView } from 'react-native'
 import TopHeading from '../components/SharedComponents/TopHeading'
 import ContactList from '../components/contact/ContactList'
-import { useNavigation } from '@react-navigation/native'
 import { LoggedInContainer } from '../components/SharedComponents'
 import AddBadge from '../components/contact/AddBadge'
+import { useSelector } from 'react-redux'
 
 const ContactScreen = () => {
-  const navigation = useNavigation()
+  const { role } = useSelector((state) => state.session.user)
 
   return (
     <LoggedInContainer>
@@ -15,7 +15,7 @@ const ContactScreen = () => {
         <TopHeading title='Contact' />
         <ContactList />
       </ScrollView>
-      <AddBadge />
+      { !(role === 'student') && <AddBadge />}
     </LoggedInContainer>
   )
 }

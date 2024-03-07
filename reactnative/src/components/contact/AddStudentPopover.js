@@ -13,7 +13,7 @@ const testValues = {
     email: 'lk370.chatapp@gmail.com',
 }
 
-const AddStudentPopover = (props) => {
+const AddParentPopover = (props) => {
     const dispatch = useDispatch()
     const { userId, token } = getLoggedInUser()
     const { isPopoverVisible, handleClosePopover } = props
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default AddStudentPopover
+export default AddParentPopover

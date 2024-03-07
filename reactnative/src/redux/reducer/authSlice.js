@@ -69,8 +69,6 @@ export const authInvitationCode = createAsyncThunk(
     'session/authInvitationCode',
     async (codeData, {rejectWithValue}) => {
         const { token, invitationCode } = codeData
-        // TODO: add token -> Async storage OR redux persist
-        // The current way of storing token in redux is not secure
         try {
             const response = await axios.post('http://localhost:5000/signup/extra_details/auth_invitation', { invitationCode }, {
                 headers: {

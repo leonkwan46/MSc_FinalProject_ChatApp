@@ -9,7 +9,11 @@ const initialState = {
         role: '',
         socketId: '',
         token:'',
-        friends: [],
+        teachers: [],
+        students: [],
+        children: [],
+        parents: [],
+        parent: '',
     },
     currentChatRoom: {
         roomId: '',
@@ -40,16 +44,39 @@ export const sendInvitationCode = createAsyncThunk(
     }
 )
 
+export const createStudentAccount = createAsyncThunk(
+    'session/createStudentAccount',
+    async (studentData, {rejectWithValue}) => {
+        const { parentToken } = studentData
+        try {
+            const response = await axios.post('http://localhost:5000/contacts/create_student_account', studentData, {
+                headers: {
+                    'authorization': `Bearer ${parentToken}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            console.log('error', error)
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
 const sessionSlice = createSlice({
     name: 'session',
     initialState: {...initialState},
     reducers: {
         setUser: (state, action) => {
-            state.user.userId = action.payload.userId,
-            state.user.email = action.payload.email,
-            state.user.role = action.payload.role,
+            state.user.userId = action.payload.user.userId,
+            state.user.email = action.payload.user.email,
+            state.user.role = action.payload.user.role,
             state.user.socketId = getSocketId(),
             state.user.token = action.payload.token
+            state.user.teachers = action.payload.user.teachers,
+            state.user.students = action.payload.user.students,
+            state.user.children = action.payload.user.children,
+            state.user.parents = action.payload.user.parents,
+            state.user.parent = action.payload.user.parent
         },
         setCurrentChatRoom: (state, action) => {
             state.currentChatRoom.roomId = action.payload.userId,
@@ -61,6 +88,7 @@ const sessionSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // Send Invitation Code
             .addCase(sendInvitationCode.pending, (state) => {
                 console.log('loading')
                 state.isLoading = true
@@ -71,6 +99,23 @@ const sessionSlice = createSlice({
                 state.isLoading = false
             })
             .addCase(sendInvitationCode.rejected, (state, action) => {
+                console.log('rejected')
+                console.log(action.error)
+                state.error = action?.payload?.message || action.error.message
+                state.isLoading = false
+            })
+
+            // Create Student Account
+            .addCase(createStudentAccount.pending, (state) => {
+                console.log('loading')
+                state.isLoading = true
+            })
+            .addCase(createStudentAccount.fulfilled, (state, action) => {
+                console.log('fulfilled')
+                state.error = null
+                state.isLoading = false
+            })
+            .addCase(createStudentAccount.rejected, (state, action) => {
                 console.log('rejected')
                 console.log(action.error)
                 state.error = action?.payload?.message || action.error.message

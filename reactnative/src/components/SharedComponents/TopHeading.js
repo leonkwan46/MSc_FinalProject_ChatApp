@@ -8,11 +8,13 @@ const TopHeading = (props) => {
   const { title, subtitle } = props
   const { fontLoaded } = useFont('Lemon-Regular')
 
+  const moreThanOneLine = title.split(' ').length > 1
+
   return (
     <View style={ styles.container }>
       { fontLoaded ?  (
         <View>
-            <Typography color='primary' size='title'>{title}</Typography>
+            <Typography color='primary' size={moreThanOneLine ? 'xxl' : 'title'} >{title}</Typography>
             { subtitle && 
                 <View>
                     <Typography color='primary' size='subtitle'>{subtitle}</Typography>
@@ -21,7 +23,7 @@ const TopHeading = (props) => {
         </View>
       ) : (
         <View>
-          <Typography color='primary' size='title' >{title}</Typography>
+          <Typography color='primary' size={moreThanOneLine ? 'xxl' : 'title'} >{title}</Typography>
           { subtitle && 
               <View>
                   <Typography color='primary' size='subtitle'>{subtitle}</Typography>
