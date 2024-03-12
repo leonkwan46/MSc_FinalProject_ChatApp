@@ -1,18 +1,17 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import ContainerMessages from '../components/chat/ContainerMessages'
+import ChatMessageList from '../components/chat/ChatMessageList'
 import TopHeading from '../components/SharedComponents/TopHeading'
-import { useNavigation } from '@react-navigation/native'
 import { LoggedInContainer } from '../components/SharedComponents'
+import { ScrollView } from 'react-native'
 
 const MessageScreen = () => {
-    const dispatch = useDispatch()
-    const navigation = useNavigation()
 
     return (
         <LoggedInContainer>
-            <TopHeading title='Messages' />
-            <ContainerMessages />
+            <ScrollView>
+                <TopHeading title='Messages' />
+                <ChatMessageList />
+            </ScrollView>
         </LoggedInContainer>
     )
 }

@@ -4,10 +4,10 @@ import TopHeading from '../components/SharedComponents/TopHeading'
 import ContactList from '../components/contact/ContactList'
 import { LoggedInContainer } from '../components/SharedComponents'
 import AddBadge from '../components/contact/AddBadge'
-import { useSelector } from 'react-redux'
+import { getLoggedInUser } from '../redux/selectors'
 
 const ContactScreen = () => {
-  const { role } = useSelector((state) => state.session.user)
+  const { role } = getLoggedInUser()
 
   return (
     <LoggedInContainer>

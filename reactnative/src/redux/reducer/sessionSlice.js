@@ -9,6 +9,8 @@ const initialState = {
         role: '',
         socketId: '',
         token:'',
+    },
+    contacts: {
         teachers: [],
         students: [],
         children: [],
@@ -62,21 +64,49 @@ export const createStudentAccount = createAsyncThunk(
     }
 )
 
+export const createChatRoom = createAsyncThunk(
+    'session/createChatRoom',
+    async (chatRoomData, {rejectWithValue}) => {
+        const { token } = chatRoomData
+        console.log('chatRoomData', chatRoomData)
+        try {
+            const response = await axios.post('http://localhost:5000/chat_message/create_chat_room', chatRoomData, {
+                headers: {
+                    'authorization': `Bearer ${token}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            console.log('error', error)
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
 const sessionSlice = createSlice({
     name: 'session',
     initialState: {...initialState},
     reducers: {
         setUser: (state, action) => {
+            // Basic Info
             state.user.userId = action.payload.user.userId,
             state.user.email = action.payload.user.email,
             state.user.role = action.payload.user.role,
             state.user.socketId = getSocketId(),
             state.user.token = action.payload.token
-            state.user.teachers = action.payload.user.teachers,
-            state.user.students = action.payload.user.students,
-            state.user.children = action.payload.user.children,
-            state.user.parents = action.payload.user.parents,
-            state.user.parent = action.payload.user.parent
+            // Contacts
+            state.contacts.teachers = action.payload.user.teachers,
+            state.contacts.students = action.payload.user.students,
+            state.contacts.children = action.payload.user.children,
+            state.contacts.parents = action.payload.user.parents,
+            state.contacts.parent = action.payload.user.parent
+        },
+        updateContacts: (state, action) => {
+            state.contacts.teachers = action.payload.teachers,
+            state.contacts.students = action.payload.students,
+            state.contacts.children = action.payload.children,
+            state.contacts.parents = action.payload.parents,
+            state.contacts.parent = action.payload.parent
         },
         setCurrentChatRoom: (state, action) => {
             state.currentChatRoom.roomId = action.payload.userId,
@@ -121,9 +151,31 @@ const sessionSlice = createSlice({
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
+
+            // Create Chat Room
+            .addCase(createChatRoom.pending, (state) => {
+                console.log('loading')
+                state.isLoading = true
+            })
+            .addCase(createChatRoom.fulfilled, (state, action) => {
+                console.log('fulfilled')
+                state.error = null
+                state.isLoading = false
+            })
+            .addCase(createChatRoom.rejected, (state, action) => {
+                console.log('rejected')
+                console.log(action.error)
+                state.error = action?.payload?.message || action.error.message
+                state.isLoading = false
+            })
     }
 })
 
-export const { setUser, setCurrentChatRoom, testTeacherSesh, testParentSesh } = sessionSlice.actions
+export const {
+    setUser,
+    updateContacts,
+    setCurrentChatRoom,
+} = sessionSlice.actions
+
 const sessionReducer = sessionSlice.reducer
 export default sessionReducer

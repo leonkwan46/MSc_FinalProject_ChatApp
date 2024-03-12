@@ -3,10 +3,10 @@ import { ImageBackground, Modal, StyleSheet, TouchableOpacity, View } from 'reac
 import { Button, TextInput, Typography } from '../../compLib'
 import { Icon } from 'react-native-elements'
 import { Formik } from 'formik'
-import { sendEmailSchema } from '../../helpers/validationHelpers'
+import { SendEmailSchema } from '../../helpers/validationHelpers'
 import { Box, VStack } from '@react-native-material/core'
 import { sendInvitationCode } from '../../redux/reducer/sessionSlice'
-import { getLoggedInUser } from '../../redux/stateHelper'
+import { getLoggedInUser } from '../../redux/selectors'
 import { useDispatch } from 'react-redux'
 
 const testValues = {
@@ -44,7 +44,7 @@ const AddParentPopover = (props) => {
                                 <Formik
                                     initialValues={testValues}
                                     onSubmit={handleSendInvitationCode}
-                                    validationSchema={sendEmailSchema}
+                                    validationSchema={SendEmailSchema}
                                 >
                                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                                         <VStack spacing={50}>

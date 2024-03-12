@@ -1,10 +1,11 @@
 import { Parent, Student, Teacher, User } from "../db/modals/index.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import userDataHelper from "./userDataHelper.js"
 
 const authHelper = {}
 
-authHelper.validateUser = async (email, isLogin=false) => {
+authHelper.validateUserByEmail = async (email, isLogin=false) => {
     let user = await User.findOne({ email })
 
     if (isLogin) {
@@ -22,8 +23,9 @@ authHelper.validatePassword = async (password, hashPassword) => {
     return isMatch
 }
 
-authHelper.returnUserData = async (user = '', isValid = false) => {
-    if (!isValid) user = await authHelper.validateUser(user.email, true)
+authHelper.returnUserDataToClient = async (user = '', isValid = false) => {
+    if (!isValid) user = await authHelper.validateUserByEmail(user.email, true)
+    if (!user) throw new Error("User not found")
 
     const defaultUserData = {
         userId: user._id,
@@ -32,57 +34,23 @@ authHelper.returnUserData = async (user = '', isValid = false) => {
         isRegistered: user.isRegistered,
         isGeneralFormComplete: user.isGeneralFormComplete,
     }
-    if (user.role === "parent") {
-        const children = await Promise.all(user.children.map(async (childId) => {
-            const child = await Student.findById(childId)
-            if (!child) return null
-            const { _id, email, name, role, DoB, gender, parent, teachers, instruments } = child
-            return { _id, email, name, role, DoB, gender, parent, teachers, instruments }
-        }))
-        const teachers = await Promise.all(user.teachers.map(async (teacherId) => {
-            const teacher = await Teacher.findById(teacherId)
-            if (!teacher) return null
-            const { _id, email, name, role, DoB, gender, parents } = teacher
-            return { _id, email, name, role, DoB, gender, parents }
-        }))
-        return {
-            ...defaultUserData,
-            isInvited: user.isInvited,
-            isInvitationVerified: user.isInvitationVerified,
-            children: children,
-            teachers: teachers,
-        }
-    } else if (user.role === "teacher") {
-        const parents = await Promise.all(user.parents.map(async (parentId) => {
-            const parent = await Parent.findById(parentId)
-            return parent
-        }))
-        const students = await Promise.all(user.students.map(async (studentId) => {
-            const student = await Student.findById(studentId)
-            return student
-        }))
-        return {
-            ...defaultUserData,
-            isDocUploaded: user.isDocUploaded,
-            isDocVerified: user.isDocVerified,
-            parents: parents,
-            students: students,
-        }
-    } else if (user.role === "student") {
-        const parent = await Parent.findById(user.parent)
-        const teachers = await Promise.all(user.teachers.map(async (teacherId) => {
-            const teacher = await Teacher.findById(teacherId)
-            return teacher
-        }))
-        return {
-            ...defaultUserData,
-            instrument: user.instruments,
-            parent: parent,
-            teachers: teachers,
-        }
-    } else {
-        return defaultUserData
+
+    let additionalUserData = {}
+    switch (user.role) {
+        case "parent":
+            additionalUserData = await userDataHelper.fetchParentUserData(user)
+            break
+        case "teacher":
+            additionalUserData = await userDataHelper.fetchTeacherUserData(user)
+            break
+        case "student":
+            additionalUserData = await userDataHelper.fetchStudentUserData(user)
+            break
+        default:
+            break
     }
+
+    return { ...defaultUserData, ...additionalUserData }
 }
 
 authHelper.generateHashPassword = async (password) => {
@@ -111,7 +79,7 @@ authHelper.generateAuthToken = async (user) => {
 }
 
 authHelper.createAccount = async (email, password, role) => {
-    let user = await authHelper.validateUser(email)
+    let user = await authHelper.validateUserByEmail(email)
     const hashPassword = await authHelper.generateHashPassword(password)
     // Create User
     if (role === "parent") {

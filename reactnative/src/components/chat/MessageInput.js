@@ -1,7 +1,9 @@
 import React from 'react'
-import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native'
+import { View, StyleSheet, Pressable, Text } from 'react-native'
+import { Button, TextInput, Typography } from '../../compLib'
+import { getColor } from '../../helpers/styleHelper'
 
-const ContainerChatMessage = ({
+const MessageInput = ({
     message,
     setMessage,
     handleSendMessage
@@ -14,14 +16,12 @@ const ContainerChatMessage = ({
                     placeholder='Type your message'
                     value={message}
                     onChangeText={setMessage}
+                    outline
                 />
             </View>
-            <View style={styles.sendButtonContainer} >
-                <Pressable
-                    style={styles.sendButton}
-                    onPress={handleSendMessage}
-                >
-                    <Text>Send</Text>
+            <View>
+                <Pressable onPress={handleSendMessage} style={styles.sendButton}>
+                    <Typography size='md'>Send</Typography>
                 </Pressable>
             </View>
         </View>
@@ -30,12 +30,12 @@ const ContainerChatMessage = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        borderTopColor: 'grey',
-        borderTopWidth: 1,
+        backgroundColor: '#555',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
     },
     textInputContainer: {
         width: '80%',
@@ -47,27 +47,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 10,
-        borderColor: 'grey',
-        borderWidth: 1,
-    },
-    sendButtonContainer: {
-        padding: 10,
-        display: 'flex',
-        justifyContent: 'center',
-        width: '20%',
     },
     sendButton: {
-        backgroundColor: '#D4AF37',
-        padding: 10,
+        backgroundColor: getColor('primary'),
+        padding: 15,
         borderRadius: 10,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    sendButtonText: {
-        color: 'white',
-        fontSize: 16,
     }
 })
 
-export default ContainerChatMessage
+export default MessageInput

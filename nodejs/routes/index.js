@@ -1,7 +1,7 @@
 import express from "express"
 import loginRoute from "./login.js"
 import signUpRoute from "./signUp.js"
-import chatMessageRoute from "./chatMessage.js"
+import chatMessageRoute from "./chat_message.js"
 import contactsRoute from "./contacts.js"
 
 const router = express.Router()

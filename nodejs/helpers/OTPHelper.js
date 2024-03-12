@@ -2,7 +2,7 @@ import { totp } from "otplib"
 import mailerHelper from "./mailerHelper.js"
 import OTPEmail from "../mailer/templates/OTPEmail.js"
 import dotenv from 'dotenv'
-import { Parent, User } from "../db/modals/index.js"
+import { Parent } from "../db/modals/index.js"
 
 dotenv.config()
 const OTPHelper = {}

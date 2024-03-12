@@ -38,7 +38,7 @@ router.post('/create_student_account', authHandler, async (req, res, next) => {
         // Update student details
         await Student.updateMany({ _id: student.user._id }, {
             $set: { name: name, DoB: DoB, gender: gender, isGeneralFormComplete: true, parent: parentID},
-            $push: { teachers: teacher[1], instrument: instrument }
+            $push: { teachers: teacher.split(',')[1], instrument: instrument }
         })
         // Update parent details
         await Parent.updateMany({ _id: parentID }, {

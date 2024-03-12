@@ -6,7 +6,12 @@ const roomSchema = new mongoose.Schema({
         required: true,
     },
     members: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
         ref: "User",
         required: true,
     },

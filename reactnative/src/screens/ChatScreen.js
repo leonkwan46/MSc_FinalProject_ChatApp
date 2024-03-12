@@ -1,16 +1,41 @@
-import { Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet } from 'react-native'
 import ContainerChatMessage from '../components/chat/ContainerChatMessage'
-import { useSelector } from 'react-redux'
+import { getChatRoomInfo } from '../redux/selectors'
+import ChatRoomTopHeading from '../components/chat/ChatRoomTopHeading'
+import { useEffect } from 'react'
+import { setCurrentChatRoom } from '../redux/reducer/sessionSlice'
+import { useDispatch } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 
 const ChatScreen = () => {
-  const roomData = useSelector(state => state.session.currentChatRoom)
-  const { roomId, name, members, messages, createdAt } = roomData
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
+  const { name } = getChatRoomInfo()
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      dispatch(setCurrentChatRoom({}))
+    })
+    return unsubscribe
+  }, [navigation])
   return (
-    <View>
-      <Text>{name}</Text>
+    <SafeAreaView style={styles.container}>
+      <ChatRoomTopHeading name={name} />
       <ContainerChatMessage />
-    </View>
+    </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
 
 export default ChatScreen

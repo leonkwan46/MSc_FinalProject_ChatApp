@@ -12,6 +12,7 @@ import LoggedInContainer from './loggedIn/LoggedInContainer'
 
 // Global Components
 import TopHeading from './TopHeading'
+import GoBackIcon from './GoBackIcon'
 
 export {
     ContainerLoginSignup,
@@ -20,5 +21,6 @@ export {
     StatusOverlay,
     TopNavLoginSignup,
     LoggedInContainer,
-    TopHeading
+    TopHeading,
+    GoBackIcon
 }

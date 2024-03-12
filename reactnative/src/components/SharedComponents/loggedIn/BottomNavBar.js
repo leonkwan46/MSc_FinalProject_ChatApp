@@ -31,7 +31,8 @@ const BottomNavBar = () => {
         <View style={styles.container}>
             <NavIcon name='address-book' screen='CONTACT' selectedIcon={selectedIcon} onPress={handleOnPress} />
             <NavIcon name='comments' screen='MESSAGE' selectedIcon={selectedIcon} onPress={handleOnPress} />
-            <NavIcon name='gear' screen='SETTING' selectedIcon={selectedIcon} onPress={handleOnPress} />
+            {/* Me no time do */}
+            <NavIcon name='gear' screen='SETTING' selectedIcon={selectedIcon} onPress={() => {}} />
         </View>
     )
 }

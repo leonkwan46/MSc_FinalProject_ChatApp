@@ -7,11 +7,11 @@ router.post('/', async (req, res, next) => {
     try {
         const { email, password } = req.body
         
-        const user = await authHelper.validateUser(email, true)
+        const user = await authHelper.validateUserByEmail(email, true)
         await authHelper.validatePassword(password, user.hashPassword)
 
         const authToken = await authHelper.generateAuthToken(user)
-        const userData = await authHelper.returnUserData(user, true)
+        const userData = await authHelper.returnUserDataToClient(user, true)
 
         return res.status(200).json({ user: userData, token: authToken })
     } catch (err) {

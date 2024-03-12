@@ -8,11 +8,13 @@ interface TextInputProps {
     placeholder?: string
     size?: string
     hasError?: boolean
+    outline?: boolean
     secureTextEntry?: boolean
     placeholderTextColor?: string
     onChangeText: (text: string) => void
     onBlur?: () => void
     onFocus?: () => void
+    disabled?: boolean
 }
 
 const CustomTextInput: FC<TextInputProps> = ({
@@ -20,14 +22,16 @@ const CustomTextInput: FC<TextInputProps> = ({
     size,
     placeholder,
     hasError,
+    outline,
     secureTextEntry,
     placeholderTextColor = '#aaa',
     onChangeText,
     onBlur,
-    onFocus
+    onFocus,
+    disabled
 }) => {
     const { fontLoaded } = useFont('Lemon-Regular')
-    const textInputStyle = getTextInputStyle({size, hasError})
+    const textInputStyle = getTextInputStyle({size, hasError, outline})
     return (
         <View>
             {fontLoaded ? (
@@ -40,6 +44,7 @@ const CustomTextInput: FC<TextInputProps> = ({
                     onChangeText={onChangeText}
                     onFocus={onFocus}
                     onBlur={onBlur}
+                    editable={disabled}
                 />
             ) : (
                 <TextInput

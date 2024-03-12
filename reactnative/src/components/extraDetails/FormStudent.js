@@ -1,18 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Button, TextInput, Typography } from '../../compLib'
 import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { getLoggedInUser } from '../../redux/stateHelper'
+import { getUserContacts, getLoggedInUser } from '../../redux/selectors'
 import dayjs from 'dayjs'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Picker } from '@react-native-picker/picker'
 import { createStudentAccount } from '../../redux/reducer/sessionSlice'
 import { SignupSchema } from '../../helpers/validationHelpers'
+import { useNavigation } from '@react-navigation/native'
 
 // For testing
-const initialValues = { email: 'student@gmail.com', password: '123456', confirmPassword: '123456', name: 'Leeeo', DoB: '04-04-2024', gender: 'Female' }
+const initialValues = { email: 'student@gmail.com', password: '123456', confirmPassword: '123456', name: 'Leeeo', DoB: '04-04-2024', gender: 'Female', teacher: '', instrument: ''}
 // const initialValues = { email: 'asd.asd@gmail.com', password: '123456', confirmPassword: '123456' }
 // const initialValues = { name: '', DoB: '', gender: '' }
 
@@ -20,15 +21,20 @@ const validationSchema = SignupSchema
 
 const FormStudent = () => {
     const dispatch = useDispatch()
+    const navigation = useNavigation()
 
-    const { token: parentToken, teachers } = getLoggedInUser()
+    const { token: parentToken } = getLoggedInUser()
+    const { teachers } = getUserContacts()
 
     const [selectedDate, setSelectedDate] = useState(dayjs().toDate())
     const [showDatePicker, setShowDatePicker] = useState(false)
+    
     const [selectedGender, setSelectedGender] = useState()
     const [showGenderPicker, setShowGenderPicker] = useState(false)
+    
     const [selectedTeacher, setSelectedTeacher] = useState()
     const [showTeacherPicker, setShowTeacherPicker] = useState(false)
+
     const [selectedInstrument, setSelectedInstrument] = useState()
     const [showInstrumentPicker, setShowInstrumentPicker] = useState(false)
 
@@ -64,6 +70,13 @@ const FormStudent = () => {
         dispatch(createStudentAccount({ ...values, parentToken }))
         resetForm()
     }
+
+    // allow swipe back
+    useEffect(() => {
+        navigation.setOptions({
+            gestureEnabled: true,
+        })
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -177,7 +190,7 @@ const FormStudent = () => {
                             <Box>
                                 <TextInput
                                     onChange={handleChange('teacher')}
-                                    value={values.teacher[0]}
+                                    value={values.teacher.split(',')[0]}
                                     size='md'
                                     hasError={errors.teacher && touched.teacher ? true : false}
                                     placeholder='Teacher'
@@ -191,12 +204,12 @@ const FormStudent = () => {
                                         itemStyle={{ color: '#fff' }}
                                         onValueChange={(itemValue, itemIndex) => {
                                             setSelectedTeacher(itemValue)
-                                            values.teacher = itemValue.split(',')
+                                            values.teacher = itemValue
                                         }}
                                     >   
-                                        <Picker.Item label="Select Teacher" value="" />
+                                        <Picker.Item label="Select Teacher" value={''} />
                                         {teachers.map(teacher => (
-                                            <Picker.Item key={teacher._id} label={teacher.name} value={[teacher.name, teacher._id]} />
+                                            <Picker.Item key={teacher._id} label={teacher.name} value={`${teacher.name},${teacher._id}`} />
                                         ))}
                                     </Picker>
                                 )}

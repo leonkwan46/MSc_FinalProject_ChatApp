@@ -31,7 +31,7 @@ const App = () => {
             <Stack.Screen name={SCREEN_NAMES.HOME} component={HomeScreen} />
             <Stack.Screen name='LoggedInTabs' component={LoggedInTabs} options={{gestureEnabled: false}} />
             <Stack.Screen name={SCREEN_NAMES.EXTRA_DETAILS} component={ExtraDetailsScreen} options={{gestureEnabled: false}} />
-            <Stack.Screen name={SCREEN_NAMES.LOGIN_REGISTER} component={LoginSignUpScreen} options={{gestureEnabled: false}} />
+            <Stack.Screen name={SCREEN_NAMES.LOGIN_REGISTER} component={LoginSignUpScreen} />
             <Stack.Screen name={SCREEN_NAMES.CHAT} component={ChatScreen} />
           </Stack.Navigator>
         </NavigationContainer>

@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import MessageInput from '../../components/chat/MessageInput'
 import Message from '../../components/chat/Message'
-import { ScrollView } from 'react-native-gesture-handler'
 
 const ContainerChatMessage = () => {
     const user = useSelector(state => state.session.user)
@@ -47,13 +46,11 @@ const ContainerChatMessage = () => {
                     keyExtractor={item => item.id}
                 />
             </View>
-            <View>
-                <MessageInput
-                    message={message}
-                    setMessage={setMessage}
-                    handleSendMessage={handleSendMessage}
-                />
-            </View>
+            <MessageInput
+                message={message}
+                setMessage={setMessage}
+                handleSendMessage={handleSendMessage}
+            />
         </View>
       )
     }
@@ -65,18 +62,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     messageList: {
+        flex: 1,
         padding: 10,
-        backgroundColor: 'black',
-        // Fix later
-        height: '100%',
-    },
-    sendButtonContainer: {
-        padding: 10,
-        backgroundColor: 'white',
-        borderTopColor: 'grey',
-        borderTopWidth: 1,
-        display: 'flex',
-        justifyContent: 'flex-end',
+        paddingVertical: 20,
     },
 })
 

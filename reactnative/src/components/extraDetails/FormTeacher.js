@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { getRegisteringUser } from '../../redux/stateHelper'
+import { getRegisteringUser } from '../../redux/selectors'
 import { Formik } from 'formik'
 import UploadDocument from './UploadDocument'
 import { Box, VStack } from '@react-native-material/core'

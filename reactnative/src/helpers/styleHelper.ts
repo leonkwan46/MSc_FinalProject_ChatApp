@@ -42,7 +42,7 @@ const getFontSize = (size) => {
     }
 }
 
-const getTextInputStyle = ({ size, hasError=false }) => {
+const getTextInputStyle = ({ size, hasError=false, outline=false}) => {
     const sizes = {
         xs: { height: 25, padding: 5, fontSize: 9 },
         sm: { height: 30, padding: 7, fontSize: 10 },
@@ -60,14 +60,24 @@ const getTextInputStyle = ({ size, hasError=false }) => {
         ...sizes.default
     }
 
-    const errorSize = {
+    const errorStlye = {
         borderColor: '#f00',
+        borderWidth: 2,
+    }
+
+    const outlineStyle = {
+        borderColor: '#000',
         borderWidth: 2,
     }
 
     const selectedSize = sizes[size] || sizes.default
 
-    return hasError ? { ...defaultSize, ...errorSize, ...selectedSize } : { ...defaultSize, ...selectedSize }
+    return {
+        ...defaultSize,
+        ...selectedSize,
+        ...(hasError ? errorStlye : {}),
+        ...(outline ? outlineStyle : {})
+    }
 }
 
 const getButtonStyle = ({ size, color, fill=true }) => {
