@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import Room from './Room'
+import ChatRoom from './ChatRoom'
 import axios from 'axios'
 import { Box, VStack } from '@react-native-material/core'
 
@@ -26,7 +26,7 @@ const ChatMessageList = () => {
                 <VStack spacing={10} divider={true}>
                     {rooms.map((room) => (
                         <Box key={room._id}>
-                            <Room roomData={room} />
+                            <ChatRoom roomData={room} />
                         </Box>
                     ))}
                 </VStack>
