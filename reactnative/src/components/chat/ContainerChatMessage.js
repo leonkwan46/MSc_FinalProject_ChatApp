@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { View, FlatList, StyleSheet } from 'react-native'
 import { sendMessage, receiveMessage } from '../../helpers/socketHelpers'
 import { useSelector } from 'react-redux'
@@ -9,12 +9,12 @@ import Message from '../../components/chat/Message'
 const ContainerChatMessage = () => {
     const user = useSelector(state => state.session.user)
     const { userId, socketId } = user
-
     const roomData = useSelector(state => state.session.currentChatRoom)
-    const { roomId, name, members, messages, createdAt } = roomData
+    const { roomId, name, members, messages: chatHistory, createdAt } = roomData
 
     const [oldMessages, setOldMessages] = useState([])
     const [message, setMessage] = useState('')
+    const flatListRef = useRef(null)
 
     const handleSendMessage = () => {
         sendMessage(roomId, message, userId)
@@ -37,13 +37,18 @@ const ContainerChatMessage = () => {
         fetchNewMessage()
     }, [oldMessages])
 
+    useEffect(() => {
+        flatListRef.current.scrollToEnd({ animated: true })
+    }, [chatHistory, oldMessages])
+
     return (
         <View style={styles.messageContainer}>
             <View style={styles.messageList} >
                 <FlatList
-                    data={oldMessages}
-                    renderItem={ item => <Message messageData={item} />}
-                    keyExtractor={item => item.id}
+                    ref={flatListRef}
+                    data={chatHistory && oldMessages ? [...chatHistory, ...oldMessages] : []}
+                    renderItem={item => <Message messageData={item} />}
+                    keyExtractor={item => item.id || item._id}
                 />
             </View>
             <MessageInput
@@ -65,6 +70,9 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         paddingVertical: 20,
+    },
+    chatHistoryList: {
+        flexGrow: 0,
     },
 })
 

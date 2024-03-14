@@ -3,16 +3,18 @@ import { Pressable, StyleSheet, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
 import { setCurrentChatRoom } from '../../redux/reducer/sessionSlice'
-import { joinRoom } from '../../helpers/socketHelpers'
+import { joinRoomAndGetChatHistory } from '../../helpers/socketHelpers'
 import { Typography } from '../../compLib'
 import ChatRoomGroupImage from './ChatRoomGroupImage'
 
-const ChatRoom  = ({ roomData }) => {
+const ChatRoom  = (props) => {
+    const { roomData } = props
     const navigation = useNavigation()
     const dispatch = useDispatch()
 
     const handleOnPress = async () => {
-        await joinRoom(roomData._id)
+        const chatHistory = await joinRoomAndGetChatHistory(roomData)
+        roomData.messages = chatHistory
         dispatch(setCurrentChatRoom(roomData))
         navigation.navigate('ChatScreen')
     }

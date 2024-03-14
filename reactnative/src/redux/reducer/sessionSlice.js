@@ -109,7 +109,7 @@ const sessionSlice = createSlice({
             state.contacts.parent = action.payload.parent
         },
         setCurrentChatRoom: (state, action) => {
-            state.currentChatRoom.roomId = action.payload.userId,
+            state.currentChatRoom.roomId = action.payload._id,
             state.currentChatRoom.name = action.payload.name,
             state.currentChatRoom.members = action.payload.members,
             state.currentChatRoom.messages = action.payload.messages,

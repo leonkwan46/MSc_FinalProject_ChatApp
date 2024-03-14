@@ -22,11 +22,16 @@ const receiveMessage = () => {
   })
 }
 
-const joinRoom = async(room) => {
-  await socket.emit('joinRoom', room)
-  await socket.on('roomJoined', (data) => {
-    console.log('JOIN LIAO LAH - ', data)
+const joinRoomAndGetChatHistory = (roomId) => {
+  return new Promise((resolve, reject) => {
+      socket.emit('joinRoom', { roomId })
+      socket.once('roomJoined', (result) => {
+          resolve(result.chatHistory)
+      })
+      socket.once('roomJoinError', (error) => {
+          reject(error)
+      })
   })
 }
 
-export { getSocketId, disconnectSocket, sendMessage, receiveMessage, joinRoom }
+export { getSocketId, disconnectSocket, sendMessage, receiveMessage, joinRoomAndGetChatHistory }

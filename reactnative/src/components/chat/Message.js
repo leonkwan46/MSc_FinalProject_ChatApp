@@ -1,17 +1,19 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
+import { Typography } from '../../compLib'
 
 const Message = ({
     messageData
 }) => {
+    console.log('=========messageData===========')
+    console.log(messageData.item)
     const { message, senderId, roomId } = messageData.item
     const user = useSelector(state => state.session.user)
     const isSender = user.userId === senderId
-
     return (
         <View style={ isSender ? styles.senderContainer : styles.receiverContainer }>
-            <Text style={ isSender ? styles.senderText : styles.receiverText }>{ message }</Text>
+            <Typography extrasStyle={ isSender ? styles.senderText : styles.receiverText }>{ message }</Typography>
         </View>
     )
 }
