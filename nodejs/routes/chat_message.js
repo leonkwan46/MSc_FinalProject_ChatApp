@@ -9,17 +9,10 @@ router.post('/create_chat_room', authHandler, async (req, res, next) => {
     const { role, _id } = req.user
     const memberData = await chatHelper.generateRoomMemberData(_id, role, req.body)
 
-    console.log('=========memberData==============')
-    console.log(memberData)
-    console.log('=======================')
-
     const newRoom = Room({
         name: `${memberData.student.name}'s Music Room`,
         members: [memberData.teacher, memberData.student, memberData.parent]
     })
-    console.log('==========newRoom=============')
-    console.log(newRoom)
-    console.log('=======================')
 
     try {
         await newRoom.save()
@@ -36,12 +29,6 @@ router.get('/get_rooms', async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-})
-
-router.get('/:roomId', async (req, res, next) => {
-    console.log('=======================')
-    console.log(req.params.roomId)
-    console.log('=======================')
 })
 
 export default router

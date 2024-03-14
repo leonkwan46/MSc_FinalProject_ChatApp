@@ -6,15 +6,11 @@ const authHandler = async (req, res, next) => {
         // Check if token exists
         const token = req.headers.authorization.split(" ")[1]
         if (!token) throw new Error("Authentication failed")
-        console.log('==============TOKEN================')
-        console.log(token)
-        console.log('====================================')
+
         // Verify token
         let user = jwt.verify(token, process.env.JWT_SECRET)
         if (!user) throw new Error("Authentication failed")
-        console.log('==============USER================')
-        console.log(user)
-        console.log('====================================')
+
         // Get user from database
         const { email } = user
         user = await User.findOne({ email })

@@ -4,8 +4,8 @@ const userDataHelper = {}
 
 // Fetch parent user data
 userDataHelper.fetchParentUserData = async (user) => {
-    const children = await fetchChildren(user.children)
-    const teachers = await fetchTeachers(user.teachers)
+    const children = user.children ? await fetchChildren(user.children): []
+    const teachers = user.teachers ? await fetchTeachers(user.teachers): []
 
     return {
         isInvited: user.isInvited,
@@ -17,8 +17,8 @@ userDataHelper.fetchParentUserData = async (user) => {
 
 // Fetch teacher user data
 userDataHelper.fetchTeacherUserData = async (user) => {
-    const parents = await fetchParents(user.parents)
-    const students = await fetchStudents(user.students)
+    const parents = user.parents ? await fetchParents(user.parents): []
+    const students = user.students ? await fetchStudents(user.students): []
 
     return {
         isDocUploaded: user.isDocUploaded,
@@ -30,8 +30,8 @@ userDataHelper.fetchTeacherUserData = async (user) => {
 
 // Fetch student user data
 userDataHelper.fetchStudentUserData = async (user) => {
-    const parent = await fetchParent(user.parent)
-    const teachers = await fetchTeachers(user.teachers)
+    const parent = user.parent ? await fetchParent(user.parent): null
+    const teachers = user.teachers ? await fetchTeachers(user.teachers): []
 
     return {
         instrument: user.instruments,

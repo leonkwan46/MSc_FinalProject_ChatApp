@@ -6,9 +6,7 @@ import { Typography } from '../../compLib'
 const Message = ({
     messageData
 }) => {
-    console.log('=========messageData===========')
-    console.log(messageData.item)
-    const { message, senderId, roomId } = messageData.item
+    const { message, senderId } = messageData.item
     const user = useSelector(state => state.session.user)
     const isSender = user.userId === senderId
     return (

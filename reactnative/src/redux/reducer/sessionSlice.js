@@ -40,7 +40,6 @@ export const sendInvitationCode = createAsyncThunk(
             })
             return response.data
         } catch (error) {
-            console.log('error', error)
             return rejectWithValue(error.response.data)
         }
     }
@@ -58,7 +57,6 @@ export const createStudentAccount = createAsyncThunk(
             })
             return response.data
         } catch (error) {
-            console.log('error', error)
             return rejectWithValue(error.response.data)
         }
     }
@@ -68,7 +66,6 @@ export const createChatRoom = createAsyncThunk(
     'session/createChatRoom',
     async (chatRoomData, {rejectWithValue}) => {
         const { token } = chatRoomData
-        console.log('chatRoomData', chatRoomData)
         try {
             const response = await axios.post('http://localhost:5000/chat_message/create_chat_room', chatRoomData, {
                 headers: {
@@ -77,7 +74,6 @@ export const createChatRoom = createAsyncThunk(
             })
             return response.data
         } catch (error) {
-            console.log('error', error)
             return rejectWithValue(error.response.data)
         }
     }
@@ -120,51 +116,39 @@ const sessionSlice = createSlice({
         builder
             // Send Invitation Code
             .addCase(sendInvitationCode.pending, (state) => {
-                console.log('loading')
                 state.isLoading = true
             })
             .addCase(sendInvitationCode.fulfilled, (state, action) => {
-                console.log('fulfilled')
                 state.error = null
                 state.isLoading = false
             })
             .addCase(sendInvitationCode.rejected, (state, action) => {
-                console.log('rejected')
-                console.log(action.error)
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
 
             // Create Student Account
             .addCase(createStudentAccount.pending, (state) => {
-                console.log('loading')
                 state.isLoading = true
             })
             .addCase(createStudentAccount.fulfilled, (state, action) => {
-                console.log('fulfilled')
                 state.error = null
                 state.isLoading = false
             })
             .addCase(createStudentAccount.rejected, (state, action) => {
-                console.log('rejected')
-                console.log(action.error)
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })
 
             // Create Chat Room
             .addCase(createChatRoom.pending, (state) => {
-                console.log('loading')
                 state.isLoading = true
             })
             .addCase(createChatRoom.fulfilled, (state, action) => {
-                console.log('fulfilled')
                 state.error = null
                 state.isLoading = false
             })
             .addCase(createChatRoom.rejected, (state, action) => {
-                console.log('rejected')
-                console.log(action.error)
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })

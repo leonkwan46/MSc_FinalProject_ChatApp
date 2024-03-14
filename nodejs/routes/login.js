@@ -6,7 +6,7 @@ const router = expres.Router()
 router.post('/', async (req, res, next) => {
     try {
         const { email, password } = req.body
-        
+
         const user = await authHelper.validateUserByEmail(email, true)
         await authHelper.validatePassword(password, user.hashPassword)
 

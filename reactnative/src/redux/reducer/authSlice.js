@@ -249,18 +249,14 @@ const authSlice = createSlice({
 
             // Auth Invitation Code
             .addCase(authInvitationCode.pending, (state) => {
-                console.log('loading')
                 state.isLoading = true
             })
             .addCase(authInvitationCode.fulfilled, (state, action) => {
-                console.log('fulfilled')
                 state.user.isInvitationVerified = true
                 state.error = null
                 state.isLoading = false
             })
             .addCase(authInvitationCode.rejected, (state, action) => {
-                console.log('rejected')
-                console.log(action.error)
                 state.error = action?.payload?.message || action.error.message
                 state.isLoading = false
             })

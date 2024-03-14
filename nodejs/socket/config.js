@@ -17,7 +17,9 @@ const connectSocketIO = (io) => {
         // Disconnect
         socket.on('disconnect', () => {
             onlineUsers.delete(socket.id)
+            console.log('=======Online Users=======')
             console.log(onlineUsers)
+            console.log('==========================')
         })
         
     })

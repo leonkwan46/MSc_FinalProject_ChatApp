@@ -28,7 +28,6 @@ const FormLoginSignUp = ({
         // Login Page
         if (isLogin) {
             dispatch(loginUser(payload)).then((res) => {
-                console.log('res', res.payload)
                 const { token, user } = res.payload
                 const { role, isInvitationVerified, isDocVerified, isGeneralFormComplete } = user
 
