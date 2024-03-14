@@ -11,8 +11,8 @@ import { LoginSchema, SignupSchema } from '../../../helpers/validationHelpers'
 import { Button, TextInput, Typography } from '../../../compLib'
 
 // For testing
-const initialValues = { email: 'lk370.chatapp@gmail.com', password: '123456', confirmPassword: '123456' }
-// const initialValues = { email: 'teacher@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
+// const initialValues = { email: 'lk370.chatapp@gmail.com', password: '123456', confirmPassword: '123456' }
+const initialValues = { email: 'teacher@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
 // const initialValues = { email: 'student@gmail.com', password: '123456'}
 // const initialValues = {}
 
@@ -28,6 +28,7 @@ const FormLoginSignUp = ({
         // Login Page
         if (isLogin) {
             dispatch(loginUser(payload)).then((res) => {
+                console.log('res', res.payload)
                 const { token, user } = res.payload
                 const { role, isInvitationVerified, isDocVerified, isGeneralFormComplete } = user
 
