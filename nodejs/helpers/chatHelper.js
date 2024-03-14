@@ -13,15 +13,10 @@ chatHelper.handleSendMessage = async (io, socket, props) => {
         sentAt: Date.now(),
         isRead: false,
     })
+
     // Save message to database
-    // try {
-    //     await newMessage.save()
-    //     console.log('=======================')
-    //     console.log('Message saved to database')
-    //     console.log('=======================')
-    // } catch (err) {
-    //     console.log(err)
-    // }
+    await newMessage.save()
+
     io.emit('chatMessage', { sender: socket.id, data: newMessage })
 }
 
@@ -63,9 +58,12 @@ chatHelper.generateRoomMemberData = async (userID, role, data) => {
     return roomMemberData
 }
 
-chatHelper.joinRoom = (io, socket, room) => {
-    socket.join(room)
-    io.to(room).emit('roomJoined', { user: socket.id, room: room })
+chatHelper.joinRoom = async (io, socket, roomData) => {
+    const { roomId } = roomData
+    const chatHistory = await Message.find({ roomId: roomId }).sort({ sentAt: 1 })
+
+    socket.join(roomId)
+    io.to(roomId).emit('roomJoined', { chatHistory })
 }
 
 

@@ -5,17 +5,15 @@ const connectSocketIO = (io) => {
 
     io.on('connection', (socket) => {
         onlineUsers.add(socket.id)
-        console.log(onlineUsers)
 
         // Join room
-        socket.on('joinRoom', (room) => {
-            chatHelper.joinRoom(io, socket, room)
+        socket.on('joinRoom', (roomData) => {
+            chatHelper.joinRoom(io, socket, roomData)
         })
         // Send message
         socket.on('sendMessage', (props) => {
             chatHelper.handleSendMessage(io, socket, props)
         })
-
         // Disconnect
         socket.on('disconnect', () => {
             onlineUsers.delete(socket.id)
