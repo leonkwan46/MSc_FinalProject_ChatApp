@@ -11,8 +11,8 @@ import { LoginSchema, SignupSchema } from '../../../helpers/validationHelpers'
 import { Button, TextInput, Typography } from '../../../compLib'
 
 // For testing
-// const initialValues = { email: 'lk370.chatapp@gmail.com', password: '123456', confirmPassword: '123456' }
-const initialValues = { email: 'teacher@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
+const initialValues = { email: 'lk370.chatapp@gmail.com', password: '123456', confirmPassword: '123456' }
+// const initialValues = { email: 'teacher@gmail.com', password: 'qwe', confirmPassword: 'qwe' }
 // const initialValues = { email: 'student@gmail.com', password: '123456'}
 // const initialValues = {}
 
@@ -55,7 +55,6 @@ const FormLoginSignUp = ({
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                // After Submit
                 onSubmit={onSubmit}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (

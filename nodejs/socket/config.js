@@ -4,6 +4,11 @@ const connectSocketIO = (io) => {
     let onlineUsers = new Set()
 
     io.on('connection', (socket) => {
+        console.log('User connected')
+        console.log('===Online Users===')
+        console.log(onlineUsers)
+        console.log('==================')
+        // Add user to online users
         onlineUsers.add(socket.id)
 
         // Join room
@@ -17,8 +22,8 @@ const connectSocketIO = (io) => {
         // Disconnect
         socket.on('disconnect', () => {
             onlineUsers.delete(socket.id)
-            console.log('=======Online Users=======')
-            console.log(onlineUsers)
+            console.log('=======Disconnected User=======')
+            console.log(socket.id)
             console.log('==========================')
         })
         

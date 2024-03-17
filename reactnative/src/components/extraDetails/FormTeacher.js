@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { getRegisteringUser } from '../../redux/selectors'
+import { getAuthUser } from '../../redux/selectors'
 import { Formik } from 'formik'
 import UploadDocument from './UploadDocument'
 import { Box, VStack } from '@react-native-material/core'
@@ -14,8 +14,7 @@ const initialValues = {}
 const FormTeacher = () => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
-    const user = getRegisteringUser()
-    const { userId } = user
+    const { userId } = getAuthUser()
     const [selectedDBS, setSelectedDBS] = useState(null)
     const [selectedID, setSelectedID] = useState(null)
     const [selectedProfessionalCert, setSelectedProfessionalCert] = useState(null)

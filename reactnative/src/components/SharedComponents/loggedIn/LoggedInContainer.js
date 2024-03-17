@@ -1,10 +1,14 @@
 import React from 'react'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
+import StatusContainer from '../feedback/StatusContainer'
+import { getUserStatus } from '../../../redux/selectors'
 
 const LoggedInContainer = ({ children }) => {
+    const { error } = getUserStatus()
     return (
         <SafeAreaView style={ styles.container }>
             <View style={ styles.innerContainer }>
+                <StatusContainer message={error} />
                 {children}
             </View>
         </SafeAreaView>

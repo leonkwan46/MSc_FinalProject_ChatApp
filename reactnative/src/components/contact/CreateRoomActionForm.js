@@ -8,22 +8,26 @@ import { StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { createChatRoom } from '../../redux/reducer/sessionSlice'
 import * as Yup from 'yup'
+import { useNavigation } from '@react-navigation/native'
 
 const CreateRoomSchemaBuilder = (params) => {
-    const { teachers, students, children, parents } = params
+    const { teachers, students, children, parents, parent } = params
     let yupObject = {}
     if (parents) yupObject.parent = Yup.string().required('Required')
+    if (parent) yupObject.parent = Yup.string().required('Required')
     if (teachers) yupObject.teacher = Yup.string().required('Required')
     if (students) yupObject.student = Yup.string().required('Required')
     if (children) yupObject.child = Yup.string().required('Required')
     return Yup.object().shape(yupObject)
 }
 
-const CreateRoomActionForm = () => {
+const CreateRoomActionForm = (props) => {
+    const { handleClosePopover } = props
     const dispatch = useDispatch()
+    const navigation = useNavigation()
     const token = getUserToken()
-    const { teachers, students, children, parents } = getUserContacts()
-    const CreateRoomSchema = CreateRoomSchemaBuilder({ teachers, students, children, parents })
+    const { teachers, students, children, parents, parent } = getUserContacts()
+    const CreateRoomSchema = CreateRoomSchemaBuilder({ teachers, students, children, parents, parent })
     
     const [selectedParent, setSelectedParent] = useState()
     const [showParentPicker, setShowParentPicker] = useState(false)
@@ -52,8 +56,11 @@ const CreateRoomActionForm = () => {
     const handleOnSubmit = async (values, { resetForm }) => {
         Object.keys(values).forEach(key => { !values[key] ? delete values[key] : null })
         values = {...values, token}
-        dispatch(createChatRoom(values))
+        await dispatch(createChatRoom(values))
+        handleClosePopover()
         resetForm()
+        // navigate and refresh the chat room list MessageScreen
+        navigation.navigate('MessageScreen')
     }
 
     return (
@@ -69,7 +76,7 @@ const CreateRoomActionForm = () => {
         >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <VStack spacing={20} >
-                {parents && (
+                {parents || parent && (
                     <Box>
                         <TextInput
                             onChange={handleChange('parent')}
@@ -91,9 +98,13 @@ const CreateRoomActionForm = () => {
                                 }}
                             >
                                 <Picker.Item label="Select Parent" value={''} />
-                                {parents.map(parent => (
+                                {parents ? (
+                                    parents.map(parent => (
+                                        <Picker.Item key={parent._id} label={parent.name} value={`${parent.name},${parent._id}`} />
+                                    ))
+                                ): (
                                     <Picker.Item key={parent._id} label={parent.name} value={`${parent.name},${parent._id}`} />
-                                ))}
+                                )}
                             </Picker>
                         )}  
                     </Box>

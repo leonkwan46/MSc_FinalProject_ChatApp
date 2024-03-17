@@ -5,7 +5,7 @@ import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
 import { useDispatch } from 'react-redux'
 import { updateUser } from '../../redux/reducer/authSlice'
-import { getRegisteringUser } from '../../redux/selectors'
+import { getAuthUser } from '../../redux/selectors'
 import dayjs from 'dayjs'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Picker } from '@react-native-picker/picker'
@@ -20,7 +20,7 @@ const initialValues = { name: 'Leeeo', DoB: '04-04-2024', gender: 'Female' }
 
 const FormGeneral = () => {
     const dispatch = useDispatch()
-    const user = getRegisteringUser()
+    const user = getAuthUser()
 
     const [selectedGender, setSelectedGender] = useState()
     const [showGenderPicker, setShowGenderPicker] = useState(false)

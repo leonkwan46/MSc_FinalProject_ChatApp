@@ -7,10 +7,8 @@ import MessageInput from '../../components/chat/MessageInput'
 import Message from '../../components/chat/Message'
 
 const ContainerChatMessage = () => {
-    const user = useSelector(state => state.session.user)
-    const { userId, socketId } = user
-    const roomData = useSelector(state => state.session.currentChatRoom)
-    const { roomId, name, members, messages: chatHistory, createdAt } = roomData
+    const { userId, socketId } = useSelector(state => state.session.user)
+    const { roomId, name, members, messages: chatHistory, createdAt } = useSelector(state => state.session.currentChatRoom)
 
     const [oldMessages, setOldMessages] = useState([])
     const [message, setMessage] = useState('')
@@ -49,6 +47,9 @@ const ContainerChatMessage = () => {
                     data={chatHistory && oldMessages ? [...chatHistory, ...oldMessages] : []}
                     renderItem={item => <Message messageData={item} />}
                     keyExtractor={item => item.id || item._id}
+                    onLayout={() => {
+                        flatListRef.current.scrollToEnd({ animated: true })
+                    }}
                 />
             </View>
             <MessageInput

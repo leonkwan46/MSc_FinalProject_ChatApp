@@ -1,7 +1,10 @@
 import { useSelector } from 'react-redux'
 
-const getRegisteringUser = () => {
+const getAuthUser = () => {
     return useSelector(state => state.auth.user)
+}
+const getAuthStatus = () => {
+    return useSelector(state => state.auth.status)
 }
 
 const getLoggedInUser = () => {
@@ -22,14 +25,23 @@ const getUserToken = () => {
 const getUserID = () => {
     return useSelector(state => state.session.user.id)
 }
+const getUserStatus = () => {
+    return useSelector(state => state.session.status)
+}
 
 
 const getChatRoomInfo = () => {
     return useSelector(state => state.session.currentChatRoom)
 }
 
+const getRequestStatus = () => {
+    const authStatus = getAuthStatus()
+    const sessionStatus = getUserStatus()
+    return { auth: authStatus, session: sessionStatus }
+}
+
 export {
-    getRegisteringUser,
+    getAuthUser,
     getLoggedInUser,
     getUserContacts,
     getPreSelectedContact,
@@ -37,4 +49,7 @@ export {
     getUserID,
     getUserToken,
     getChatRoomInfo,
+    getRequestStatus,
+    getAuthStatus,
+    getUserStatus,
 }

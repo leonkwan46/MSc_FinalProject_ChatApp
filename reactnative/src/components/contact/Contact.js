@@ -8,7 +8,7 @@ const parentPic = require('../../../assets/images/parent.jpg')
 const studentPic = require('../../../assets/images/defaultFacePic.png')
 
 const Contact = (props) => {
-  const { name, role } = props.contactData[0]
+  const { name, role } = props.contactData
   const profilePic = role === 'teacher' ? teacherPic : role === 'parent' ? parentPic : studentPic
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
 

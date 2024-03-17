@@ -10,8 +10,10 @@ userDataHelper.fetchParentUserData = async (user) => {
     return {
         isInvited: user.isInvited,
         isInvitationVerified: user.isInvitationVerified,
-        children,
-        teachers,
+        contacts: {
+            children,
+            teachers,
+        }
     }
 }
 
@@ -23,8 +25,10 @@ userDataHelper.fetchTeacherUserData = async (user) => {
     return {
         isDocUploaded: user.isDocUploaded,
         isDocVerified: user.isDocVerified,
-        parents,
-        students,
+        contacts: {
+            parents,
+            students,
+        }
     }
 }
 
@@ -35,8 +39,10 @@ userDataHelper.fetchStudentUserData = async (user) => {
 
     return {
         instrument: user.instruments,
-        parent,
-        teachers,
+        contacts: {
+            parent,
+            teachers,
+        }
     }
 }
 

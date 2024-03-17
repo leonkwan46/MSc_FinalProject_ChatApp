@@ -3,21 +3,21 @@ import { View, StyleSheet } from 'react-native'
 import { Button, TextInput, Typography } from '../../compLib'
 import { Box, VStack } from '@react-native-material/core'
 import { Formik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getUserContacts, getLoggedInUser } from '../../redux/selectors'
 import dayjs from 'dayjs'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Picker } from '@react-native-picker/picker'
 import { createStudentAccount } from '../../redux/reducer/sessionSlice'
-import { SignupSchema } from '../../helpers/validationHelpers'
+import { StudentFormSchema } from '../../helpers/validationHelpers'
 import { useNavigation } from '@react-navigation/native'
 
 // For testing
-const initialValues = { email: 'student@gmail.com', password: '123456', confirmPassword: '123456', name: 'Leeeo', DoB: '04-04-2024', gender: 'Female', teacher: '', instrument: ''}
+const initialValues = { email: 'student@gmail.com', password: '123456', confirmPassword: '123456', name: 'Noel', DoB: '04-04-2024', gender: 'Female', teacher: '', instrument: 'Piano'}
 // const initialValues = { email: 'asd.asd@gmail.com', password: '123456', confirmPassword: '123456' }
 // const initialValues = { name: '', DoB: '', gender: '' }
 
-const validationSchema = SignupSchema
+const validationSchema = StudentFormSchema
 
 const FormStudent = () => {
     const dispatch = useDispatch()
@@ -69,13 +69,12 @@ const FormStudent = () => {
     const onSubmit = async (values, { resetForm }) => {
         dispatch(createStudentAccount({ ...values, parentToken }))
         resetForm()
+        navigation.goBack()
     }
 
     // allow swipe back
     useEffect(() => {
-        navigation.setOptions({
-            gestureEnabled: true,
-        })
+        navigation.setOptions({ gestureEnabled: true, })
     }, [])
 
     return (

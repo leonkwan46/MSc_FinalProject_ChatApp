@@ -22,7 +22,7 @@ router.post('/create_chat_room', authHandler, async (req, res, next) => {
     }
 })
 
-router.get('/get_rooms', async (req, res, next) => {
+router.get('/get_rooms', authHandler, async (req, res, next) => {
     try {
         const rooms = await Room.find()
         return res.status(200).json(rooms)

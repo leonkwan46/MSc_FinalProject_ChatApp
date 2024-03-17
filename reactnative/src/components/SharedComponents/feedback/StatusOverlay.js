@@ -1,24 +1,34 @@
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native'
 import { Overlay } from 'react-native-elements'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { closeStatusOverlay } from '../../../redux/reducer/registerInfoSlice'
+import { clearLoggedInRequestStatus } from '../../../redux/reducer/sessionSlice'
+import { clearAuthRequestStatus } from '../../../redux/reducer/authSlice'
 
 const failed = require('../../../../assets/images/error.png')
 
-const StatusOverlay = ({message, status}) => {
+const StatusOverlay = ({ message, visible }) => {
+    const [isVisible, setIsVisible] = useState(visible)
     const dispatch = useDispatch()
-    const visible = useSelector(state => state.registerInfo.isStatusOverlayOpen)
 
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         dispatch(closeStatusOverlay())
-    //     }, 3000)
-    //     return () => { clearTimeout(timer) }
-    // }, [visible])
+    const handleOnBackdropPress = () => {
+        setIsVisible(false)
+        dispatch(closeStatusOverlay())
+        dispatch(clearLoggedInRequestStatus())
+        dispatch(clearAuthRequestStatus())
+    }
+
+    useEffect(() => {
+        setIsVisible(visible)
+        const timer = setTimeout(() => {
+            handleOnBackdropPress()
+        }, 2500)
+        return () => { clearTimeout(timer) }
+    }, [visible])
 
     return (
-        <Overlay isVisible={visible} overlayStyle={styles.overlay} onBackdropPress={() => dispatch(closeStatusOverlay())}>
+        <Overlay isVisible={isVisible} overlayStyle={styles.overlay} onBackdropPress={handleOnBackdropPress}>
             <View>
                 <Image source={failed} style={styles.image} />
             </View>
@@ -27,8 +37,8 @@ const StatusOverlay = ({message, status}) => {
                 <Text style={styles.errorMessage}>{message}</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <Pressable style={styles.buttonFailed} onPress={() => dispatch(closeStatusOverlay())}>
-                    <Text style={styles.buttonText}>{'Try Again'}</Text>
+                <Pressable style={styles.buttonFailed} onPress={handleOnBackdropPress}>
+                    <Text style={styles.buttonText}>{'Close'}</Text>
                 </Pressable>
             </View>
         </Overlay>

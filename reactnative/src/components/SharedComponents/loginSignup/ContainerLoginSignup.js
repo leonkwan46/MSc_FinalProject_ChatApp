@@ -1,21 +1,19 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
-import { useSelector } from 'react-redux'
-import StatusOverlay from '../feedback/StatusOverlay'
-import Loading from '../feedback/Loading'
+import { ImageBackground, StyleSheet, SafeAreaView } from 'react-native'
+import StatusContainer from '../feedback/StatusContainer'
+import { getAuthStatus } from '../../../redux/selectors'
 
 const image = require('../../../../assets/images/login-signup-bg-img.jpg')
 
 const ContainerLoginSignup = ({ children }) => {
-  const { isLoading, error, token } = useSelector(state => state.auth)
-  const status = error && !token ? true : false
+  const { error } = getAuthStatus()
+
   return (
       <ImageBackground
         source={image}
         style={styles.container}
       >
-        {isLoading ? <Loading /> : null}
-        {status ? <StatusOverlay message={error} /> : null}
+        <StatusContainer message={error} />
         <SafeAreaView style={ styles.backgroundColor }>
           {children}
         </SafeAreaView>

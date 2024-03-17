@@ -25,8 +25,10 @@ const initialState = {
         isDocUploaded: '',
         isDocVerified: '',
     },
-    isLoading: false,
-    error: null,
+    status: {
+        isLoading: false,
+        error: null,
+    }
 }
 
 export const signUpUser = createAsyncThunk(
@@ -115,15 +117,19 @@ const authSlice = createSlice({
                 isDocUploaded: '',
                 isDocVerified: '',
             }
-            state.isLoading = false
-            state.error = null
+            state.status.isLoading = false
+            state.status.error = null
         },
+        clearAuthRequestStatus: (state) => {
+            state.status.isLoading = false
+            state.status.error = null
+        }
     },
     extraReducers: (builder) => {
         builder
             // SignUp Status
             .addCase(signUpUser.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(signUpUser.fulfilled, (state, action) => {
                 state.user.token = action.payload.token
@@ -149,8 +155,8 @@ const authSlice = createSlice({
                     state.user.isInvitationVerified = action.payload.user.isInvitationVerified
                 }
 
-                state.error = null
-                state.isLoading = false
+                state.status.error = null
+                state.status.isLoading = false
             })
             .addCase(signUpUser.rejected, (state, action) => {
                 state.user = {
@@ -169,13 +175,13 @@ const authSlice = createSlice({
                     isDocUploaded: '',
                     isDocVerified: '',
                 }
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
 
             // Login Status
             .addCase(loginUser.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.user.token = action.payload.token
@@ -201,8 +207,8 @@ const authSlice = createSlice({
                     state.user.isInvitationVerified = action.payload.user.isInvitationVerified
                 }
 
-                state.error = null
-                state.isLoading = false
+                state.status.error = null
+                state.status.isLoading = false
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.user = {
@@ -221,20 +227,20 @@ const authSlice = createSlice({
                     isDocUploaded: '',
                     isDocVerified: '',
                 }
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
 
             // Update User Status
             .addCase(updateUser.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(updateUser.fulfilled, (state, action) => {
                 state.user.name = action.payload.name,
                 state.user.DoB = action.payload.DoB,
                 state.user.gender = action.payload.gender,
                 state.user.isGeneralFormComplete = action.payload.isGeneralFormComplete
-                state.isLoading = false
+                state.status.isLoading = false
             })
             .addCase(updateUser.rejected, (state, action) => {
                 state.user = {
@@ -243,38 +249,38 @@ const authSlice = createSlice({
                     DoB: '',
                     gender: '',
                 }
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
 
             // Auth Invitation Code
             .addCase(authInvitationCode.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(authInvitationCode.fulfilled, (state, action) => {
                 state.user.isInvitationVerified = true
-                state.error = null
-                state.isLoading = false
+                state.status.error = null
+                state.status.isLoading = false
             })
             .addCase(authInvitationCode.rejected, (state, action) => {
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
 
             // Update Teacher Status
             .addCase(updateTeacherDocuments.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(updateTeacherDocuments.fulfilled, (state) => {
                 state.user.isDocUploaded = true
-                state.isLoading = false
+                state.status.isLoading = false
             })
             .addCase(updateTeacherDocuments.rejected, (state, action) => {
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
     }
 })
 
-export const { clearAuthStates, testTeacher, testParent } = authSlice.actions
+export const { clearAuthStates, clearAuthRequestStatus } = authSlice.actions
 export default authSlice.reducer

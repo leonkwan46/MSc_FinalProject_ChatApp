@@ -15,7 +15,7 @@ const LoggedInTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{ headerShown: false }}
-      tabBar={props => <BottomNavBar {...props} />}
+      tabBar={navigation => <BottomNavBar navigation={navigation} />}
     >
       <Tab.Screen name={SCREEN_NAMES.MESSAGE} component={MessageScreen} />
       <Tab.Screen name={SCREEN_NAMES.CONTACT} component={ContactScreen} />

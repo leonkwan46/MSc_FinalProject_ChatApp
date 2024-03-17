@@ -7,7 +7,7 @@ import CreateRoomActionForm from './CreateRoomActionForm'
 const backgroundImage = require('../../../assets/images/piano-dark.jpg')
 
 const CreateRoomPopover = (props) => {
-    const { isPopoverVisible, handleClosePopover, role } = props
+    const { isPopoverVisible, handleClosePopover } = props
     return (
         <Modal
             animationType="fade"
@@ -32,7 +32,7 @@ const CreateRoomPopover = (props) => {
                                         <View style={styles.title}>
                                             <Typography size='xl' color='primary'>Create Chat Room</Typography>
                                         </View>
-                                        <CreateRoomActionForm role={role} />
+                                        <CreateRoomActionForm handleClosePopover={handleClosePopover} />
                                     </View>
                                 </View>
                             </ImageBackground>

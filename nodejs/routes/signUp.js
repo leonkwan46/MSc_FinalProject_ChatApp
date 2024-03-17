@@ -84,10 +84,13 @@ router.post('/extra_details/auth_invitation', authHandler, async (req, res, next
         const user = req.user
         const { invitationCode } = req.body
 
-        await OTPHelper.verifyOTP(invitationCode, user.hashPassword)
+        const isVerified = await OTPHelper.verifyOTP(invitationCode, user.hashPassword)
+        if (!isVerified) throw new Error("Invalid OTP Code")
 
         const isUpdated = await Parent.findOneAndUpdate({ email: user.email }, { isInvitationVerified: true })
         if (!isUpdated) throw new Error("Failed to update user")
+
+        
         
         return res.status(200).json({ message: "Success" })
     } catch (err) {

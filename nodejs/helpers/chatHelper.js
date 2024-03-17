@@ -20,14 +20,9 @@ chatHelper.handleSendMessage = async (io, socket, props) => {
     io.emit('chatMessage', { sender: socket.id, data: newMessage })
 }
 
-chatHelper.createRoom = async (io, socket, userData) => {
-
-}
-
 chatHelper.generateRoomMemberData = async (userID, role, data) => {
     const { teacher, student, parent, child } = data
     let roomMemberData
-
     switch (role) {
         case 'teacher':
             roomMemberData = {

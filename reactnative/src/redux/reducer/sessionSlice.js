@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { getSocketId } from "../../helpers/socketHelpers"
 import axios from "axios"
+import { getUserContacts } from "../selectors"
 
 const initialState = {
     user: {
@@ -24,8 +25,10 @@ const initialState = {
         messages: [],
         createdAt: '',
     },
-    isLoading: false,
-    error: null,
+    status: {
+        isLoading: false,
+        error: null,
+    }
 }
 
 export const sendInvitationCode = createAsyncThunk(
@@ -79,6 +82,40 @@ export const createChatRoom = createAsyncThunk(
     }
 )
 
+export const getChatRooms = createAsyncThunk(
+    'session/getChatRoom',
+    async (chatRoomData, {rejectWithValue}) => {
+        const { token } = chatRoomData
+        try {
+            const response = await axios.get('http://localhost:5000/chat_message/get_rooms', {
+                headers: {
+                    'authorization': `Bearer ${token}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const getContacts = createAsyncThunk(
+    'session/getContacts',
+    async (contactData, {rejectWithValue}) => {
+        const { token } = contactData
+        try {
+            const response = await axios.get('http://localhost:5000/contacts/get_contacts', {
+                headers: {
+                    'authorization': `Bearer ${token}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
 const sessionSlice = createSlice({
     name: 'session',
     initialState: {...initialState},
@@ -91,18 +128,11 @@ const sessionSlice = createSlice({
             state.user.socketId = getSocketId(),
             state.user.token = action.payload.token
             // Contacts
-            state.contacts.teachers = action.payload.user.teachers,
-            state.contacts.students = action.payload.user.students,
-            state.contacts.children = action.payload.user.children,
-            state.contacts.parents = action.payload.user.parents,
-            state.contacts.parent = action.payload.user.parent
-        },
-        updateContacts: (state, action) => {
-            state.contacts.teachers = action.payload.teachers,
-            state.contacts.students = action.payload.students,
-            state.contacts.children = action.payload.children,
-            state.contacts.parents = action.payload.parents,
-            state.contacts.parent = action.payload.parent
+            state.contacts.teachers = action.payload.user.contacts.teachers,
+            state.contacts.students = action.payload.user.contacts.students,
+            state.contacts.children = action.payload.user.contacts.children,
+            state.contacts.parents = action.payload.user.contacts.parents,
+            state.contacts.parent = action.payload.user.contacts.parent
         },
         setCurrentChatRoom: (state, action) => {
             state.currentChatRoom.roomId = action.payload._id,
@@ -111,54 +141,72 @@ const sessionSlice = createSlice({
             state.currentChatRoom.messages = action.payload.messages,
             state.currentChatRoom.createdAt = action.payload.createdAt
         },
+        clearLoggedInRequestStatus: (state) => {
+            state.status.isLoading = false
+            state.status.error = null
+        }
     },
     extraReducers: (builder) => {
         builder
             // Send Invitation Code
             .addCase(sendInvitationCode.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(sendInvitationCode.fulfilled, (state, action) => {
-                state.error = null
-                state.isLoading = false
+                state.status.error = null
+                state.status.isLoading = false
             })
             .addCase(sendInvitationCode.rejected, (state, action) => {
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
 
             // Create Student Account
             .addCase(createStudentAccount.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(createStudentAccount.fulfilled, (state, action) => {
-                state.error = null
-                state.isLoading = false
+                state.status.error = null
+                state.status.isLoading = false
             })
             .addCase(createStudentAccount.rejected, (state, action) => {
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
 
             // Create Chat Room
             .addCase(createChatRoom.pending, (state) => {
-                state.isLoading = true
+                state.status.isLoading = true
             })
             .addCase(createChatRoom.fulfilled, (state, action) => {
-                state.error = null
-                state.isLoading = false
+                
+                state.status.error = null
+                state.status.isLoading = false
             })
             .addCase(createChatRoom.rejected, (state, action) => {
-                state.error = action?.payload?.message || action.error.message
-                state.isLoading = false
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
+            })
+
+            // Get Chat Rooms
+            .addCase(getChatRooms.pending, (state) => {
+                state.status.isLoading = true
+            })
+            .addCase(getChatRooms.fulfilled, (state, action) => {
+                state.status.error = null
+                state.status.isLoading = false
+            })
+            .addCase(getChatRooms.rejected, (state, action) => {
+                state.status.error = action?.payload?.message || action.error.message
+                state.status.isLoading = false
             })
     }
 })
 
 export const {
     setUser,
-    updateContacts,
     setCurrentChatRoom,
+    clearLoggedInRequestStatus
 } = sessionSlice.actions
 
 const sessionReducer = sessionSlice.reducer

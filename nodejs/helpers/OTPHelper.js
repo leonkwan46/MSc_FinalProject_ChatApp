@@ -12,7 +12,7 @@ totp.options = {
     digits: 6,
     step: 7 * 24 * 60 * 60, // 7 days
     window: [1, 10] // [past, future]
-  }
+}
 
 OTPHelper.generateOTP = async (secret) => {
     return await totp.generate(secret)

@@ -1,30 +1,47 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { getUserContacts } from '../../redux/selectors'
+import { getUserToken } from '../../redux/selectors'
 import Contact from './Contact'
 import { Box, VStack } from '@react-native-material/core'
+import { useFocusEffect } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { getContacts } from '../../redux/reducer/sessionSlice'
+import { combineContacts } from '../../helpers/generalHelpers'
 
 const ContactList = () => {
-    const contacts = getUserContacts()
-    const allContacts = []
-    for (const [key, value] of Object.entries(contacts)) {
-        if (!key || !value) continue
-        allContacts.push(value)
+    const dispatch = useDispatch()
+    const token = getUserToken()
+    const [allContacts, setAllContacts] = useState([])
+    
+    const fetchContacts = async () => {
+        const response = await dispatch(getContacts({ token }))
+        console.log('response', response.payload)
+        const combineAllContacts = combineContacts(response.payload)
+        console.log('combineAllContacts', combineAllContacts)
+        setAllContacts(combineAllContacts)
     }
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchContacts()
+        }, [])
+    )
+
+    console.log('allContacts', allContacts)
     return (
-        <View>
-            {allContacts && (
+        <>
+            {allContacts.length > 0 && (
                 <View style={styles.container}>
                     <VStack spacing={10} divider={true}>
                         {allContacts.map((contact) => (
-                            <Box key={contact[0]._id}>
+                            <Box key={contact?._id}>
                                 <Contact contactData={contact} />
                             </Box>
                         ))}
                     </VStack>
                 </View>
             )}
-        </View>
+        </>
     )
 }
 

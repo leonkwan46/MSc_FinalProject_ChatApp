@@ -2,22 +2,26 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Formik } from 'formik'
 import { Box, VStack } from '@react-native-material/core'
-import { getRegisteringUser } from '../../redux/selectors'
+import { getAuthUser } from '../../redux/selectors'
 import { useDispatch } from 'react-redux'
 import { authInvitationCode } from '../../redux/reducer/authSlice'
 import { Button, TextInput, Typography } from '../../compLib'
+import { ParentFormSchema } from '../../helpers/validationHelpers'
+
+const validationSchema = ParentFormSchema
 
 const FormParent = () => {
-    const user = getRegisteringUser()
+    const { token } = getAuthUser()
     const dispatch = useDispatch()
     const handleOnSubmit = async (values, { resetForm }) => {
-        values = { ...values, token: user.token }
+        values = { ...values, token }
         await dispatch(authInvitationCode(values))
         resetForm()
     }
     return (
         <View style={styles.container}>
             <Formik
+                validationSchema={validationSchema}
                 initialValues={{ invitationCode: '' }}
                 onSubmit={handleOnSubmit}
             >

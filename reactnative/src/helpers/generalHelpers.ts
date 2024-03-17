@@ -33,4 +33,17 @@ const getTitleByScreenName = (screenName: string) => {
     }
 }
 
-export { TITLES, SCREEN_NAMES, getTitleByScreenName }
+const filterEmptyContacts = (contacts: object) => {
+    return Object.values(contacts).filter((key) => {
+        return contacts[key] !== undefined && contacts[key] !== null
+    })
+}
+
+const combineContacts = (contacts: object) => {
+    return Object.values(contacts) // Extract values
+        .flatMap(contact => contact) // Flatten array of arrays
+        .filter(contact => contact && contact.name) // Filter out contacts without a name
+        .sort((a, b) => a.name.localeCompare(b.name)) // Sort by name
+}
+
+export { TITLES, SCREEN_NAMES, getTitleByScreenName, filterEmptyContacts, combineContacts }

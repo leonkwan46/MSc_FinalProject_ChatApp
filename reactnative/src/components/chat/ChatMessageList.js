@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import ChatRoom from './ChatRoom'
-import axios from 'axios'
 import { Box, VStack } from '@react-native-material/core'
+import { getUserToken } from '../../redux/selectors'
+import { useDispatch } from 'react-redux'
+import { getChatRooms } from '../../redux/reducer/sessionSlice'
+import { useFocusEffect } from '@react-navigation/native'
 
 const ChatMessageList = () => {
+    const dispatch = useDispatch()
     const [rooms, setRooms] = useState([])
-
+    const token = getUserToken()
+    
     const fetchRooms = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/chat_message/get_rooms')
-            setRooms(response.data)
-        } catch (err) {
-            console.log(err)
-        }
+        const response = await dispatch(getChatRooms({ token, setRooms }))
+        setRooms(response.payload)
     }
 
-    useEffect(() => {
-        fetchRooms()
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            fetchRooms()
+        }, [])
+    )
 
     return (
         <View>
-            <View>
-                <VStack spacing={10} divider={true}>
-                    {rooms.map((room) => (
-                        <Box key={room._id}>
-                            <ChatRoom roomData={room} />
-                        </Box>
-                    ))}
-                </VStack>
-            </View>
+            <VStack spacing={10} divider={true}>
+                {rooms?.map((room) => (
+                    <Box key={room._id}>
+                        <ChatRoom roomData={room} />
+                    </Box>
+                ))}
+            </VStack>
         </View>
     )
 }
